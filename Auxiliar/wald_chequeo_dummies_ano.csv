@@ -1,0 +1,136 @@
+especificacion,institucion,bloque,tipo,stat_type,stat,df,df_r,p
+binaria,Gobierno,1 (<=1949),dentro-bloque,chi2,    0.695,  1,     .,   0.4046
+binaria,Gobierno,2 (1950-1964),dentro-bloque,chi2,    0.413,  2,     .,   0.8135
+binaria,Gobierno,3 (1965-1979),dentro-bloque,chi2,    3.269,  2,     .,   0.1951
+binaria,Gobierno,4 (1980-1994),dentro-bloque,chi2,    3.181,  2,     .,   0.2038
+binaria,Gobierno,5 (1995+),dentro-bloque,chi2,    0.807,  2,     .,   0.6680
+binaria,Gobierno,frontera 1-2 (1949/1950),frontera,chi2,    1.999,  1,     .,   0.1574
+binaria,Gobierno,frontera 2-3 (1964/1965),frontera,chi2,    1.321,  1,     .,   0.2505
+binaria,Gobierno,frontera 3-4 (1979/1980),frontera,chi2,    1.948,  1,     .,   0.1628
+binaria,Gobierno,frontera 4-5 (1994/1995),frontera,chi2,    4.835,  1,     .,   0.0279
+binaria,Parlamento,1 (<=1949),dentro-bloque,chi2,    0.474,  1,     .,   0.4911
+binaria,Parlamento,2 (1950-1964),dentro-bloque,chi2,    5.721,  2,     .,   0.0572
+binaria,Parlamento,3 (1965-1979),dentro-bloque,chi2,    6.136,  2,     .,   0.0465
+binaria,Parlamento,4 (1980-1994),dentro-bloque,chi2,    2.702,  2,     .,   0.2590
+binaria,Parlamento,5 (1995+),dentro-bloque,chi2,    3.962,  2,     .,   0.1379
+binaria,Parlamento,frontera 1-2 (1949/1950),frontera,chi2,    0.218,  1,     .,   0.6403
+binaria,Parlamento,frontera 2-3 (1964/1965),frontera,chi2,    0.490,  1,     .,   0.4841
+binaria,Parlamento,frontera 3-4 (1979/1980),frontera,chi2,    1.279,  1,     .,   0.2581
+binaria,Parlamento,frontera 4-5 (1994/1995),frontera,chi2,    0.117,  1,     .,   0.7324
+binaria,Partidos,1 (<=1949),dentro-bloque,chi2,    0.073,  1,     .,   0.7864
+binaria,Partidos,2 (1950-1964),dentro-bloque,chi2,    1.358,  2,     .,   0.5071
+binaria,Partidos,3 (1965-1979),dentro-bloque,chi2,    4.072,  2,     .,   0.1305
+binaria,Partidos,4 (1980-1994),dentro-bloque,chi2,    0.293,  2,     .,   0.8638
+binaria,Partidos,5 (1995+),dentro-bloque,chi2,    1.304,  2,     .,   0.5210
+binaria,Partidos,frontera 1-2 (1949/1950),frontera,chi2,    0.471,  1,     .,   0.4923
+binaria,Partidos,frontera 2-3 (1964/1965),frontera,chi2,    1.312,  1,     .,   0.2520
+binaria,Partidos,frontera 3-4 (1979/1980),frontera,chi2,    0.269,  1,     .,   0.6040
+binaria,Partidos,frontera 4-5 (1994/1995),frontera,chi2,    2.343,  1,     .,   0.1258
+binaria,FF.AA.,1 (<=1949),dentro-bloque,chi2,    1.057,  1,     .,   0.3038
+binaria,FF.AA.,2 (1950-1964),dentro-bloque,chi2,    0.331,  2,     .,   0.8476
+binaria,FF.AA.,3 (1965-1979),dentro-bloque,chi2,    5.157,  2,     .,   0.0759
+binaria,FF.AA.,4 (1980-1994),dentro-bloque,chi2,    0.435,  2,     .,   0.8045
+binaria,FF.AA.,5 (1995+),dentro-bloque,chi2,    0.351,  2,     .,   0.8392
+binaria,FF.AA.,frontera 1-2 (1949/1950),frontera,chi2,    5.439,  1,     .,   0.0197
+binaria,FF.AA.,frontera 2-3 (1964/1965),frontera,chi2,    0.051,  1,     .,   0.8216
+binaria,FF.AA.,frontera 3-4 (1979/1980),frontera,chi2,    0.550,  1,     .,   0.4581
+binaria,FF.AA.,frontera 4-5 (1994/1995),frontera,chi2,    5.812,  1,     .,   0.0159
+binaria,Iglesia,1 (<=1949),dentro-bloque,chi2,    0.508,  1,     .,   0.4760
+binaria,Iglesia,2 (1950-1964),dentro-bloque,chi2,    0.363,  2,     .,   0.8342
+binaria,Iglesia,3 (1965-1979),dentro-bloque,chi2,    0.974,  2,     .,   0.6144
+binaria,Iglesia,4 (1980-1994),dentro-bloque,chi2,    1.004,  2,     .,   0.6054
+binaria,Iglesia,5 (1995+),dentro-bloque,chi2,    2.230,  2,     .,   0.3279
+binaria,Iglesia,frontera 1-2 (1949/1950),frontera,chi2,    1.359,  1,     .,   0.2437
+binaria,Iglesia,frontera 2-3 (1964/1965),frontera,chi2,    0.148,  1,     .,   0.7007
+binaria,Iglesia,frontera 3-4 (1979/1980),frontera,chi2,    0.000,  1,     .,   0.9996
+binaria,Iglesia,frontera 4-5 (1994/1995),frontera,chi2,    0.713,  1,     .,   0.3984
+zscore,Gobierno,1 (<=1949),dentro-bloque,chi2,        .,  1,     .,   0.0227
+zscore,Gobierno,2 (1950-1964),dentro-bloque,chi2,        .,  2,     .,   0.0418
+zscore,Gobierno,3 (1965-1979),dentro-bloque,chi2,        .,  2,     .,   0.2319
+zscore,Gobierno,4 (1980-1994),dentro-bloque,chi2,        .,  2,     .,   0.0678
+zscore,Gobierno,5 (1995+),dentro-bloque,chi2,        .,  2,     .,   0.0194
+zscore,Gobierno,frontera 1-2 (1949/1950),frontera,chi2,        .,  1,     .,   0.4570
+zscore,Gobierno,frontera 2-3 (1964/1965),frontera,chi2,        .,  1,     .,   0.2469
+zscore,Gobierno,frontera 3-4 (1979/1980),frontera,chi2,        .,  1,     .,   0.2724
+zscore,Gobierno,frontera 4-5 (1994/1995),frontera,chi2,        .,  1,     .,   0.0001
+zscore,Parlamento,1 (<=1949),dentro-bloque,chi2,        .,  1,     .,   0.1172
+zscore,Parlamento,2 (1950-1964),dentro-bloque,chi2,        .,  2,     .,   0.0020
+zscore,Parlamento,3 (1965-1979),dentro-bloque,chi2,        .,  2,     .,   0.0016
+zscore,Parlamento,4 (1980-1994),dentro-bloque,chi2,        .,  2,     .,   0.0578
+zscore,Parlamento,5 (1995+),dentro-bloque,chi2,        .,  2,     .,   0.0000
+zscore,Parlamento,frontera 1-2 (1949/1950),frontera,chi2,        .,  1,     .,   0.8409
+zscore,Parlamento,frontera 2-3 (1964/1965),frontera,chi2,        .,  1,     .,   0.3580
+zscore,Parlamento,frontera 3-4 (1979/1980),frontera,chi2,        .,  1,     .,   0.9541
+zscore,Parlamento,frontera 4-5 (1994/1995),frontera,chi2,        .,  1,     .,   0.0000
+zscore,Partidos,1 (<=1949),dentro-bloque,chi2,        .,  1,     .,   0.1828
+zscore,Partidos,2 (1950-1964),dentro-bloque,chi2,        .,  2,     .,   0.1431
+zscore,Partidos,3 (1965-1979),dentro-bloque,chi2,        .,  2,     .,   0.0008
+zscore,Partidos,4 (1980-1994),dentro-bloque,chi2,        .,  2,     .,   0.4887
+zscore,Partidos,5 (1995+),dentro-bloque,chi2,        .,  2,     .,   0.0022
+zscore,Partidos,frontera 1-2 (1949/1950),frontera,chi2,        .,  1,     .,   0.1073
+zscore,Partidos,frontera 2-3 (1964/1965),frontera,chi2,        .,  1,     .,   0.4884
+zscore,Partidos,frontera 3-4 (1979/1980),frontera,chi2,        .,  1,     .,   0.8837
+zscore,Partidos,frontera 4-5 (1994/1995),frontera,chi2,        .,  1,     .,   0.0000
+zscore,FF.AA.,1 (<=1949),dentro-bloque,chi2,        .,  1,     .,   0.4978
+zscore,FF.AA.,2 (1950-1964),dentro-bloque,chi2,        .,  2,     .,   0.6606
+zscore,FF.AA.,3 (1965-1979),dentro-bloque,chi2,        .,  2,     .,   0.0122
+zscore,FF.AA.,4 (1980-1994),dentro-bloque,chi2,        .,  2,     .,   0.9902
+zscore,FF.AA.,5 (1995+),dentro-bloque,chi2,        .,  2,     .,   0.3917
+zscore,FF.AA.,frontera 1-2 (1949/1950),frontera,chi2,        .,  1,     .,   0.1383
+zscore,FF.AA.,frontera 2-3 (1964/1965),frontera,chi2,        .,  1,     .,   0.7236
+zscore,FF.AA.,frontera 3-4 (1979/1980),frontera,chi2,        .,  1,     .,   0.2188
+zscore,FF.AA.,frontera 4-5 (1994/1995),frontera,chi2,        .,  1,     .,   0.0002
+zscore,Iglesia,1 (<=1949),dentro-bloque,chi2,        .,  1,     .,   0.3013
+zscore,Iglesia,2 (1950-1964),dentro-bloque,chi2,        .,  2,     .,   0.7487
+zscore,Iglesia,3 (1965-1979),dentro-bloque,chi2,        .,  2,     .,   0.1673
+zscore,Iglesia,4 (1980-1994),dentro-bloque,chi2,        .,  2,     .,   0.3909
+zscore,Iglesia,5 (1995+),dentro-bloque,chi2,        .,  2,     .,   0.1059
+zscore,Iglesia,frontera 1-2 (1949/1950),frontera,chi2,        .,  1,     .,   0.4336
+zscore,Iglesia,frontera 2-3 (1964/1965),frontera,chi2,        .,  1,     .,   0.8575
+zscore,Iglesia,frontera 3-4 (1979/1980),frontera,chi2,        .,  1,     .,   0.6528
+zscore,Iglesia,frontera 4-5 (1994/1995),frontera,chi2,        .,  1,     .,   0.1771
+ordinal,Gobierno,1 (<=1949),dentro-bloque,chi2,    5.525,  1,     .,   0.0187
+ordinal,Gobierno,2 (1950-1964),dentro-bloque,chi2,    7.351,  2,     .,   0.0253
+ordinal,Gobierno,3 (1965-1979),dentro-bloque,chi2,    2.859,  2,     .,   0.2395
+ordinal,Gobierno,4 (1980-1994),dentro-bloque,chi2,    7.083,  2,     .,   0.0290
+ordinal,Gobierno,5 (1995+),dentro-bloque,chi2,   11.540,  2,     .,   0.0031
+ordinal,Gobierno,frontera 1-2 (1949/1950),frontera,chi2,    0.182,  1,     .,   0.6698
+ordinal,Gobierno,frontera 2-3 (1964/1965),frontera,chi2,    1.760,  1,     .,   0.1847
+ordinal,Gobierno,frontera 3-4 (1979/1980),frontera,chi2,    1.154,  1,     .,   0.2826
+ordinal,Gobierno,frontera 4-5 (1994/1995),frontera,chi2,   14.645,  1,     .,   0.0001
+ordinal,Parlamento,1 (<=1949),dentro-bloque,chi2,    3.304,  1,     .,   0.0691
+ordinal,Parlamento,2 (1950-1964),dentro-bloque,chi2,   11.592,  2,     .,   0.0030
+ordinal,Parlamento,3 (1965-1979),dentro-bloque,chi2,   16.296,  2,     .,   0.0003
+ordinal,Parlamento,4 (1980-1994),dentro-bloque,chi2,    5.474,  2,     .,   0.0648
+ordinal,Parlamento,5 (1995+),dentro-bloque,chi2,   35.653,  2,     .,   0.0000
+ordinal,Parlamento,frontera 1-2 (1949/1950),frontera,chi2,    0.123,  1,     .,   0.7263
+ordinal,Parlamento,frontera 2-3 (1964/1965),frontera,chi2,    0.589,  1,     .,   0.4427
+ordinal,Parlamento,frontera 3-4 (1979/1980),frontera,chi2,    0.066,  1,     .,   0.7977
+ordinal,Parlamento,frontera 4-5 (1994/1995),frontera,chi2,   18.232,  1,     .,   0.0000
+ordinal,Partidos,1 (<=1949),dentro-bloque,chi2,    0.985,  1,     .,   0.3210
+ordinal,Partidos,2 (1950-1964),dentro-bloque,chi2,    3.020,  2,     .,   0.2210
+ordinal,Partidos,3 (1965-1979),dentro-bloque,chi2,   16.674,  2,     .,   0.0002
+ordinal,Partidos,4 (1980-1994),dentro-bloque,chi2,    2.637,  2,     .,   0.2675
+ordinal,Partidos,5 (1995+),dentro-bloque,chi2,   14.078,  2,     .,   0.0009
+ordinal,Partidos,frontera 1-2 (1949/1950),frontera,chi2,    2.935,  1,     .,   0.0867
+ordinal,Partidos,frontera 2-3 (1964/1965),frontera,chi2,    0.890,  1,     .,   0.3454
+ordinal,Partidos,frontera 3-4 (1979/1980),frontera,chi2,    0.080,  1,     .,   0.7776
+ordinal,Partidos,frontera 4-5 (1994/1995),frontera,chi2,   20.228,  1,     .,   0.0000
+ordinal,FF.AA.,1 (<=1949),dentro-bloque,chi2,    0.624,  1,     .,   0.4295
+ordinal,FF.AA.,2 (1950-1964),dentro-bloque,chi2,    0.546,  2,     .,   0.7612
+ordinal,FF.AA.,3 (1965-1979),dentro-bloque,chi2,    8.698,  2,     .,   0.0129
+ordinal,FF.AA.,4 (1980-1994),dentro-bloque,chi2,    0.075,  2,     .,   0.9633
+ordinal,FF.AA.,5 (1995+),dentro-bloque,chi2,    1.385,  2,     .,   0.5004
+ordinal,FF.AA.,frontera 1-2 (1949/1950),frontera,chi2,    2.563,  1,     .,   0.1094
+ordinal,FF.AA.,frontera 2-3 (1964/1965),frontera,chi2,    0.051,  1,     .,   0.8215
+ordinal,FF.AA.,frontera 3-4 (1979/1980),frontera,chi2,    1.364,  1,     .,   0.2428
+ordinal,FF.AA.,frontera 4-5 (1994/1995),frontera,chi2,   13.712,  1,     .,   0.0002
+ordinal,Iglesia,1 (<=1949),dentro-bloque,chi2,    1.878,  1,     .,   0.1706
+ordinal,Iglesia,2 (1950-1964),dentro-bloque,chi2,    0.658,  2,     .,   0.7195
+ordinal,Iglesia,3 (1965-1979),dentro-bloque,chi2,    4.810,  2,     .,   0.0903
+ordinal,Iglesia,4 (1980-1994),dentro-bloque,chi2,    1.697,  2,     .,   0.4280
+ordinal,Iglesia,5 (1995+),dentro-bloque,chi2,    4.642,  2,     .,   0.0982
+ordinal,Iglesia,frontera 1-2 (1949/1950),frontera,chi2,    0.275,  1,     .,   0.6000
+ordinal,Iglesia,frontera 2-3 (1964/1965),frontera,chi2,    0.072,  1,     .,   0.7886
+ordinal,Iglesia,frontera 3-4 (1979/1980),frontera,chi2,    0.226,  1,     .,   0.6345
+ordinal,Iglesia,frontera 4-5 (1994/1995),frontera,chi2,    3.299,  1,     .,   0.0693

@@ -1,0 +1,15 @@
+# Red de seguridad: nunca subir microdata, aunque se copie por error a esta carpeta.
+*.dta
+*.sav
+*.csv.gz
+*.rds
+
+# Archivos temporales y logs de Stata
+*.tmp
+*.tmp.*
+*.log
+*.smcl
+
+# Basura de sistema
+.DS_Store
+Thumbs.db
