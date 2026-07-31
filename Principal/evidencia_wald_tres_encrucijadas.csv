@@ -1,0 +1,226 @@
+especificacion,esquema,institucion,bloque,tipo,chi2,df,p
+binaria,teorica,Gobierno,1 (<=1949),dentro-bloque,    3.465,  1,   0.0627
+binaria,teorica,Gobierno,2 (1950-1964),dentro-bloque,    2.762,  2,   0.2513
+binaria,teorica,Gobierno,3 (1965-1979),dentro-bloque,    1.583,  2,   0.4532
+binaria,teorica,Gobierno,4 (1980-1994),dentro-bloque,    2.383,  2,   0.3037
+binaria,teorica,Gobierno,5 (1995+),dentro-bloque,    0.890,  2,   0.6407
+binaria,teorica,Gobierno,frontera 1-2 (1949/1950),frontera,    2.594,  1,   0.1073
+binaria,teorica,Gobierno,frontera 2-3 (1964/1965),frontera,    1.257,  1,   0.2623
+binaria,teorica,Gobierno,frontera 3-4 (1979/1980),frontera,    4.058,  1,   0.0440
+binaria,teorica,Gobierno,frontera 4-5 (1994/1995),frontera,    4.634,  1,   0.0313
+binaria,importada,Gobierno,frontera Silenciosa/Boomer (1945/1946),frontera,    1.560,  1,   0.2116
+binaria,importada,Gobierno,frontera Boomer/X (1964/1965),frontera,    0.080,  1,   0.7774
+binaria,importada,Gobierno,frontera X/Millennial (1980/1981),frontera,    0.973,  1,   0.3240
+binaria,importada,Gobierno,frontera Millennial/Z (1996/1997),frontera,    0.271,  1,   0.6024
+binaria,balcells,Gobierno,frontera plebiscito 1988 (1970/1971),frontera,    0.681,  1,   0.4092
+binaria,balcells,Gobierno,frontera retorno democracia 1990 (1972/1973),frontera,    1.725,  1,   0.1891
+binaria,teorica,Parlamento,1 (<=1949),dentro-bloque,    0.106,  1,   0.7449
+binaria,teorica,Parlamento,2 (1950-1964),dentro-bloque,    4.081,  2,   0.1300
+binaria,teorica,Parlamento,3 (1965-1979),dentro-bloque,    1.470,  2,   0.4796
+binaria,teorica,Parlamento,4 (1980-1994),dentro-bloque,    1.152,  2,   0.5621
+binaria,teorica,Parlamento,5 (1995+),dentro-bloque,    4.680,  2,   0.0963
+binaria,teorica,Parlamento,frontera 1-2 (1949/1950),frontera,    0.036,  1,   0.8496
+binaria,teorica,Parlamento,frontera 2-3 (1964/1965),frontera,    0.000,  1,   0.9910
+binaria,teorica,Parlamento,frontera 3-4 (1979/1980),frontera,    0.100,  1,   0.7517
+binaria,teorica,Parlamento,frontera 4-5 (1994/1995),frontera,    0.054,  1,   0.8157
+binaria,importada,Parlamento,frontera Silenciosa/Boomer (1945/1946),frontera,    2.712,  1,   0.0996
+binaria,importada,Parlamento,frontera Boomer/X (1964/1965),frontera,    0.520,  1,   0.4710
+binaria,importada,Parlamento,frontera X/Millennial (1980/1981),frontera,    0.317,  1,   0.5734
+binaria,importada,Parlamento,frontera Millennial/Z (1996/1997),frontera,    2.354,  1,   0.1250
+binaria,balcells,Parlamento,frontera plebiscito 1988 (1970/1971),frontera,    3.440,  1,   0.0636
+binaria,balcells,Parlamento,frontera retorno democracia 1990 (1972/1973),frontera,    0.024,  1,   0.8769
+binaria,teorica,Partidos,1 (<=1949),dentro-bloque,    0.461,  1,   0.4972
+binaria,teorica,Partidos,2 (1950-1964),dentro-bloque,    2.548,  2,   0.2798
+binaria,teorica,Partidos,3 (1965-1979),dentro-bloque,    2.134,  2,   0.3440
+binaria,teorica,Partidos,4 (1980-1994),dentro-bloque,    1.859,  2,   0.3948
+binaria,teorica,Partidos,5 (1995+),dentro-bloque,    1.587,  2,   0.4522
+binaria,teorica,Partidos,frontera 1-2 (1949/1950),frontera,    0.031,  1,   0.8612
+binaria,teorica,Partidos,frontera 2-3 (1964/1965),frontera,    0.161,  1,   0.6886
+binaria,teorica,Partidos,frontera 3-4 (1979/1980),frontera,    0.920,  1,   0.3374
+binaria,teorica,Partidos,frontera 4-5 (1994/1995),frontera,    1.691,  1,   0.1934
+binaria,importada,Partidos,frontera Silenciosa/Boomer (1945/1946),frontera,    1.270,  1,   0.2597
+binaria,importada,Partidos,frontera Boomer/X (1964/1965),frontera,    0.773,  1,   0.3793
+binaria,importada,Partidos,frontera X/Millennial (1980/1981),frontera,    2.418,  1,   0.1199
+binaria,importada,Partidos,frontera Millennial/Z (1996/1997),frontera,    5.057,  1,   0.0245
+binaria,balcells,Partidos,frontera plebiscito 1988 (1970/1971),frontera,    0.855,  1,   0.3551
+binaria,balcells,Partidos,frontera retorno democracia 1990 (1972/1973),frontera,    0.177,  1,   0.6743
+binaria,teorica,FF.AA.,1 (<=1949),dentro-bloque,    2.401,  1,   0.1213
+binaria,teorica,FF.AA.,2 (1950-1964),dentro-bloque,    0.264,  2,   0.8763
+binaria,teorica,FF.AA.,3 (1965-1979),dentro-bloque,    3.517,  2,   0.1723
+binaria,teorica,FF.AA.,4 (1980-1994),dentro-bloque,    0.383,  2,   0.8257
+binaria,teorica,FF.AA.,5 (1995+),dentro-bloque,    0.697,  2,   0.7057
+binaria,teorica,FF.AA.,frontera 1-2 (1949/1950),frontera,    4.048,  1,   0.0442
+binaria,teorica,FF.AA.,frontera 2-3 (1964/1965),frontera,    0.014,  1,   0.9063
+binaria,teorica,FF.AA.,frontera 3-4 (1979/1980),frontera,    0.565,  1,   0.4524
+binaria,teorica,FF.AA.,frontera 4-5 (1994/1995),frontera,   14.526,  1,   0.0001
+binaria,importada,FF.AA.,frontera Silenciosa/Boomer (1945/1946),frontera,    0.963,  1,   0.3263
+binaria,importada,FF.AA.,frontera Boomer/X (1964/1965),frontera,    0.107,  1,   0.7436
+binaria,importada,FF.AA.,frontera X/Millennial (1980/1981),frontera,    0.043,  1,   0.8359
+binaria,importada,FF.AA.,frontera Millennial/Z (1996/1997),frontera,    7.121,  1,   0.0076
+binaria,balcells,FF.AA.,frontera plebiscito 1988 (1970/1971),frontera,    7.727,  1,   0.0054
+binaria,balcells,FF.AA.,frontera retorno democracia 1990 (1972/1973),frontera,    2.097,  1,   0.1476
+binaria,teorica,Iglesia,1 (<=1949),dentro-bloque,    1.557,  1,   0.2121
+binaria,teorica,Iglesia,2 (1950-1964),dentro-bloque,    0.014,  2,   0.9929
+binaria,teorica,Iglesia,3 (1965-1979),dentro-bloque,    1.327,  2,   0.5150
+binaria,teorica,Iglesia,4 (1980-1994),dentro-bloque,    0.506,  2,   0.7765
+binaria,teorica,Iglesia,5 (1995+),dentro-bloque,    7.540,  2,   0.0231
+binaria,teorica,Iglesia,frontera 1-2 (1949/1950),frontera,    0.526,  1,   0.4682
+binaria,teorica,Iglesia,frontera 2-3 (1964/1965),frontera,    0.386,  1,   0.5342
+binaria,teorica,Iglesia,frontera 3-4 (1979/1980),frontera,    0.271,  1,   0.6030
+binaria,teorica,Iglesia,frontera 4-5 (1994/1995),frontera,    0.322,  1,   0.5706
+binaria,importada,Iglesia,frontera Silenciosa/Boomer (1945/1946),frontera,    0.786,  1,   0.3752
+binaria,importada,Iglesia,frontera Boomer/X (1964/1965),frontera,    0.408,  1,   0.5230
+binaria,importada,Iglesia,frontera X/Millennial (1980/1981),frontera,    0.065,  1,   0.7985
+binaria,importada,Iglesia,frontera Millennial/Z (1996/1997),frontera,    1.578,  1,   0.2090
+binaria,balcells,Iglesia,frontera plebiscito 1988 (1970/1971),frontera,    0.226,  1,   0.6348
+binaria,balcells,Iglesia,frontera retorno democracia 1990 (1972/1973),frontera,    1.777,  1,   0.1825
+zscore,teorica,Gobierno,1 (<=1949),dentro-bloque,   14.580,  1,   0.0001
+zscore,teorica,Gobierno,2 (1950-1964),dentro-bloque,   24.888,  2,   0.0000
+zscore,teorica,Gobierno,3 (1965-1979),dentro-bloque,    5.362,  2,   0.0685
+zscore,teorica,Gobierno,4 (1980-1994),dentro-bloque,    5.282,  2,   0.0713
+zscore,teorica,Gobierno,5 (1995+),dentro-bloque,   10.015,  2,   0.0067
+zscore,teorica,Gobierno,frontera 1-2 (1949/1950),frontera,    0.439,  1,   0.5076
+zscore,teorica,Gobierno,frontera 2-3 (1964/1965),frontera,    0.802,  1,   0.3704
+zscore,teorica,Gobierno,frontera 3-4 (1979/1980),frontera,    1.879,  1,   0.1704
+zscore,teorica,Gobierno,frontera 4-5 (1994/1995),frontera,   16.515,  1,   0.0000
+zscore,importada,Gobierno,frontera Silenciosa/Boomer (1945/1946),frontera,    2.119,  1,   0.1455
+zscore,importada,Gobierno,frontera Boomer/X (1964/1965),frontera,    0.233,  1,   0.6296
+zscore,importada,Gobierno,frontera X/Millennial (1980/1981),frontera,    0.512,  1,   0.4745
+zscore,importada,Gobierno,frontera Millennial/Z (1996/1997),frontera,    0.670,  1,   0.4131
+zscore,balcells,Gobierno,frontera plebiscito 1988 (1970/1971),frontera,    1.958,  1,   0.1618
+zscore,balcells,Gobierno,frontera retorno democracia 1990 (1972/1973),frontera,    0.855,  1,   0.3551
+zscore,teorica,Parlamento,1 (<=1949),dentro-bloque,   16.108,  1,   0.0001
+zscore,teorica,Parlamento,2 (1950-1964),dentro-bloque,   23.834,  2,   0.0000
+zscore,teorica,Parlamento,3 (1965-1979),dentro-bloque,    6.591,  2,   0.0371
+zscore,teorica,Parlamento,4 (1980-1994),dentro-bloque,    2.177,  2,   0.3368
+zscore,teorica,Parlamento,5 (1995+),dentro-bloque,   25.360,  2,   0.0000
+zscore,teorica,Parlamento,frontera 1-2 (1949/1950),frontera,    1.913,  1,   0.1666
+zscore,teorica,Parlamento,frontera 2-3 (1964/1965),frontera,    0.052,  1,   0.8195
+zscore,teorica,Parlamento,frontera 3-4 (1979/1980),frontera,    2.343,  1,   0.1258
+zscore,teorica,Parlamento,frontera 4-5 (1994/1995),frontera,    7.870,  1,   0.0050
+zscore,importada,Parlamento,frontera Silenciosa/Boomer (1945/1946),frontera,    0.187,  1,   0.6651
+zscore,importada,Parlamento,frontera Boomer/X (1964/1965),frontera,    0.001,  1,   0.9748
+zscore,importada,Parlamento,frontera X/Millennial (1980/1981),frontera,    0.342,  1,   0.5590
+zscore,importada,Parlamento,frontera Millennial/Z (1996/1997),frontera,    3.533,  1,   0.0602
+zscore,balcells,Parlamento,frontera plebiscito 1988 (1970/1971),frontera,    8.962,  1,   0.0028
+zscore,balcells,Parlamento,frontera retorno democracia 1990 (1972/1973),frontera,    1.491,  1,   0.2220
+zscore,teorica,Partidos,1 (<=1949),dentro-bloque,    5.075,  1,   0.0243
+zscore,teorica,Partidos,2 (1950-1964),dentro-bloque,    6.401,  2,   0.0407
+zscore,teorica,Partidos,3 (1965-1979),dentro-bloque,   15.467,  2,   0.0004
+zscore,teorica,Partidos,4 (1980-1994),dentro-bloque,    0.619,  2,   0.7338
+zscore,teorica,Partidos,5 (1995+),dentro-bloque,   14.513,  2,   0.0007
+zscore,teorica,Partidos,frontera 1-2 (1949/1950),frontera,    4.528,  1,   0.0333
+zscore,teorica,Partidos,frontera 2-3 (1964/1965),frontera,    0.001,  1,   0.9774
+zscore,teorica,Partidos,frontera 3-4 (1979/1980),frontera,    1.208,  1,   0.2717
+zscore,teorica,Partidos,frontera 4-5 (1994/1995),frontera,   17.652,  1,   0.0000
+zscore,importada,Partidos,frontera Silenciosa/Boomer (1945/1946),frontera,    1.121,  1,   0.2898
+zscore,importada,Partidos,frontera Boomer/X (1964/1965),frontera,    0.292,  1,   0.5891
+zscore,importada,Partidos,frontera X/Millennial (1980/1981),frontera,    0.944,  1,   0.3312
+zscore,importada,Partidos,frontera Millennial/Z (1996/1997),frontera,   10.340,  1,   0.0013
+zscore,balcells,Partidos,frontera plebiscito 1988 (1970/1971),frontera,    2.290,  1,   0.1302
+zscore,balcells,Partidos,frontera retorno democracia 1990 (1972/1973),frontera,    0.363,  1,   0.5466
+zscore,teorica,FF.AA.,1 (<=1949),dentro-bloque,    4.439,  1,   0.0351
+zscore,teorica,FF.AA.,2 (1950-1964),dentro-bloque,    7.930,  2,   0.0190
+zscore,teorica,FF.AA.,3 (1965-1979),dentro-bloque,    4.768,  2,   0.0922
+zscore,teorica,FF.AA.,4 (1980-1994),dentro-bloque,    1.714,  2,   0.4244
+zscore,teorica,FF.AA.,5 (1995+),dentro-bloque,    1.231,  2,   0.5405
+zscore,teorica,FF.AA.,frontera 1-2 (1949/1950),frontera,    0.933,  1,   0.3340
+zscore,teorica,FF.AA.,frontera 2-3 (1964/1965),frontera,    1.295,  1,   0.2550
+zscore,teorica,FF.AA.,frontera 3-4 (1979/1980),frontera,    0.101,  1,   0.7511
+zscore,teorica,FF.AA.,frontera 4-5 (1994/1995),frontera,   17.748,  1,   0.0000
+zscore,importada,FF.AA.,frontera Silenciosa/Boomer (1945/1946),frontera,    0.088,  1,   0.7674
+zscore,importada,FF.AA.,frontera Boomer/X (1964/1965),frontera,    2.187,  1,   0.1392
+zscore,importada,FF.AA.,frontera X/Millennial (1980/1981),frontera,    0.044,  1,   0.8342
+zscore,importada,FF.AA.,frontera Millennial/Z (1996/1997),frontera,    8.470,  1,   0.0036
+zscore,balcells,FF.AA.,frontera plebiscito 1988 (1970/1971),frontera,    0.198,  1,   0.6561
+zscore,balcells,FF.AA.,frontera retorno democracia 1990 (1972/1973),frontera,    1.637,  1,   0.2008
+zscore,teorica,Iglesia,1 (<=1949),dentro-bloque,    6.040,  1,   0.0140
+zscore,teorica,Iglesia,2 (1950-1964),dentro-bloque,    0.890,  2,   0.6410
+zscore,teorica,Iglesia,3 (1965-1979),dentro-bloque,    3.211,  2,   0.2008
+zscore,teorica,Iglesia,4 (1980-1994),dentro-bloque,    0.059,  2,   0.9709
+zscore,teorica,Iglesia,5 (1995+),dentro-bloque,    2.019,  2,   0.3643
+zscore,teorica,Iglesia,frontera 1-2 (1949/1950),frontera,    0.008,  1,   0.9280
+zscore,teorica,Iglesia,frontera 2-3 (1964/1965),frontera,    0.612,  1,   0.4339
+zscore,teorica,Iglesia,frontera 3-4 (1979/1980),frontera,    0.749,  1,   0.3869
+zscore,teorica,Iglesia,frontera 4-5 (1994/1995),frontera,    0.225,  1,   0.6351
+zscore,importada,Iglesia,frontera Silenciosa/Boomer (1945/1946),frontera,    3.494,  1,   0.0616
+zscore,importada,Iglesia,frontera Boomer/X (1964/1965),frontera,    0.221,  1,   0.6380
+zscore,importada,Iglesia,frontera X/Millennial (1980/1981),frontera,    0.080,  1,   0.7779
+zscore,importada,Iglesia,frontera Millennial/Z (1996/1997),frontera,    5.698,  1,   0.0170
+zscore,balcells,Iglesia,frontera plebiscito 1988 (1970/1971),frontera,    0.428,  1,   0.5127
+zscore,balcells,Iglesia,frontera retorno democracia 1990 (1972/1973),frontera,    1.726,  1,   0.1890
+ordinal,teorica,Gobierno,1 (<=1949),dentro-bloque,    7.708,  1,   0.0055
+ordinal,teorica,Gobierno,2 (1950-1964),dentro-bloque,   15.191,  2,   0.0005
+ordinal,teorica,Gobierno,3 (1965-1979),dentro-bloque,    8.623,  2,   0.0134
+ordinal,teorica,Gobierno,4 (1980-1994),dentro-bloque,   11.178,  2,   0.0037
+ordinal,teorica,Gobierno,5 (1995+),dentro-bloque,   16.246,  2,   0.0003
+ordinal,teorica,Gobierno,frontera 1-2 (1949/1950),frontera,    0.048,  1,   0.8274
+ordinal,teorica,Gobierno,frontera 2-3 (1964/1965),frontera,    0.759,  1,   0.3835
+ordinal,teorica,Gobierno,frontera 3-4 (1979/1980),frontera,    0.968,  1,   0.3251
+ordinal,teorica,Gobierno,frontera 4-5 (1994/1995),frontera,   10.837,  1,   0.0010
+ordinal,importada,Gobierno,frontera Silenciosa/Boomer (1945/1946),frontera,    4.868,  1,   0.0274
+ordinal,importada,Gobierno,frontera Boomer/X (1964/1965),frontera,    0.047,  1,   0.8288
+ordinal,importada,Gobierno,frontera X/Millennial (1980/1981),frontera,    0.518,  1,   0.4718
+ordinal,importada,Gobierno,frontera Millennial/Z (1996/1997),frontera,    0.948,  1,   0.3301
+ordinal,balcells,Gobierno,frontera plebiscito 1988 (1970/1971),frontera,    3.601,  1,   0.0577
+ordinal,balcells,Gobierno,frontera retorno democracia 1990 (1972/1973),frontera,    1.692,  1,   0.1933
+ordinal,teorica,Parlamento,1 (<=1949),dentro-bloque,    5.474,  1,   0.0193
+ordinal,teorica,Parlamento,2 (1950-1964),dentro-bloque,   13.044,  2,   0.0015
+ordinal,teorica,Parlamento,3 (1965-1979),dentro-bloque,   17.748,  2,   0.0001
+ordinal,teorica,Parlamento,4 (1980-1994),dentro-bloque,    9.177,  2,   0.0102
+ordinal,teorica,Parlamento,5 (1995+),dentro-bloque,   25.744,  2,   0.0000
+ordinal,teorica,Parlamento,frontera 1-2 (1949/1950),frontera,    0.676,  1,   0.4111
+ordinal,teorica,Parlamento,frontera 2-3 (1964/1965),frontera,    0.096,  1,   0.7563
+ordinal,teorica,Parlamento,frontera 3-4 (1979/1980),frontera,    0.452,  1,   0.5012
+ordinal,teorica,Parlamento,frontera 4-5 (1994/1995),frontera,   13.692,  1,   0.0002
+ordinal,importada,Parlamento,frontera Silenciosa/Boomer (1945/1946),frontera,    0.123,  1,   0.7261
+ordinal,importada,Parlamento,frontera Boomer/X (1964/1965),frontera,    0.058,  1,   0.8105
+ordinal,importada,Parlamento,frontera X/Millennial (1980/1981),frontera,    0.136,  1,   0.7119
+ordinal,importada,Parlamento,frontera Millennial/Z (1996/1997),frontera,    2.326,  1,   0.1272
+ordinal,balcells,Parlamento,frontera plebiscito 1988 (1970/1971),frontera,   11.879,  1,   0.0006
+ordinal,balcells,Parlamento,frontera retorno democracia 1990 (1972/1973),frontera,    0.566,  1,   0.4520
+ordinal,teorica,Partidos,1 (<=1949),dentro-bloque,    2.266,  1,   0.1322
+ordinal,teorica,Partidos,2 (1950-1964),dentro-bloque,    6.950,  2,   0.0310
+ordinal,teorica,Partidos,3 (1965-1979),dentro-bloque,   17.590,  2,   0.0002
+ordinal,teorica,Partidos,4 (1980-1994),dentro-bloque,    3.341,  2,   0.1881
+ordinal,teorica,Partidos,5 (1995+),dentro-bloque,   23.622,  2,   0.0000
+ordinal,teorica,Partidos,frontera 1-2 (1949/1950),frontera,    3.952,  1,   0.0468
+ordinal,teorica,Partidos,frontera 2-3 (1964/1965),frontera,    0.515,  1,   0.4728
+ordinal,teorica,Partidos,frontera 3-4 (1979/1980),frontera,    0.000,  1,   0.9992
+ordinal,teorica,Partidos,frontera 4-5 (1994/1995),frontera,   21.184,  1,   0.0000
+ordinal,importada,Partidos,frontera Silenciosa/Boomer (1945/1946),frontera,    1.442,  1,   0.2299
+ordinal,importada,Partidos,frontera Boomer/X (1964/1965),frontera,    0.114,  1,   0.7360
+ordinal,importada,Partidos,frontera X/Millennial (1980/1981),frontera,    0.560,  1,   0.4542
+ordinal,importada,Partidos,frontera Millennial/Z (1996/1997),frontera,    8.118,  1,   0.0044
+ordinal,balcells,Partidos,frontera plebiscito 1988 (1970/1971),frontera,    1.532,  1,   0.2158
+ordinal,balcells,Partidos,frontera retorno democracia 1990 (1972/1973),frontera,    0.346,  1,   0.5566
+ordinal,teorica,FF.AA.,1 (<=1949),dentro-bloque,    1.156,  1,   0.2823
+ordinal,teorica,FF.AA.,2 (1950-1964),dentro-bloque,    1.113,  2,   0.5733
+ordinal,teorica,FF.AA.,3 (1965-1979),dentro-bloque,    7.735,  2,   0.0209
+ordinal,teorica,FF.AA.,4 (1980-1994),dentro-bloque,    0.152,  2,   0.9267
+ordinal,teorica,FF.AA.,5 (1995+),dentro-bloque,    1.676,  2,   0.4325
+ordinal,teorica,FF.AA.,frontera 1-2 (1949/1950),frontera,    2.948,  1,   0.0860
+ordinal,teorica,FF.AA.,frontera 2-3 (1964/1965),frontera,    0.019,  1,   0.8914
+ordinal,teorica,FF.AA.,frontera 3-4 (1979/1980),frontera,    2.205,  1,   0.1376
+ordinal,teorica,FF.AA.,frontera 4-5 (1994/1995),frontera,   27.846,  1,   0.0000
+ordinal,importada,FF.AA.,frontera Silenciosa/Boomer (1945/1946),frontera,    0.128,  1,   0.7201
+ordinal,importada,FF.AA.,frontera Boomer/X (1964/1965),frontera,    0.161,  1,   0.6881
+ordinal,importada,FF.AA.,frontera X/Millennial (1980/1981),frontera,    0.060,  1,   0.8070
+ordinal,importada,FF.AA.,frontera Millennial/Z (1996/1997),frontera,    6.643,  1,   0.0100
+ordinal,balcells,FF.AA.,frontera plebiscito 1988 (1970/1971),frontera,    0.551,  1,   0.4577
+ordinal,balcells,FF.AA.,frontera retorno democracia 1990 (1972/1973),frontera,    2.193,  1,   0.1387
+ordinal,teorica,Iglesia,1 (<=1949),dentro-bloque,    3.042,  1,   0.0811
+ordinal,teorica,Iglesia,2 (1950-1964),dentro-bloque,    0.207,  2,   0.9018
+ordinal,teorica,Iglesia,3 (1965-1979),dentro-bloque,    6.030,  2,   0.0490
+ordinal,teorica,Iglesia,4 (1980-1994),dentro-bloque,    1.110,  2,   0.5740
+ordinal,teorica,Iglesia,5 (1995+),dentro-bloque,    2.775,  2,   0.2497
+ordinal,teorica,Iglesia,frontera 1-2 (1949/1950),frontera,    0.081,  1,   0.7754
+ordinal,teorica,Iglesia,frontera 2-3 (1964/1965),frontera,    0.002,  1,   0.9653
+ordinal,teorica,Iglesia,frontera 3-4 (1979/1980),frontera,    0.020,  1,   0.8887
+ordinal,teorica,Iglesia,frontera 4-5 (1994/1995),frontera,    1.780,  1,   0.1821
+ordinal,importada,Iglesia,frontera Silenciosa/Boomer (1945/1946),frontera,    3.169,  1,   0.0750
+ordinal,importada,Iglesia,frontera Boomer/X (1964/1965),frontera,    0.159,  1,   0.6903
+ordinal,importada,Iglesia,frontera X/Millennial (1980/1981),frontera,    0.450,  1,   0.5022
+ordinal,importada,Iglesia,frontera Millennial/Z (1996/1997),frontera,    5.204,  1,   0.0225
+ordinal,balcells,Iglesia,frontera plebiscito 1988 (1970/1971),frontera,    0.655,  1,   0.4183
+ordinal,balcells,Iglesia,frontera retorno democracia 1990 (1972/1973),frontera,    1.253,  1,   0.2629
