@@ -16,10 +16,21 @@
 //                                 cohortes quinquenales, diseño muestral
 //   3. ROBUSTEZ: COHORTES TEÓRICAS  misma estructura, cohortes histórico-
 //                                 generacionales en vez de quinquenios
-//   4. GRÁFICOS DE MÁRGENES ..... cohorte / período / edad, los tres modelos
+//   4. GRÁFICOS DE MÁRGENES ..... cohorte / período / edad, los tres modelos.
+//                                 Principal usa continua donde la sección 5
+//                                 no encuentra violación seria de normalidad
+//                                 (Gobierno/FF.AA./Iglesia) y ordinal donde
+//                                 sí (Parlamento/Partidos) — ver sección 4
+//   4B. GRÁFICOS COHORTES TEÓRICAS  mismos márgenes, pero con cohort_teorica
+//                                 (5 bloques) en vez de cohort5 (14
+//                                 quinquenios) — carpeta aparte, comparación
 //   5. DIAGNÓSTICO DE NORMALIDAD  residuos del modelo continuo
 //   6. TESTS DE WALD ............ tres encrucijadas de esquemas de cohorte
 //   7. HALLAZGO CONFIRMADO ...... brecha pre/post Generación del estallido
+//   8. FOREST PLOT ENCRUCIJADAS . visualiza la sección 6 (no estima nada,
+//                                 solo importa el csv que ya exportó)
+//   9. TENDENCIA TEMPORAL ....... contexto descriptivo 2006-2025 (proporción
+//                                 ponderada simple, no modelo multinivel)
 //
 // Para saltar a una sección, buscar el texto ">>> SECCIÓN N" en este archivo.
 // ============================================================================
@@ -34,12 +45,17 @@
 //              brecha del estallido, y la evidencia de las 3 encrucijadas
 // AUXILIAR:    carpeta para robustez y diagnóstico — binaria, continua,
 //              cohortes teóricas, normalidad, chequeo de dummies de año
-// Todo lo demás en este do-file usa estos tres globals — no hace falta
+// TEORICA:     carpeta aparte solo para los gráficos de márgenes con
+//              cohort_teorica (5 bloques histórico-generacionales) en vez
+//              de cohort5 (14 quinquenios) — comparación visual, no
+//              reemplaza nada de Principal/Auxiliar todavía (ver sección 4B)
+// Todo lo demás en este do-file usa estos cuatro globals — no hace falta
 // cambiar ninguna otra ruta en el resto del archivo.
 
 global DATA      "C:\Users\gonza\Dropbox\Proyectos personales\02.- DATOS\Bicentenario\bicentenario_panel_armonizado.dta"
 global PRINCIPAL "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Principal"
 global AUXILIAR  "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Auxiliar"
+global TEORICA   "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Cohortes teóricas"
 
 
 // ============================================================================
@@ -345,6 +361,17 @@ foreach m in gob parl part ffaa igl {
 }
 
 // --- (b) Continua: escala z-score ------------------------------------------
+// Elección de cuál gráfico (continuo vs. ordinal) va a Principal: no es
+// estética, sigue el diagnóstico de normalidad de la sección 5. Ahí la
+// violación es leve en Gobierno/FF.AA./Iglesia (el continuo es defendible y
+// se ve más limpio) y seria en Parlamento/Partidos (piso de la escala muy
+// cargado; el continuo ahí angosta los IC precisamente donde el supuesto
+// que los angosta no se sostiene). Por eso la especificación principal
+// visual se decide institución por institución, no de forma pareja para
+// las 5 — la tabla de resultados (arriba) sí sigue siendo ordinal para las
+// 5, esto solo cambia qué gráfico ilustra el hallazgo.
+local limpias "gob ffaa igl"
+
 foreach m in gob parl part ffaa igl {
     if "`m'" == "gob"  local nombre "Gobierno"
     if "`m'" == "parl" local nombre "Parlamento"
@@ -360,12 +387,22 @@ foreach m in gob parl part ffaa igl {
     margins, at(age_s = (1.8(1)8.5))
     marginsplot, xlabel(1.8 "18" 2.8 "28" 3.8 "38" 4.8 "48" 5.8 "58" 6.8 "68" 7.8 "78" 8.5 "85") xtitle("Edad") ytitle("Confianza (z-score por año)") title("Confianza en `nombre' por edad") name(g3, replace)
     graph combine g1 g2 g3, rows(1) title("APC Confianza en `nombre' (b) continua") xsize(14) ysize(5)
-    graph export "$AUXILIAR\1b_continua_`m'.png", replace width(2400)
+
+    if strpos(" `limpias' ", " `m' ") {
+        graph export "$PRINCIPAL\1b_continua_`m'.png", replace width(2400)
+    }
+    else {
+        graph export "$AUXILIAR\1b_continua_`m'.png", replace width(2400)
+    }
 }
 
 // --- (c) Ordinal: P(confía) = P(Y=4) + P(Y=5) ------------------------------
 // predict(pr outcome(4)) + predict(pr outcome(5)) vía expression(): el
-// modelo ordinal no acepta un rango "4/5" directo en outcome().
+// modelo ordinal no acepta un rango "4/5" directo en outcome(). Contraparte
+// del bloque anterior: en Parlamento/Partidos este es el gráfico principal
+// (intervalos más anchos, pero es la incertidumbre real dado el sesgo de
+// piso); en Gobierno/FF.AA./Iglesia queda como chequeo de robustez en
+// Auxiliar (misma conclusión sustantiva, solo más ruido visual).
 foreach m in gob parl part ffaa igl {
     if "`m'" == "gob"  local nombre "Gobierno"
     if "`m'" == "parl" local nombre "Parlamento"
@@ -381,7 +418,56 @@ foreach m in gob parl part ffaa igl {
     margins, at(age_s = (1.8(1)8.5)) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
     marginsplot, xlabel(1.8 "18" 2.8 "28" 3.8 "38" 4.8 "48" 5.8 "58" 6.8 "68" 7.8 "78" 8.5 "85") xtitle("Edad") ytitle("P(confía) = P(Y=4)+P(Y=5)") title("Confianza en `nombre' por edad") name(g3, replace)
     graph combine g1 g2 g3, rows(1) title("APC Confianza en `nombre' (c) ordinal") xsize(14) ysize(5)
-    graph export "$PRINCIPAL\1c_ordinal_`m'.png", replace width(2400)
+
+    if strpos(" `limpias' ", " `m' ") {
+        graph export "$AUXILIAR\1c_ordinal_`m'.png", replace width(2400)
+    }
+    else {
+        graph export "$PRINCIPAL\1c_ordinal_`m'.png", replace width(2400)
+    }
+}
+
+
+// ============================================================================
+// >>> SECCIÓN 4B: GRÁFICOS DE MÁRGENES — COHORTES TEÓRICAS
+// ============================================================================
+// Mismo ejercicio que la sección 4, pero con cohort_teorica (5 bloques
+// histórico-generacionales) en vez de cohort5 (14 quinquenios). Al agrupar
+// mucha más N por categoría, los intervalos deberían angostarse bastante
+// frente a los de la sección 4 — a costa de perder la resolución quinquenal.
+// Se generan ambas especificaciones (continua y ordinal) para las 5
+// instituciones, en una carpeta aparte ($TEORICA) para comparar a ojo antes
+// de decidir si alguna reemplaza a las de Principal/Auxiliar. Reutiliza los
+// modelos _teo ya estimados en la sección 3 — no se vuelve a estimar nada.
+
+foreach m in gob parl part ffaa igl {
+    if "`m'" == "gob"  local nombre "Gobierno"
+    if "`m'" == "parl" local nombre "Parlamento"
+    if "`m'" == "part" local nombre "Partidos"
+    if "`m'" == "ffaa" local nombre "FF.AA."
+    if "`m'" == "igl"  local nombre "Iglesia"
+
+    // --- continua (z-score), cohortes teóricas -----------------------------
+    estimates restore `m'_lineal_teo
+    margins cohort_teorica
+    marginsplot, title("Confianza en `nombre' por cohorte (teórica)") xtitle("Cohorte histórico-generacional") ytitle("Confianza (z-score por año)") xlabel(, valuelabel angle(30) labsize(vsmall)) name(g1, replace)
+    margins, over(year)
+    marginsplot, xlabel(2006 2011 2016 2019 2021 2023 2025, angle(45) labsize(small)) xtitle("Año de encuesta") ytitle("Confianza (z-score por año)") title("Confianza en `nombre' por período") name(g2, replace)
+    margins, at(age_s = (1.8(1)8.5))
+    marginsplot, xlabel(1.8 "18" 2.8 "28" 3.8 "38" 4.8 "48" 5.8 "58" 6.8 "68" 7.8 "78" 8.5 "85") xtitle("Edad") ytitle("Confianza (z-score por año)") title("Confianza en `nombre' por edad") name(g3, replace)
+    graph combine g1 g2 g3, rows(1) title("APC Confianza en `nombre' (b-teo) continua, cohortes teóricas") xsize(14) ysize(5)
+    graph export "$TEORICA\1b_continua_teo_`m'.png", replace width(2400)
+
+    // --- ordinal, cohortes teóricas -----------------------------------------
+    estimates restore `m'_ord_teo
+    margins cohort_teorica, expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+    marginsplot, title("Confianza en `nombre' por cohorte (teórica)") xtitle("Cohorte histórico-generacional") ytitle("P(confía) = P(Y=4)+P(Y=5)") xlabel(, valuelabel angle(30) labsize(vsmall)) name(g1, replace)
+    margins, over(year) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+    marginsplot, xlabel(2006 2011 2016 2019 2021 2023 2025, angle(45) labsize(small)) xtitle("Año de encuesta") ytitle("P(confía) = P(Y=4)+P(Y=5)") title("Confianza en `nombre' por período") name(g2, replace)
+    margins, at(age_s = (1.8(1)8.5)) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+    marginsplot, xlabel(1.8 "18" 2.8 "28" 3.8 "38" 4.8 "48" 5.8 "58" 6.8 "68" 7.8 "78" 8.5 "85") xtitle("Edad") ytitle("P(confía) = P(Y=4)+P(Y=5)") title("Confianza en `nombre' por edad") name(g3, replace)
+    graph combine g1 g2 g3, rows(1) title("APC Confianza en `nombre' (c-teo) ordinal, cohortes teóricas") xsize(14) ysize(5)
+    graph export "$TEORICA\1c_ordinal_teo_`m'.png", replace width(2400)
 }
 
 
@@ -641,6 +727,123 @@ twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) ///
     graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\4_brecha_estallido.png", replace width(2400)
 restore
+
+
+// ============================================================================
+// >>> SECCIÓN 8: FOREST PLOT — LAS TRES ENCRUCIJADAS DE COHORTES
+// ============================================================================
+// No estima nada nuevo — solo importa tabla_4_wald_cohortes.csv (ya
+// generado en la sección 6) y lo grafica. Un punto por frontera candidata x
+// institución, especificación ordinal (la principal). Eje x: -log10(p) del
+// test de Wald — más a la derecha = más significativo, línea de referencia
+// en p=.05. La idea: hacer visible de un vistazo que de las 10 fronteras
+// candidatas testeadas entre las tres encrucijadas, solo una (1994/1995) es
+// significativa de forma consistente en las 5 instituciones.
+
+preserve
+import delimited "$PRINCIPAL\tabla_4_wald_cohortes.csv", clear varnames(1) case(preserve)
+keep if tipo == "frontera" & especificacion == "ordinal"
+
+gen neglog10p = -log10(p)
+
+gen front_pos = .
+replace front_pos = 1  if bloque == "frontera Silenciosa/Boomer (1945/1946)"
+replace front_pos = 2  if bloque == "frontera 1-2 (1949/1950)"
+replace front_pos = 3  if bloque == "frontera Boomer/X (1964/1965)"
+replace front_pos = 4  if bloque == "frontera 2-3 (1964/1965)"
+replace front_pos = 5  if bloque == "frontera plebiscito 1988 (1970/1971)"
+replace front_pos = 6  if bloque == "frontera retorno democracia 1990 (1972/1973)"
+replace front_pos = 7  if bloque == "frontera 3-4 (1979/1980)"
+replace front_pos = 8  if bloque == "frontera X/Millennial (1980/1981)"
+replace front_pos = 9  if bloque == "frontera 4-5 (1994/1995)"
+replace front_pos = 10 if bloque == "frontera Millennial/Z (1996/1997)"
+
+// Jitter vertical pequeño para que las 5 instituciones no se encimen en la
+// misma fila.
+gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, ///
+    cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, ///
+    cond(institucion=="FF.AA.",0.12,0.24))))
+
+// El texto va directo en ylabel() (no como value label) porque front_jit
+// trae el jitter y sus valores no caen justo en los enteros 1-10 — un
+// value label ahí no calzaría con ningún punto exacto.
+twoway ///
+    (scatter front_jit neglog10p if institucion=="Gobierno",   mcolor(navy)    msymbol(O)) ///
+    (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon)  msymbol(D)) ///
+    (scatter front_jit neglog10p if institucion=="Partidos",   mcolor(dkgreen) msymbol(T)) ///
+    (scatter front_jit neglog10p if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
+    (scatter front_jit neglog10p if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
+    , xline(1.301, lpattern(dash) lcolor(gs8)) ///
+      ylabel(1 "Silenciosa/Boomer 1945/46 (importada)" ///
+             2 "Bloque 1-2, 1949/1950 (teorica)" ///
+             3 "Boomer/X 1964/65 (importada)" ///
+             4 "Bloque 2-3, 1964/1965 (teorica)" ///
+             5 "Plebiscito 1988, 1970/71 (balcells)" ///
+             6 "Retorno democracia, 1972/73 (balcells)" ///
+             7 "Bloque 3-4, 1979/1980 (teorica)" ///
+             8 "X/Millennial 1980/81 (importada)" ///
+             9 "Bloque 4-5, 1994/1995 (teorica)" ///
+             10 "Millennial/Z 1996/97 (importada)", angle(0) labsize(vsmall)) ytitle("") ///
+      xtitle("-log10(p), test de Wald (especificación ordinal)") ///
+      title("Solo una frontera generacional sobrevive a las tres encrucijadas", size(medium)) ///
+      subtitle("Línea punteada = umbral p=.05. Más a la derecha = más significativo.", size(vsmall)) ///
+      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
+      graphregion(color(white)) xsize(10) ysize(7)
+graph export "$PRINCIPAL\5_forest_encrucijadas.png", replace width(2400)
+restore
+
+
+// ============================================================================
+// >>> SECCIÓN 9: TENDENCIA TEMPORAL 2006-2025 (contexto descriptivo)
+// ============================================================================
+// Panel de contexto: evolución del % que confía (top-2-box) en las 5
+// instituciones a través del tiempo. Deliberadamente descriptivo — una
+// proporción ponderada simple por año (comando `mean`, no un modelo
+// multinivel, no margins) — para situar al lector antes de entrar en el
+// argumento generacional: ¿la confianza en general sube o baja en el
+// período, más allá de qué cohorte responde cada año? Corre en segundos
+// (18 años x 5 instituciones = 90 medias ponderadas simples).
+
+tempname fh_trend
+tempfile trend_data
+postfile `fh_trend' int anio byte inst_id double prop using "`trend_data'", replace
+
+// Algunas instituciones no se preguntaron en todos los años del panel (ver
+// nota de CLAUDE.md sobre cobertura de variables por ola) — `capture` salta
+// esas celdas vacías en vez de abortar todo el loop con "no observations".
+quietly levelsof year, local(anios)
+local i = 1
+foreach v of local institutions {
+    foreach a of local anios {
+        capture quietly mean `v'_bin [pweight=ponderador] if year == `a'
+        if _rc == 0 {
+            matrix b = e(b)
+            post `fh_trend' (`a') (`i') (b[1,1])
+        }
+    }
+    local ++i
+}
+postclose `fh_trend'
+
+preserve
+use "`trend_data'", clear
+label define instlbl2 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
+label values inst_id instlbl2
+
+twoway ///
+    (connected prop anio if inst_id==1, mcolor(navy)    lcolor(navy)    msymbol(O)) ///
+    (connected prop anio if inst_id==2, mcolor(maroon)  lcolor(maroon)  msymbol(D)) ///
+    (connected prop anio if inst_id==3, mcolor(dkgreen) lcolor(dkgreen) msymbol(T)) ///
+    (connected prop anio if inst_id==4, mcolor(orange)  lcolor(orange)  msymbol(S)) ///
+    (connected prop anio if inst_id==5, mcolor(purple)  lcolor(purple)  msymbol(X)) ///
+    , xtitle("Año de encuesta") ytitle("% que confía (top-2-box, ponderado)") ///
+      title("Confianza institucional en Chile, 2006-2025", size(medium)) ///
+      subtitle("Tendencia descriptiva simple, sin ajustar por cohorte ni edad", size(vsmall)) ///
+      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
+      graphregion(color(white)) xsize(10) ysize(6)
+graph export "$PRINCIPAL\6_tendencia_temporal.png", replace width(2400)
+restore
+
 
 di as text _n "{hline 78}"
 di as text "FIN DEL ANÁLISIS."
