@@ -50,7 +50,13 @@ preserve
 import delimited "$PRINCIPAL\tabla_4_wald_cohortes.csv", clear varnames(1) case(preserve)
 keep if tipo == "frontera" & especificacion == "ordinal"
 
-gen neglog10p = -log10(p)
+// No usar la columna p tal cual: se guardó con solo 4 decimales en la
+// sección 6, así que cualquier p menor a 0.0001 quedó redondeado a "0.0000"
+// en el csv, y -log10(0) es indefinido — esos puntos (los más significativos,
+// justo los que más importan) desaparecerían del gráfico. Se recalcula el
+// p-valor exacto desde el estadístico chi2 (guardado con más precisión) con
+// chi2tail(), sin necesidad de volver a estimar nada.
+gen neglog10p = -log10(chi2tail(df, stat))
 
 gen front_pos = .
 replace front_pos = 1  if bloque == "frontera Silenciosa/Boomer (1945/1946)"
@@ -80,18 +86,9 @@ twoway ///
     (scatter front_jit neglog10p if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
     (scatter front_jit neglog10p if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
     , xline(1.301, lpattern(dash) lcolor(gs8)) ///
-      ylabel(1 "Silenciosa/Boomer 1945/46 (importada)" ///
-             2 "Bloque 1-2, 1949/1950 (teorica)" ///
-             3 "Boomer/X 1964/65 (importada)" ///
-             4 "Bloque 2-3, 1964/1965 (teorica)" ///
-             5 "Plebiscito 1988, 1970/71 (balcells)" ///
-             6 "Retorno democracia, 1972/73 (balcells)" ///
-             7 "Bloque 3-4, 1979/1980 (teorica)" ///
-             8 "X/Millennial 1980/81 (importada)" ///
-             9 "Bloque 4-5, 1994/1995 (teorica)" ///
-             10 "Millennial/Z 1996/97 (importada)", angle(0) labsize(vsmall)) ytitle("") ///
+      ylabel(1 "Silenciosa/Boomer 1945/46 (importada)" 2 "Bloque 1-2, 1949/1950 (teorica)" 3 "Boomer/X 1964/65 (importada)" 4 "Bloque 2-3, 1964/1965 (teorica)" 5 "Plebiscito 1988, 1970/71 (balcells)" 6 "Retorno democracia, 1972/73 (balcells)" 7 "Bloque 3-4, 1979/1980 (teorica)" 8 "X/Millennial 1980/81 (importada)" 9 "Bloque 4-5, 1994/1995 (teorica)" 10 "Millennial/Z 1996/97 (importada)", angle(0) labsize(vsmall)) ytitle("") ///
       xtitle("-log10(p), test de Wald (especificación ordinal)") ///
-      title("Solo una frontera generacional sobrevive a las tres encrucijadas", size(medium)) ///
+      title("Solo una frontera generacional" "sobrevive a las tres encrucijadas", size(medium)) ///
       subtitle("Línea punteada = umbral p=.05. Más a la derecha = más significativo.", size(vsmall)) ///
       legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
       graphregion(color(white)) xsize(10) ysize(7)
