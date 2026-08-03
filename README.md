@@ -71,12 +71,8 @@ De todas las fronteras candidatas, solo una sobrevive de forma robusta a la iden
 
 La evidencia de esa convergencia, en cuatro ángulos distintos:
 
-1. **`tabla_4_wald_cohortes.csv`** — los 225 tests de Wald crudos, las tres encrucijadas completas.
-2. **`8_specification_curve.png`** — las 10 fronteras candidatas de las tres encrucijadas juntas en una sola figura (curva de especificaciones / *multiverse analysis*, Simonsohn, Simmons & Nelson 2020; Steegen et al. 2016): de un vistazo, cuál corte sobrevive y cuáles no.
-3. **`5_forest_encrucijadas.png`** — dentro del esquema quinquenal, las 13 fronteras entre cohortes consecutivas: dónde exactamente, al detalle más fino posible con este panel, se concentra el quiebre.
-4. **`4_brecha_estallido.png`** / **`7_brecha_estallido_prob.png`** — el contraste final ya simplificado a una sola variable binaria (pre/post 1995), en dos escalas (z-score y % que confía), con test de significancia impreso en el csv que acompaña a la segunda.
-
-## Datos
-
-Este análisis usa el panel armonizado de la Encuesta Bicentenario (PUCV), 2006-2025, 18 olas. Los microdatos **no** están incluidos en este repositorio — no se encontró una licencia explícita que autorice su redistribución pública; deben solicitarse directamente a la Encuesta Bicentenario (PUCV).
+1. **`tabla_4_wald_cohortes.csv`**: los 225 tests de Wald crudos, las tres encrucijadas completas.
+2. **`8_specification_curve.png`**: las 10 fronteras candidatas de las tres encrucijadas juntas en una sola figura (curva de especificaciones / *multiverse analysis*, Simonsohn, Simmons & Nelson 2020; Steegen et al. 2016): de un vistazo, cuál corte sobrevive y cuáles no.
+3. **`5_forest_encrucijadas.png`**: dentro del esquema quinquenal, las 13 fronteras entre cohortes consecutivas: dónde exactamente, al detalle más fino posible con este panel, se concentra el quiebre.
+4. **`4_brecha_estallido.png`** / **`7_brecha_estallido_prob.png`**: el contraste final ya simplificado a una sola variable binaria (pre/post 1995), en dos escalas (z-score y % que confía), con test de significancia impreso en el csv que acompaña a la segunda.
 
