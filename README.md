@@ -2,13 +2,17 @@
 
 Gonzalo Bustamante Rojas & Alonso Quintero Contreras
 
-Ponencia aceptada en el **4to Congreso Latinoamericano de Ciencias Sociales y Gobierno de la Triada 2026** (PUC Chile / Universidad de los Andes Colombia / Tec de Monterrey), 1-2 de octubre de 2026, campus Ciudad de México.
+<sub>Ponencia aceptada en el 4to Congreso Latinoamericano de Ciencias Sociales y Gobierno de la Triada 2026 (PUC Chile / Universidad de los Andes Colombia / Tec de Monterrey), 1-2 de octubre de 2026, campus Ciudad de México.</sub>
 
 ## Qué hace este análisis
 
-Un análisis edad-período-cohorte (APC) de la confianza institucional en Chile (Gobierno, Parlamento, Partidos, Fuerzas Armadas, Iglesia), usando el panel armonizado de la Encuesta Bicentenario PUCV (2006-2025). La pregunta central: ¿existe una ruptura generacional real en la confianza institucional asociada a la Generación del estallido (nacidos desde 1995), o lo que parece "generacional" es en realidad edad o coyuntura del momento (efecto de período)?
+Un análisis edad-período-cohorte (APC) de la confianza institucional en Chile (Gobierno, Parlamento, Partidos, Fuerzas Armadas, Iglesia), usando el panel armonizado de la Encuesta Bicentenario PUCV (2006-2025). La pregunta central:
 
-Se estimaron tres especificaciones de la variable dependiente en paralelo (binaria top-2-box, continua z-score, ordinal completa) y se puso a prueba la elección de la frontera generacional contra tres esquemas de cohorte alternativos (una taxonomía generacional importada tipo Silent/Boomer/X/Millennial/Z, la periodización histórico-local propia del proyecto, y un corte único de transición democrática estilo Balcells & Villamil 2026) — 225 tests de Wald en total. **El resultado:** de todas las fronteras candidatas, solo una sobrevive de forma robusta: 1994/1995, la Generación del estallido. Robusta en las tres especificaciones para Gobierno y FF.AA.; robusta en continua y ordinal (no en binaria — dicotomizar pierde potencia justo ahí) para Parlamento y Partidos; en Iglesia el patrón es mucho más débil y depende de la especificación — significativa solo en la comparación más potente (post-estallido contra todo el resto del panel), no en ninguna de las otras tres formas de testearla.
+*¿Existe una ruptura generacional real en la confianza institucional chilena, distinta del efecto de la edad o la coyuntura del momento (efecto de período), y si existe, dónde se ubica?*
+
+Se estimaron tres especificaciones multinivel de la variable dependiente en paralelo (binaria top-2-box, continua z-score, ordinal completa) y se puso a prueba la elección de la frontera generacional contra tres esquemas de cohorte alternativos: una taxonomía generacional importada tipo Silent/Boomer/X/Millennial/Z (del Solar & Fernández, 2024), una periodización histórico-local propia del proyecto (Araujo & Martuccelli, 2012; Krosnick & Alwin, 1989; Didier, 2017), y un corte único de transición democrática (Balcells & Villamil, 2026) — 225 tests de Wald en total.
+
+**Sobre el aparato teórico de generaciones:** todas las estimaciones parten de cohortes quinquenales como base. Sobre esta se pusieron a prueba tres esquemas candidatos de dónde debería estar el quiebre real ("encrucijadas", `Principal/tabla_4_wald_cohortes.csv`): **(1)** la taxonomía generacional importada tipo Silenciosa/Boomer/X/Millennial/Z, popular en reportes chilenos (del Solar & Fernández, 2024) pero que Didier (2017) critica por ser fronteras sin anclaje en la experiencia histórica local; **(2)** una periodización histórico-local propia del proyecto, inspirada en el argumento de Araujo & Martuccelli (2012) de que la subjetividad se forma en condiciones históricas concretas, extendida con la Generación del estallido siguiendo la lógica de "años impresionables" de Mannheim (1928) y Krosnick & Alwin (1989); y **(3)** un corte único de edad-en-la-transición-democrática estilo Balcells & Villamil (2026), prácticamente rechazado en las ~20 pruebas.
 
 ## Estructura del repositorio
 
@@ -53,15 +57,28 @@ Análisis final/
                                                   # de las bases anuales de Bicentenario
 ```
 
+## Estimaciones
+
+**Estimación continua** (z-score de la escala 1-5, normalizada por año): es la que más potencia estadística da, pero asume que los residuos del modelo son normales. Se testeó ese supuesto (ver `Auxiliar/tabla_3_diagnostico_normalidad.csv`, histogramas y QQ-plots en `Auxiliar/3_normalidad_*.png`) y se encontró que se rompe en serio justo en Parlamento y Partidos. En FF.AA. la violación es prácticamente nula.
+
+**Estimación binaria** (top-2-box): se dicotomizó la variable. Este tipo de modelo no impone normalidad, pero dicotomizar tiene un costo conocido: al colapsar 5 categorías a 2, se pierde información y potencia estadística — de hecho, la especificación binaria falla en detectar la frontera generacional justo en Parlamento y Partidos, las mismas dos instituciones donde ya se sabía que había sesgo de piso. La continua y la ordinal sí la detectan ahí sin problema.
+
+**Estimación ordinal**: soluciona los problemas de las dos anteriores. Usa toda la información de la escala 1-5 (no pierde potencia como la binaria) y no asume normalidad de la variable observada — solo de una variable latente subyacente con puntos de corte libres, que sí se puede estimar sin ese supuesto. Por eso quedó como la especificación principal (`Principal/tabla_1c_ordinal.rtf`).
+
+## Resultados
+
+De todas las fronteras candidatas, solo una sobrevive de forma robusta a la identificación de la ruptura generacional: 1994/1995, la Generación del estallido. Robusta en las tres especificaciones para Gobierno y FF.AA.; robusta en continua y ordinal para Parlamento y Partidos; en Iglesia el patrón es mucho más débil y depende de la especificación.
+
+La evidencia de esa convergencia, en cuatro ángulos distintos:
+
+1. **`tabla_4_wald_cohortes.csv`** — los 225 tests de Wald crudos, las tres encrucijadas completas.
+2. **`8_specification_curve.png`** — las 10 fronteras candidatas de las tres encrucijadas juntas en una sola figura (curva de especificaciones / *multiverse analysis*, Simonsohn, Simmons & Nelson 2020; Steegen et al. 2016): de un vistazo, cuál corte sobrevive y cuáles no.
+3. **`5_forest_encrucijadas.png`** — dentro del esquema quinquenal, las 13 fronteras entre cohortes consecutivas: dónde exactamente, al detalle más fino posible con este panel, se concentra el quiebre.
+4. **`4_brecha_estallido.png`** / **`7_brecha_estallido_prob.png`** — el contraste final ya simplificado a una sola variable binaria (pre/post 1995), en dos escalas (z-score y % que confía), con test de significancia impreso en el csv que acompaña a la segunda.
+
 ## Datos
 
-**Los microdatos de la Encuesta Bicentenario NO están incluidos en este repositorio.** No se encontró una licencia explícita que autorice su redistribución pública; los datos deben solicitarse directamente a la Encuesta Bicentenario (PUCV).
-
-Para reproducir el análisis:
-1. Obtener las bases anuales de Bicentenario (2006-2025) directamente de PUCV.
-2. Correr `Construcción del panel/build_panel_bicentenario_armonizado.do` para generar el panel armonizado.
-3. Editar los globals al inicio de `dofile final confianza institucional.do` (`$DATA`, `$PRINCIPAL`, `$AUXILIAR`, `$TEORICA`) para que apunten a las rutas locales correspondientes.
-4. Correr el do-file completo (tarda varias horas, sobre todo por los loops de `margins`/`marginsplot`) — o, para regenerar solo una figura puntual sin correr todo, usar el script chico correspondiente (`graficos_nuevos.do`, `fronteras_quinquenales.do`, `brecha_probabilidad.do`, `specification_curve.do`, `cohort_check_ventana2.do`).
+Este análisis usa el panel armonizado de la Encuesta Bicentenario (PUCV), 2006-2025, 18 olas. Los microdatos **no** están incluidos en este repositorio — no se encontró una licencia explícita que autorice su redistribución pública; deben solicitarse directamente a la Encuesta Bicentenario (PUCV).
 
 ## Especificación metodológica
 
@@ -71,15 +88,6 @@ Para reproducir el análisis:
 - **Diseño muestral**: ponderador incorporado como `pweight` con errores estándar robustos (`vce(robust)`) en todos los modelos multinivel, ya que Stata no propaga correctamente el prefijo `svy:` a través de efectos aleatorios anidados.
 - **Cohortes**: quinquenales (Bargsted & Maldonado 2018) como especificación principal; cohortes histórico-generacionales (inspiradas en Araujo & Martuccelli 2012, extendidas con la Generación del estallido siguiendo Mannheim 1928 y Krosnick & Alwin 1989) como robustez con etiquetas interpretables — se probó también como alternativa visual a los márgenes quinquenales y se descartó (ver `Cohortes teóricas/`).
 - **Fronteras candidatas fuera de la grilla quinquenal** (taxonomía importada y corte único Balcells): se testean con una variable auxiliar (`cohort_check`) que usa resolución fina solo alrededor de cada corte candidato — ventana de ±2 años de nacimiento a cada lado (año individual, ±1, para el par Balcells por estar sus dos cortes a solo 2 años de distancia). Esto evita el problema de comparar generaciones completas: si la confianza sube o baja de forma gradual con cada cohorte de nacimiento sin ningún quiebre real, comparar promedios de grupos amplios da "significativo" en casi cualquier corte que se elija — comparar años adyacentes al borde específico sí puede distinguir un quiebre genuino de una tendencia suave.
-
-## La evidencia de robustez, en cuatro ángulos distintos
-
-1. **`tabla_4_wald_cohortes.csv`** — los 225 tests de Wald crudos, las tres encrucijadas completas.
-2. **`8_specification_curve.png`** — las 10 fronteras candidatas de las tres encrucijadas juntas en una sola figura (curva de especificaciones / *multiverse analysis*, Simonsohn, Simmons & Nelson 2020; Steegen et al. 2016): de un vistazo, cuál corte sobrevive y cuáles no.
-3. **`5_forest_encrucijadas.png`** — dentro del esquema quinquenal, las 13 fronteras entre cohortes consecutivas: dónde exactamente, al detalle más fino posible con este panel, se concentra el quiebre.
-4. **`4_brecha_estallido.png`** / **`7_brecha_estallido_prob.png`** — el contraste final ya simplificado a una sola variable binaria (pre/post 1995), en dos escalas (z-score y % que confía), con test de significancia impreso en el csv que acompaña a la segunda.
-
-Las cuatro miradas convergen en el mismo punto: la Generación del estallido es la única ruptura generacional real en Gobierno, Parlamento, Partidos y FF.AA. Iglesia es la excepción — ahí la señal es débil y depende de qué tan potente sea la comparación específica.
 
 ## Estado
 
