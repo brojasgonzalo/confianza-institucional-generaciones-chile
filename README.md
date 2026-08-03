@@ -80,15 +80,3 @@ La evidencia de esa convergencia, en cuatro ángulos distintos:
 
 Este análisis usa el panel armonizado de la Encuesta Bicentenario (PUCV), 2006-2025, 18 olas. Los microdatos **no** están incluidos en este repositorio — no se encontró una licencia explícita que autorice su redistribución pública; deben solicitarse directamente a la Encuesta Bicentenario (PUCV).
 
-## Especificación metodológica
-
-- **Modelo APC**: cohorte y edad como efectos fijos (edad con término cuadrático), período como intercepto aleatorio por año de encuesta — siguiendo a Bargsted & Maldonado (2018).
-- **Tres especificaciones de DV**: binaria top-2-box (`melogit`), continua z-score por año (`mixed`), ordinal completa 1-5 (`meologit`). La ordinal es la recomendada como principal para las tablas de resultados: usa toda la información de la escala sin asumir normalidad de la variable observada. El diagnóstico de residuos (`Auxiliar/tabla_3_diagnostico_normalidad.csv`) confirma que esa normalidad se rompe en serio en Parlamento y Partidos (mayor sesgo de piso) — y el test de Wald de la frontera 1994/1995 lo demuestra empíricamente: la binaria falla en detectar la ruptura ahí, mientras ordinal y continua sí la detectan.
-- **Gráficos de márgenes**: la elección entre continua y ordinal se hace institución por institución según ese mismo diagnóstico — continua donde la violación es leve (Gobierno, FF.AA., Iglesia), ordinal donde es seria (Parlamento, Partidos).
-- **Diseño muestral**: ponderador incorporado como `pweight` con errores estándar robustos (`vce(robust)`) en todos los modelos multinivel, ya que Stata no propaga correctamente el prefijo `svy:` a través de efectos aleatorios anidados.
-- **Cohortes**: quinquenales (Bargsted & Maldonado 2018) como especificación principal; cohortes histórico-generacionales (inspiradas en Araujo & Martuccelli 2012, extendidas con la Generación del estallido siguiendo Mannheim 1928 y Krosnick & Alwin 1989) como robustez con etiquetas interpretables — se probó también como alternativa visual a los márgenes quinquenales y se descartó (ver `Cohortes teóricas/`).
-- **Fronteras candidatas fuera de la grilla quinquenal** (taxonomía importada y corte único Balcells): se testean con una variable auxiliar (`cohort_check`) que usa resolución fina solo alrededor de cada corte candidato — ventana de ±2 años de nacimiento a cada lado (año individual, ±1, para el par Balcells por estar sus dos cortes a solo 2 años de distancia). Esto evita el problema de comparar generaciones completas: si la confianza sube o baja de forma gradual con cada cohorte de nacimiento sin ningún quiebre real, comparar promedios de grupos amplios da "significativo" en casi cualquier corte que se elija — comparar años adyacentes al borde específico sí puede distinguir un quiebre genuino de una tendencia suave.
-
-## Estado
-
-Ponencia aceptada; artículo completo en preparación (fecha límite: 7 de noviembre de 2026).
