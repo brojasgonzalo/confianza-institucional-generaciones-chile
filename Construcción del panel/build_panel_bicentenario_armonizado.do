@@ -17,6 +17,17 @@
   - 2024: confint (s11) = actitudes hacia inmigrantes → missing
   - 2024: convivencia = i_1_f34 con framing diferente → missing
   - 2024: sit_lab3 parcial (cp07 código 5 agrupa cesante+inactivo)
+  - 2017: gse_calc_x código 9 ("No calculable") recodificado a missing
+  - 2023/2024/2025: gse_x/nse_3 vienen precolapsados de fábrica a solo 3
+    categorías (rompe comparabilidad con el resto del panel) — se sustituye
+    por cvar11 (GSE Calculado, 5 categorías), ver bloques de año. PENDIENTE
+    VERIFICAR: no se pudo confirmar desde acá que cvar11 use el mismo orden
+    1=alto...5=bajo que gse_x en los demás años — correr `tab gse year if
+    inrange(year,2023,2025)` y comparar contra el label de cvar11 antes de
+    confiar en el recode de nse4 (Parte 3, más abajo)
+  - gse: variable cruda, NO comparable entre olas tal cual (cada año trae su
+    propio esquema de códigos) — usar nse4 (armonizada, 4 categorías) para
+    cualquier análisis; gse se deja solo por trazabilidad
 
   Creado: 2026-05
 =============================================================================*/
@@ -716,6 +727,7 @@ else {
 }
 capture confirm variable gse
 if _rc != 0 gen byte gse = .
+replace gse = . if gse == 9   // 2017: 9="No calculable" en gse_calc_x
 
 capture rename cp01     educ_raw
 capture rename cp05     ecivil_raw
@@ -1048,13 +1060,27 @@ if _rc != 0 gen int estrato = .
 * edad, sexo, region → ya nombrados
 capture rename zona macrozona
 capture rename cp15  ingreso
-capture confirm variable gse_x
+* gse_x en 2023 viene precolapsado a 3 categorías (Bajo/Medio/Alto) — se usa
+* cvar11 (GSE Calculado, 5 categorías completas) en su lugar; gse_x queda
+* como fallback solo si cvar11 no existiera en el archivo.
+capture confirm variable cvar11
 if _rc == 0 {
-    capture rename gse_x gse
+    capture rename cvar11 gse
     if _rc != 0 {
         rename gse gse_old
-        rename gse_x gse
+        rename cvar11 gse
         drop gse_old
+    }
+}
+else {
+    capture confirm variable gse_x
+    if _rc == 0 {
+        capture rename gse_x gse
+        if _rc != 0 {
+            rename gse gse_old
+            rename gse_x gse
+            drop gse_old
+        }
     }
 }
 capture confirm variable gse
@@ -1114,12 +1140,34 @@ if _rc != 0 {
 * edad, sexo, region, zona → ya nombrados
 capture rename zona macrozona
 capture rename cp15  ingreso
-capture confirm variable gse
-if _rc != 0 {
-    capture rename nse_3 gse
-    if _rc != 0 gen byte gse = .
+* nse_3 en 2024 viene precolapsado a 3 categorías (Bajo/Medio/Alto) — se usa
+* cvar11/cvar11_org (GSE Calculado, 5 categorías completas) en su lugar;
+* nse_3 queda como fallback solo si ninguna de las dos existiera.
+capture confirm variable cvar11
+if _rc == 0 {
+    capture rename cvar11 gse
+    if _rc != 0 {
+        rename gse gse_old
+        rename cvar11 gse
+        drop gse_old
+    }
 }
-* 2024 usa nse_3 (3 cats), no gse_x
+else {
+    capture confirm variable cvar11_org
+    if _rc == 0 {
+        capture rename cvar11_org gse
+        if _rc != 0 {
+            rename gse gse_old
+            rename cvar11_org gse
+            drop gse_old
+        }
+    }
+    else {
+        capture rename nse_3 gse
+    }
+}
+capture confirm variable gse
+if _rc != 0 gen byte gse = .
 
 capture rename i_1_cp04_bis educ_raw
 capture rename cp08         ecivil_raw
@@ -1196,13 +1244,38 @@ else {
         if _rc != 0 gen byte ingreso = .
     }
 }
-capture confirm variable gse_x
+* gse_x en 2025 viene precolapsado a 3 categorías (Bajo/Medio/Alto) — se usa
+* cvar11/cvar11_sin_imp (GSE Calculado, 5 categorías completas) en su lugar;
+* gse_x queda como fallback solo si ninguna de las dos existiera.
+capture confirm variable cvar11
 if _rc == 0 {
-    capture rename gse_x gse
+    capture rename cvar11 gse
     if _rc != 0 {
         rename gse gse_old
-        rename gse_x gse
+        rename cvar11 gse
         drop gse_old
+    }
+}
+else {
+    capture confirm variable cvar11_sin_imp
+    if _rc == 0 {
+        capture rename cvar11_sin_imp gse
+        if _rc != 0 {
+            rename gse gse_old
+            rename cvar11_sin_imp gse
+            drop gse_old
+        }
+    }
+    else {
+        capture confirm variable gse_x
+        if _rc == 0 {
+            capture rename gse_x gse
+            if _rc != 0 {
+                rename gse gse_old
+                rename gse_x gse
+                drop gse_old
+            }
+        }
     }
 }
 capture confirm variable gse
@@ -1407,6 +1480,30 @@ label values afil4 afil4lbl
 label var afil4 "Afiliación religiosa armonizada (4 categorías)"
 
 
+* ─── nse4 ────────────────────────────────────────────────────────────────────
+* La mayoría de las olas trae gse_x/gse_calc_x con 5 categorías (1=ABC1/C1
+* alto ... 5=E bajo); 2006 y 2010 ya vienen con D y E fusionados de fábrica
+* (tope en 4). 2023/2024/2025 tenían gse_x/nse_3 precolapsado a solo 3
+* categorías — se sustituyó por cvar11 en los bloques de año de arriba para
+* recuperar las 5 categorías completas antes de llegar acá.
+*
+* PENDIENTE VERIFICAR (no se pudo confirmar desde este equipo, sin Stata a
+* mano): que cvar11 use el mismo orden 1=alto...5=bajo que gse_x en el resto
+* del panel. Antes de confiar en el recode de abajo, correr:
+*     tab gse year if inrange(year,2023,2025), nolabel
+*     label list <nombre del value label asociado a cvar11>
+* Si el orden viniera invertido en esos tres años, corregir con
+*     recode gse (1=5)(2=4)(3=3)(4=2)(5=1) if inrange(year,2023,2025)
+* antes del `gen byte nse4 = gse` de abajo.
+gen byte nse4 = gse
+recode nse4 (5 = 4)   // funde E dentro de "Bajo" para que sea comparable
+                       // con 2006/2010, que ya vienen fusionados de fábrica
+label define nse4lbl 1 "Alto (ABC1/C1)" 2 "Medio-alto (C2)" ///
+                     3 "Medio-bajo (C3)" 4 "Bajo (D/E)"
+label values nse4 nse4lbl
+label var nse4 "Nivel socioeconómico armonizado (4 categorías)"
+
+
 /*============================================================================
   PARTE 4: CORRECCIÓN DE DIRECCIÓN Y LIMPIEZA NS/NR
   Convención target actitudes: 1=Muy en desacuerdo, 5=Muy de acuerdo
@@ -1579,7 +1676,7 @@ svyset folio_mapa [pw=ponderador], strata(estrato) vce(linearized) singleunit(ce
 order year ponderador folio_mapa estrato                              ///
       edad sexo region macrozona                                      ///
       educ_raw educ4 ecivil_raw ecivil5 slab_raw sit_lab3 afil_raw afil4 ///
-      ingreso gse                                                     ///
+      ingreso gse nse4                                                ///
       creencia_dios asist_misa                                        ///
       homo_casar homo_adopt convivencia matrimonio                    ///
       aborto_vio aborto_gen rol_genero                                ///
