@@ -27,10 +27,16 @@
 //   5. DIAGNÓSTICO DE NORMALIDAD  residuos del modelo continuo
 //   6. TESTS DE WALD ............ tres encrucijadas de esquemas de cohorte
 //   7. HALLAZGO CONFIRMADO ...... brecha pre/post Generación del estallido
-//   8. FOREST PLOT ENCRUCIJADAS . visualiza la sección 6 (no estima nada,
-//                                 solo importa el csv que ya exportó)
+//   8. FOREST PLOT QUINQUENIOS .. las 13 fronteras entre quinquenios
+//                                 consecutivos (reutiliza estimates de la
+//                                 sección 2, sin volver a estimar)
 //   9. TENDENCIA TEMPORAL ....... contexto descriptivo 2006-2025 (proporción
 //                                 ponderada simple, no modelo multinivel)
+//   10. BRECHA ESTALLIDO EN % ... como la sección 7 pero en P(confía), no
+//                                 z-score — 5 modelos rápidos, 1 predictor
+//   11. CURVA DE ESPECIFICACIONES  las 10 fronteras candidatas de las tres
+//                                 encrucijadas juntas (no estima nada, solo
+//                                 grafica la sección 6)
 //
 // Para saltar a una sección, buscar el texto ">>> SECCIÓN N" en este archivo.
 // ============================================================================
@@ -51,11 +57,18 @@
 //              reemplaza nada de Principal/Auxiliar todavía (ver sección 4B)
 // Todo lo demás en este do-file usa estos cuatro globals — no hace falta
 // cambiar ninguna otra ruta en el resto del archivo.
+//
+// NSE (2026-08-06): se agregó i.nse4 (nivel socioeconómico armonizado, 4
+// categorías) como control en las ~45 estimaciones, junto a mujer/educ4.
+// Requiere que bicentenario_panel_armonizado.dta ya tenga nse4 (generado en
+// build_panel_bicentenario_armonizado.do). Las tres carpetas de salida se
+// redirigieron a *_NSE para no pisar la corrida anterior (sin el control de
+// NSE) que sigue intacta en Principal/Auxiliar/Cohortes teóricas.
 
 global DATA      "C:\Users\gonza\Dropbox\Proyectos personales\02.- DATOS\Bicentenario\bicentenario_panel_armonizado.dta"
-global PRINCIPAL "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Principal"
-global AUXILIAR  "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Auxiliar"
-global TEORICA   "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Cohortes teóricas"
+global PRINCIPAL "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Principal_NSE"
+global AUXILIAR  "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Auxiliar_NSE"
+global TEORICA   "C:\Users\gonza\Dropbox\Proyectos personales\01.- Desarrollo investigación\Quintero, Bustamante\Análisis final\Cohortes teóricas_NSE"
 
 
 // ============================================================================
@@ -119,21 +132,33 @@ label define cohort_teoricalbl ///
 label values cohort_teorica cohort_teoricalbl
 
 // Cohortes para testear esquemas alternativos (sección 6): copia de
-// cohort5, pero con resolución anual alrededor de las fronteras que no
-// coinciden con un borde de cohort5.
+// cohort5, pero con ventana ±2 años alrededor de las fronteras que no
+// coinciden con un borde de cohort5 (antes era resolución anual, un año
+// contra el siguiente — muy poca potencia; ±2 es el punto intermedio entre
+// eso y comparar generaciones completas, que mezclaría el quiebre puntual
+// con la tendencia general).
 //   - Taxonomía importada (Silenciosa/Boomer/X/Millennial/Z): fronteras en
 //     1945/46, 1980/81 y 1996/97 no coinciden con cohort5; 1964/65 sí
 //     coincide (borde 1960 vs. 1965) y se reutiliza directo.
 //   - Corte único estilo Balcells & Villamil (2026): dos candidatos,
 //     plebiscito 1988 (corte 1970/71) y retorno a la democracia 1990
-//     (corte 1972/73), ninguno coincide con un borde de cohort5.
-// Los offsets (11000, 12000, 13000, 20000) evitan colisión con los códigos
-// de cohort5.
+//     (corte 1972/73) — están a solo 2 años de distancia entre sí, así que
+//     una ventana ±2 en ambos se superpondría (el "después" del primero
+//     coincidiría con el "antes" del segundo). Se dejan en año individual
+//     (ventana ±1), la única excepción a la regla de ±2.
+// Los offsets (11001/11002, 12001/12002, 13001/13002, 20001-20004) evitan
+// colisión con los códigos de cohort5.
 gen cohort_check = cohort5
-replace cohort_check = 11000 + birthyear if inrange(birthyear, 1943, 1948)
-replace cohort_check = 12000 + birthyear if inrange(birthyear, 1978, 1983)
-replace cohort_check = 13000 + birthyear if inrange(birthyear, 1994, 1999)
-replace cohort_check = 20000 + birthyear if inrange(birthyear, 1967, 1976)
+replace cohort_check = 11001 if inrange(birthyear, 1944, 1945)
+replace cohort_check = 11002 if inrange(birthyear, 1946, 1947)
+replace cohort_check = 12001 if inrange(birthyear, 1979, 1980)
+replace cohort_check = 12002 if inrange(birthyear, 1981, 1982)
+replace cohort_check = 13001 if inrange(birthyear, 1995, 1996)
+replace cohort_check = 13002 if inrange(birthyear, 1997, 1998)
+replace cohort_check = 20001 if birthyear == 1970
+replace cohort_check = 20002 if birthyear == 1971
+replace cohort_check = 20003 if birthyear == 1972
+replace cohort_check = 20004 if birthyear == 1973
 
 // Generación del estallido como variable binaria: la única frontera
 // generacional confirmada en la sección 6 (ver detalle ahí). Se usa en la
@@ -178,39 +203,39 @@ local labels        `""Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia""'
 //       recomendada, ver sección 6 para la justificación empírica completa
 
 // --- (a) Binaria -------------------------------------------------------
-melogit conf_gobierno_bin   age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_gobierno_bin   age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store gob_logit
-melogit conf_parlamento_bin age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_parlamento_bin age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store parl_logit
-melogit conf_partidos_bin   age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_partidos_bin   age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store part_logit
-melogit conf_ffaa_bin       age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_ffaa_bin       age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store ffaa_logit
-melogit conf_iglesia_bin    age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_iglesia_bin    age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store igl_logit
 
 // --- (b) Continua (z-score) ---------------------------------------------
-mixed conf_gobierno_z   age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_gobierno_z   age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store gob_lineal
-mixed conf_parlamento_z age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_parlamento_z age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store parl_lineal
-mixed conf_partidos_z   age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_partidos_z   age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store part_lineal
-mixed conf_ffaa_z       age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_ffaa_z       age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store ffaa_lineal
-mixed conf_iglesia_z    age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_iglesia_z    age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store igl_lineal
 
 // --- (c) Ordinal ---------------------------------------------------------
-meologit conf_gobierno   age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_gobierno   age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store gob_ord
-meologit conf_parlamento age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_parlamento age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store parl_ord
-meologit conf_partidos   age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_partidos   age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store part_ord
-meologit conf_ffaa       age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_ffaa       age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store ffaa_ord
-meologit conf_iglesia    age_s age_s2 i.cohort5 mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_iglesia    age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store igl_ord
 
 // --- AIC, BIC y sigma de período, para las 15 estimaciones ---------------
@@ -262,37 +287,37 @@ esttab gob_ord parl_ord part_ord ffaa_ord igl_ord ///
 // generacionales con nombre (más legible para el lector), aunque el modelo
 // de identificación principal sigue siendo el de cohortes quinquenales.
 
-melogit conf_gobierno_bin   age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_gobierno_bin   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store gob_logit_teo
-melogit conf_parlamento_bin age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_parlamento_bin age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store parl_logit_teo
-melogit conf_partidos_bin   age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_partidos_bin   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store part_logit_teo
-melogit conf_ffaa_bin       age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_ffaa_bin       age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store ffaa_logit_teo
-melogit conf_iglesia_bin    age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+melogit conf_iglesia_bin    age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store igl_logit_teo
 
-mixed conf_gobierno_z   age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_gobierno_z   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store gob_lineal_teo
-mixed conf_parlamento_z age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_parlamento_z age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store parl_lineal_teo
-mixed conf_partidos_z   age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_partidos_z   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store part_lineal_teo
-mixed conf_ffaa_z       age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_ffaa_z       age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store ffaa_lineal_teo
-mixed conf_iglesia_z    age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+mixed conf_iglesia_z    age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
 estimates store igl_lineal_teo
 
-meologit conf_gobierno   age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_gobierno   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store gob_ord_teo
-meologit conf_parlamento age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_parlamento age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store parl_ord_teo
-meologit conf_partidos   age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_partidos   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store part_ord_teo
-meologit conf_ffaa       age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_ffaa       age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store ffaa_ord_teo
-meologit conf_iglesia    age_s age_s2 i.cohort_teorica mujer i.educ4 [pweight=ponderador] || year:, or vce(robust)
+meologit conf_iglesia    age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store igl_ord_teo
 
 foreach m in gob_logit_teo parl_logit_teo part_logit_teo ffaa_logit_teo igl_logit_teo ///
@@ -644,20 +669,20 @@ foreach spec in binaria zscore ordinal {
         // ================= ENCRUCIJADAS 1 y 3: cohort_check ==============
         // Modelo nuevo (no estaba guardado de antes) con la variable de
         // resolución mixta para las fronteras importada y Balcells.
-        quietly `estcmd' `v'`dvsuf' age_s age_s2 i.cohort_check mujer i.educ4 [pweight=ponderador] || year: `estopt'
+        quietly `estcmd' `v'`dvsuf' age_s age_s2 i.cohort_check mujer i.educ4 i.nse4 [pweight=ponderador] || year: `estopt'
 
-        quietly test 12945.cohort_check = 12946.cohort_check
+        quietly test 11002.cohort_check = 11001.cohort_check
         wald_row `fh_wald' "`spec'" "importada" "`lbl'" "frontera Silenciosa/Boomer (1945/1946)" "frontera"
         quietly test 1960.cohort_check = 1965.cohort_check
         wald_row `fh_wald' "`spec'" "importada" "`lbl'" "frontera Boomer/X (1964/1965)" "frontera"
-        quietly test 13980.cohort_check = 13981.cohort_check
+        quietly test 12002.cohort_check = 12001.cohort_check
         wald_row `fh_wald' "`spec'" "importada" "`lbl'" "frontera X/Millennial (1980/1981)" "frontera"
-        quietly test 14996.cohort_check = 14997.cohort_check
+        quietly test 13002.cohort_check = 13001.cohort_check
         wald_row `fh_wald' "`spec'" "importada" "`lbl'" "frontera Millennial/Z (1996/1997)" "frontera"
 
-        quietly test 21970.cohort_check = 21971.cohort_check
+        quietly test 20002.cohort_check = 20001.cohort_check
         wald_row `fh_wald' "`spec'" "balcells" "`lbl'" "frontera plebiscito 1988 (1970/1971)" "frontera"
-        quietly test 21972.cohort_check = 21973.cohort_check
+        quietly test 20004.cohort_check = 20003.cohort_check
         wald_row `fh_wald' "`spec'" "balcells" "`lbl'" "frontera retorno democracia 1990 (1972/1973)" "frontera"
 
         local ++i
@@ -698,7 +723,7 @@ postfile `fh_estallido' byte inst_id byte post_estallido double b double ll doub
 
 local i = 1
 foreach v of local institutions {
-    quietly mixed `v'_z age_s age_s2 i.post_estallido mujer i.educ4 [pweight=ponderador] || year:, mle vce(robust)
+    quietly mixed `v'_z age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
     quietly margins post_estallido
     matrix tab_est = r(table)
     forvalues c = 1/2 {
@@ -730,39 +755,69 @@ restore
 
 
 // ============================================================================
-// >>> SECCIÓN 8: FOREST PLOT — LAS TRES ENCRUCIJADAS DE COHORTES
+// >>> SECCIÓN 8: FOREST PLOT — FRONTERAS ENTRE QUINQUENIOS CONSECUTIVOS
 // ============================================================================
-// No estima nada nuevo — solo importa tabla_4_wald_cohortes.csv (ya
-// generado en la sección 6) y lo grafica. Un punto por frontera candidata x
-// institución, especificación ordinal (la principal). Eje x: -log10(p) del
-// test de Wald — más a la derecha = más significativo, línea de referencia
-// en p=.05. La idea: hacer visible de un vistazo que de las 10 fronteras
-// candidatas testeadas entre las tres encrucijadas, solo una (1994/1995) es
-// significativa de forma consistente en las 5 instituciones.
+// Reutiliza los modelos ordinales con cohort5 completo ya estimados en la
+// sección 2 (estimates restore `short'_ord — cero estimación nueva acá).
+// Testea las 13 fronteras entre quinquenios consecutivos (¿≤1944 vs
+// 1945-49?, ¿1945-49 vs 1950-54?, ..., ¿2000-04 vs 2005-07?) para cada
+// institución — resolución completa quinquenio a quinquenio, no solo las 4
+// fronteras entre los bloques teóricos grandes (esas siguen en
+// tabla_4_wald_cohortes.csv). Eje x: -log10(p) del test de Wald —
+// más a la derecha = más significativo, línea de referencia en p=.05.
+
+tempname fh_front_q
+file open `fh_front_q' using "$PRINCIPAL\5_fronteras_quinquenales.csv", write replace
+file write `fh_front_q' "institucion,frontera,chi2,df,p" _n
+
+local cohortvals   "1944 1945 1950 1955 1960 1965 1970 1975 1980 1985 1990 1995 2000 2005"
+local frontlabels  `""≤1944 / 1945-49" "1945-49 / 1950-54" "1950-54 / 1955-59" "1955-59 / 1960-64" "1960-64 / 1965-69" "1965-69 / 1970-74" "1970-74 / 1975-79" "1975-79 / 1980-84" "1980-84 / 1985-89" "1985-89 / 1990-94" "1990-94 / 1995-99" "1995-99 / 2000-04" "2000-04 / 2005-07""'
+
+local i = 1
+foreach v of local institutions {
+    local lbl   : word `i' of `labels'
+    local short : word `i' of `shortnames'
+    estimates restore `short'_ord
+
+    forvalues b = 1/13 {
+        local lo    : word `b' of `cohortvals'
+        local hiidx = `b' + 1
+        local hi    : word `hiidx' of `cohortvals'
+        local flbl  : word `b' of `frontlabels'
+        if `b' == 1 {
+            quietly test `hi'.cohort5 = 0
+        }
+        else {
+            quietly test `hi'.cohort5 = `lo'.cohort5
+        }
+        file write `fh_front_q' `""`lbl'""' "," `""`flbl'""' "," %9.3f (r(chi2)) "," %3.0f (r(df)) "," %9.4f (r(p)) _n
+    }
+    local ++i
+}
+file close `fh_front_q'
 
 preserve
-import delimited "$PRINCIPAL\tabla_4_wald_cohortes.csv", clear varnames(1) case(preserve)
-keep if tipo == "frontera" & especificacion == "ordinal"
+import delimited "$PRINCIPAL\5_fronteras_quinquenales.csv", clear varnames(1) case(preserve)
 
-// No usar la columna p tal cual: se guardó con solo 4 decimales en la
-// sección 6, así que cualquier p menor a 0.0001 quedó redondeado a "0.0000"
-// en el csv, y -log10(0) es indefinido — esos puntos (los más significativos,
-// justo los que más importan) desaparecerían del gráfico. Se recalcula el
-// p-valor exacto desde el estadístico chi2 (guardado con más precisión) con
-// chi2tail(), sin necesidad de volver a estimar nada.
-gen neglog10p = -log10(chi2tail(df, stat))
+// No usar la columna p tal cual (redondeada a 4 decimales, colapsa a
+// "0.0000" en fronteras muy significativas y -log10(0) es indefinido) —
+// recalcular desde el chi2 con chi2tail(), como en el resto del do-file.
+gen neglog10p = -log10(chi2tail(df, chi2))
 
 gen front_pos = .
-replace front_pos = 1  if bloque == "frontera Silenciosa/Boomer (1945/1946)"
-replace front_pos = 2  if bloque == "frontera 1-2 (1949/1950)"
-replace front_pos = 3  if bloque == "frontera Boomer/X (1964/1965)"
-replace front_pos = 4  if bloque == "frontera 2-3 (1964/1965)"
-replace front_pos = 5  if bloque == "frontera plebiscito 1988 (1970/1971)"
-replace front_pos = 6  if bloque == "frontera retorno democracia 1990 (1972/1973)"
-replace front_pos = 7  if bloque == "frontera 3-4 (1979/1980)"
-replace front_pos = 8  if bloque == "frontera X/Millennial (1980/1981)"
-replace front_pos = 9  if bloque == "frontera 4-5 (1994/1995)"
-replace front_pos = 10 if bloque == "frontera Millennial/Z (1996/1997)"
+replace front_pos = 1  if frontera == "≤1944 / 1945-49"
+replace front_pos = 2  if frontera == "1945-49 / 1950-54"
+replace front_pos = 3  if frontera == "1950-54 / 1955-59"
+replace front_pos = 4  if frontera == "1955-59 / 1960-64"
+replace front_pos = 5  if frontera == "1960-64 / 1965-69"
+replace front_pos = 6  if frontera == "1965-69 / 1970-74"
+replace front_pos = 7  if frontera == "1970-74 / 1975-79"
+replace front_pos = 8  if frontera == "1975-79 / 1980-84"
+replace front_pos = 9  if frontera == "1980-84 / 1985-89"
+replace front_pos = 10 if frontera == "1985-89 / 1990-94"
+replace front_pos = 11 if frontera == "1990-94 / 1995-99"
+replace front_pos = 12 if frontera == "1995-99 / 2000-04"
+replace front_pos = 13 if frontera == "2000-04 / 2005-07"
 
 // Jitter vertical pequeño para que las 5 instituciones no se encimen en la
 // misma fila.
@@ -770,9 +825,6 @@ gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, ///
     cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, ///
     cond(institucion=="FF.AA.",0.12,0.24))))
 
-// El texto va directo en ylabel() (no como value label) porque front_jit
-// trae el jitter y sus valores no caen justo en los enteros 1-10 — un
-// value label ahí no calzaría con ningún punto exacto.
 twoway ///
     (scatter front_jit neglog10p if institucion=="Gobierno",   mcolor(navy)    msymbol(O)) ///
     (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon)  msymbol(D)) ///
@@ -780,12 +832,11 @@ twoway ///
     (scatter front_jit neglog10p if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
     (scatter front_jit neglog10p if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
     , xline(1.301, lpattern(dash) lcolor(gs8)) ///
-      ylabel(1 "Silenciosa/Boomer 1945/46 (importada)" 2 "Bloque 1-2, 1949/1950 (teorica)" 3 "Boomer/X 1964/65 (importada)" 4 "Bloque 2-3, 1964/1965 (teorica)" 5 "Plebiscito 1988, 1970/71 (balcells)" 6 "Retorno democracia, 1972/73 (balcells)" 7 "Bloque 3-4, 1979/1980 (teorica)" 8 "X/Millennial 1980/81 (importada)" 9 "Bloque 4-5, 1994/1995 (teorica)" 10 "Millennial/Z 1996/97 (importada)", angle(0) labsize(vsmall)) ytitle("") ///
+      ylabel(1 "≤1944 / 1945-49" 2 "1945-49 / 1950-54" 3 "1950-54 / 1955-59" 4 "1955-59 / 1960-64" 5 "1960-64 / 1965-69" 6 "1965-69 / 1970-74" 7 "1970-74 / 1975-79" 8 "1975-79 / 1980-84" 9 "1980-84 / 1985-89" 10 "1985-89 / 1990-94" 11 "1990-94 / 1995-99" 12 "1995-99 / 2000-04" 13 "2000-04 / 2005-07", angle(0) labsize(vsmall)) ytitle("") ///
       xtitle("-log10(p), test de Wald (especificación ordinal)") ///
-      title("Solo una frontera generacional" "sobrevive a las tres encrucijadas", size(medium)) ///
-      subtitle("Línea punteada = umbral p=.05. Más a la derecha = más significativo.", size(vsmall)) ///
+      title("Gráfico de significancia de tests de Wald", size(medium)) ///
       legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
-      graphregion(color(white)) xsize(10) ysize(7)
+      graphregion(color(white)) xsize(10) ysize(9)
 graph export "$PRINCIPAL\5_forest_encrucijadas.png", replace width(2400)
 restore
 
@@ -839,6 +890,119 @@ twoway ///
       legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
       graphregion(color(white)) xsize(10) ysize(6)
 graph export "$PRINCIPAL\6_tendencia_temporal.png", replace width(2400)
+restore
+
+
+// ============================================================================
+// >>> SECCIÓN 10: BRECHA ESTALLIDO EN ESCALA DE PROBABILIDAD
+// ============================================================================
+// Misma lógica que la sección 7 (brecha pre/post estallido), pero con el
+// modelo ordinal (la especificación principal del paper) en vez de z-score,
+// graficando P(confía) = P(Y=4)+P(Y=5) — más intuitivo para una audiencia
+// de congreso ("% que confía" en vez de "desviaciones estándar"). Mismo
+// contraste robusto, misma estructura APC (edad + intercepto aleatorio de
+// período + post_estallido como único predictor de cohorte). A diferencia
+// de la sección 4, acá no hay grid de márgenes por edad ni 14 categorías de
+// cohorte — son 5 modelos de un solo predictor, deberían tardar segundos
+// por institución, no horas.
+
+tempname fh_estallido_p
+tempfile margins_estallido_p
+postfile `fh_estallido_p' byte inst_id byte post_estallido double b double ll double ul using "`margins_estallido_p'", replace
+
+// Test de significancia del salto pre/post-estallido en esta especificación
+// simplificada (post_estallido como único predictor de cohorte, sin las 14
+// categorías de cohort5) — para no depender solo de si los IC del gráfico
+// se tocan o no (overlap visual no es lo mismo que test no significativo).
+tempname fh_sig
+file open `fh_sig' using "$PRINCIPAL\7_brecha_estallido_prob_pvalues.csv", write replace
+file write `fh_sig' "institucion,chi2,p" _n
+
+local i = 1
+foreach v of local institutions {
+    quietly meologit `v' age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
+    quietly test 1.post_estallido
+    local lbl : word `i' of `labels'
+    di as text "`lbl': chi2 = " %9.3f (r(chi2)) ", p = " %9.4f (r(p))
+    file write `fh_sig' `""`lbl'""' "," %9.3f (r(chi2)) "," %9.4f (r(p)) _n
+
+    quietly margins post_estallido, expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+    matrix tab_est = r(table)
+    forvalues c = 1/2 {
+        post `fh_estallido_p' (`i') (`c' - 1) (tab_est[1,`c']) (tab_est[5,`c']) (tab_est[6,`c'])
+    }
+    local ++i
+}
+postclose `fh_estallido_p'
+file close `fh_sig'
+
+preserve
+use "`margins_estallido_p'", clear
+label define instlbl3 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
+label values inst_id instlbl3
+
+gen xpos = inst_id + (post_estallido - 0.5) * 0.35
+
+twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) ///
+       (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) ///
+       (rcap ll ul xpos, lcolor(black)), ///
+    xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) ///
+    xtitle("") ytitle("P(confía) = P(Y=4)+P(Y=5)", size(small)) ///
+    title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) ///
+    subtitle("Misma ruptura que la Sección 7, en escala de probabilidad (modelo ordinal)", size(vsmall)) ///
+    legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) ///
+    graphregion(color(white)) xsize(9) ysize(6)
+graph export "$PRINCIPAL\7_brecha_estallido_prob.png", replace width(2400)
+restore
+
+
+// ============================================================================
+// >>> SECCIÓN 11: CURVA DE ESPECIFICACIONES — LAS TRES ENCRUCIJADAS
+// ============================================================================
+// No estima nada nuevo — solo importa tabla_4_wald_cohortes.csv (ya
+// generado en la sección 6) y lo grafica. Muestra las 10 fronteras
+// candidatas de las tres encrucijadas juntas (teórica + importada +
+// Balcells): a diferencia de la sección 8 (que solo mira dentro del
+// esquema teórico), esta es la evidencia de robustez de la ELECCIÓN del
+// esquema de cohorte en sí — una "specification curve" (Simonsohn, Simmons
+// & Nelson 2020) / "multiverse analysis" (Steegen et al. 2016): todas las
+// decisiones analíticas razonables a la vez, no solo la que se usó.
+
+preserve
+import delimited "$PRINCIPAL\tabla_4_wald_cohortes.csv", clear varnames(1) case(preserve)
+keep if tipo == "frontera" & especificacion == "ordinal"
+
+gen neglog10p = -log10(chi2tail(df, stat))
+
+gen front_pos = .
+replace front_pos = 1  if bloque == "frontera Silenciosa/Boomer (1945/1946)"
+replace front_pos = 2  if bloque == "frontera 1-2 (1949/1950)"
+replace front_pos = 3  if bloque == "frontera Boomer/X (1964/1965)"
+replace front_pos = 4  if bloque == "frontera 2-3 (1964/1965)"
+replace front_pos = 5  if bloque == "frontera plebiscito 1988 (1970/1971)"
+replace front_pos = 6  if bloque == "frontera retorno democracia 1990 (1972/1973)"
+replace front_pos = 7  if bloque == "frontera 3-4 (1979/1980)"
+replace front_pos = 8  if bloque == "frontera X/Millennial (1980/1981)"
+replace front_pos = 9  if bloque == "frontera 4-5 (1994/1995)"
+replace front_pos = 10 if bloque == "frontera Millennial/Z (1996/1997)"
+
+gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, ///
+    cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, ///
+    cond(institucion=="FF.AA.",0.12,0.24))))
+
+twoway ///
+    (scatter front_jit neglog10p if institucion=="Gobierno",   mcolor(navy)    msymbol(O)) ///
+    (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon)  msymbol(D)) ///
+    (scatter front_jit neglog10p if institucion=="Partidos",   mcolor(dkgreen) msymbol(T)) ///
+    (scatter front_jit neglog10p if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
+    (scatter front_jit neglog10p if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
+    , xline(1.301, lpattern(dash) lcolor(gs8)) ///
+      ylabel(1 "Silenciosa/Boomer 1945/46 (importada)" 2 "Bloque 1-2, 1949/1950 (teorica)" 3 "Boomer/X 1964/65 (importada)" 4 "Bloque 2-3, 1964/1965 (teorica)" 5 "Plebiscito 1988, 1970/71 (balcells)" 6 "Retorno democracia, 1972/73 (balcells)" 7 "Bloque 3-4, 1979/1980 (teorica)" 8 "X/Millennial 1980/81 (importada)" 9 "Bloque 4-5, 1994/1995 (teorica)" 10 "Millennial/Z 1996/97 (importada)", angle(0) labsize(vsmall)) ytitle("") ///
+      xtitle("-log10(p), test de Wald (especificación ordinal)") ///
+      title("Curva de especificaciones — fronteras de cohorte candidatas", size(medium)) ///
+      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
+      graphregion(color(white)) xsize(10) ysize(7)
+graph export "$PRINCIPAL\8_specification_curve.png", replace width(2400)
 restore
 
 

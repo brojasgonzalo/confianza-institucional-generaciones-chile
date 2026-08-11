@@ -1,0 +1,16 @@
+especificacion,institucion,n_omitidas,cohortes_omitidas,n_obs_celdas_degeneradas
+binaria,Gobierno,0,,0
+binaria,Parlamento,0,,1507
+binaria,Partidos,0,,1283
+binaria,FF.AA.,0,,0
+binaria,Iglesia,0,,0
+zscore,Gobierno,0,,0
+zscore,Parlamento,0,,0
+zscore,Partidos,0,,0
+zscore,FF.AA.,0,,0
+zscore,Iglesia,0,,0
+ordinal,Gobierno,0,,0
+ordinal,Parlamento,0,,0
+ordinal,Partidos,0,,0
+ordinal,FF.AA.,0,,0
+ordinal,Iglesia,0,,0

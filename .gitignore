@@ -13,3 +13,6 @@
 # Basura de sistema
 .DS_Store
 Thumbs.db
+
+# Archivos de bloqueo de Word (se crean mientras un .docx está abierto)
+~$*.docx
