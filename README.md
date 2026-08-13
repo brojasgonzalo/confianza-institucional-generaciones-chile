@@ -76,7 +76,7 @@ Análisis final/
 ├── dofile final confianza institucional.do     # script único: las 15 secciones completas del análisis
 ├── Resultados completos - Confianza institucional (con NSE).docx
 │
-├── Principal_NSE/                              # salida vigente (especificación con control de NSE)
+├── Principal/                                   # tablas y gráficos centrales
 │   ├── tabla_1c_ordinal.rtf
 │   ├── tabla_4_wald_cohortes.csv                # 225 tests de frontera (pt2)
 │   ├── lr_bargsted_maldonado.csv                # test de Wald conjunto (pt1)
@@ -87,20 +87,18 @@ Análisis final/
 │   ├── 7_brecha_estallido_prob.png / _pvalues.csv
 │   ├── 8_specification_curve.png
 │   ├── 9_wald_momento1_cohorte.png
-│   └── cobertura_variables_detalle.csv / _resumen.csv
+│   ├── cobertura_variables_detalle.csv / _resumen.csv
+│   └── Metodologia_y_hallazgos*.docx             # borradores del manuscrito
 │
-├── Auxiliar_NSE/                                # robustez y diagnóstico
+├── Auxiliar/                                    # robustez y diagnóstico
 │   ├── tabla_1a_binaria.rtf / tabla_1b_continua.rtf
 │   ├── tabla_2{a,b,c}_*_robustez_teorica.rtf
 │   ├── tabla_3_diagnostico_normalidad.csv
 │   ├── diagnostico_omitidas_cohort5.csv
 │   └── 1a_binaria_*.png / 1b_continua_{parl,part}.png / 1c_ordinal_{gob,ffaa,igl}.png / 3_normalidad_*.png
 │
-├── Cohortes teóricas_NSE/                       # comparación descartada: cohort_teorica (5 bloques)
+├── Cohortes teóricas/                           # comparación descartada: cohort_teorica (5 bloques)
 │   └── 1{b,c}_{continua,ordinal}_teo_*.png
-│
-├── Principal/ Auxiliar/ Cohortes teóricas/      # corrida anterior sin control de NSE, se mantiene
-│   └── Metodologia_y_hallazgos*.docx             # como referencia; los borradores del manuscrito viven acá dentro
 │
 └── Construcción del panel/
     └── build_panel_bicentenario_armonizado.do   # arma el panel 2006-2025 a partir de las bases anuales

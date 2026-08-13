@@ -1,11 +1,11 @@
 institucion,nivel,n,skewness,kurtosis,chi2_sktest,p_sktest
-"Gobierno",individual,24405,   0.6403,   2.7459,        .,        .
-"Gobierno",ano_re,13,  -0.8583,   3.9095,    4.950,   0.0841
-"Parlamento",individual,28269,   1.3087,   4.4059,        .,        .
-"Parlamento",ano_re,15,   0.2437,   3.2527,    1.297,   0.5228
-"Partidos",individual,26289,   1.4573,   4.8983,        .,        .
-"Partidos",ano_re,14,   0.7235,   3.4219,    3.676,   0.1591
-"FF.AA.",individual,26337,   0.0793,   2.0873,        .,        .
-"FF.AA.",ano_re,14,  -0.4035,   2.3539,    0.694,   0.7068
-"Iglesia",individual,28351,   0.4485,   2.2399,        .,        .
-"Iglesia",ano_re,15,  -1.7534,   6.2221,   12.367,   0.0021
+"Gobierno",individual,24375,   0.6361,   2.7558,        .,        .
+"Gobierno",ano_re,13,  -0.9647,   4.1609,    5.761,   0.0561
+"Parlamento",individual,28241,   1.3090,   4.4285,        .,        .
+"Parlamento",ano_re,15,   0.1052,   2.9976,    0.548,   0.7605
+"Partidos",individual,26259,   1.4564,   4.9143,        .,        .
+"Partidos",ano_re,14,   0.6433,   3.2089,    2.838,   0.2419
+"FF.AA.",individual,26308,   0.0790,   2.0898,        .,        .
+"FF.AA.",ano_re,14,  -0.4351,   2.4300,    0.787,   0.6748
+"Iglesia",individual,28321,   0.4477,   2.2430,        .,        .
+"Iglesia",ano_re,15,  -1.8051,   6.3684,   12.792,   0.0017
