@@ -22,8 +22,6 @@ por lo tanto:
 
 Se utilizaron escalas de confianza estilo Likert 1-5.
 
-<div align="center">
-
 | Institución | N observaciones | Olas con datos | Años sin dato |
 |---|---|---|---|
 | Gobierno | 24.421 | 13 / 18 | 2007, 2008, 2009, 2013, 2014 |
@@ -31,8 +29,6 @@ Se utilizaron escalas de confianza estilo Likert 1-5.
 | Partidos | 26.306 | 14 / 18 | 2007, 2008, 2009, 2013 |
 | FF.AA. | 26.354 | 14 / 18 | 2007, 2008, 2009, 2013 |
 | Iglesia | 28.375 | 15 / 18 | 2007, 2008, 2009 |
-
-</div>
 
 <p align="center"><img src="Principal/6_tendencia_temporal.png" width="600"></p>
 
@@ -47,8 +43,6 @@ La propuesta de análisis generacional se hace de tres esquemas de análisis a p
 pt1. ¿existe un "efecto" de cohorte?
 
 Para responder esta parte de la pregunta, se aplicó un test de Wald conjunto sobre los 13 coeficientes de las cohortes quinquenales contra la base (H0: todos son cero a la vez), calculado sobre el mismo modelo completo. El test resultó significativo en las 15 combinaciones de institución y especificación. Todas las combinaciones cruzan el umbral de significancia. Hay, en efecto, algún efecto de cohorte que localizar en las cinco instituciones y en las tres especificaciones.
-
-<div align="center">
 
 | Especificación | Institución | Wald χ² | gl | p |
 |---|---|---|---|---|
@@ -67,8 +61,6 @@ Para responder esta parte de la pregunta, se aplicó un test de Wald conjunto so
 | Ordinal | Partidos | 53880,31 | 13 | <0,0001 |
 | Ordinal | FF.AA. | 465,30 | 13 | <0,0001 |
 | Ordinal | Iglesia | 966,55 | 13 | <0,0001 |
-
-</div>
 
 pt2. ¿Dónde existe un quiebre?
 
