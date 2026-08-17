@@ -4,6 +4,8 @@ Gonzalo Bustamante Rojas & Alonso Quintero Contreras
 
 <sub>Ponencia aceptada en el 4to Congreso Latinoamericano de Ciencias Sociales y Gobierno de la Triada 2026 (PUC Chile / Universidad de los Andes Colombia / Tec de Monterrey), 1-2 de octubre de 2026, campus Ciudad de México.</sub>
 
+Autor: [brojasgonzalo](https://github.com/brojasgonzalo)
+
 ## General
 
 Análisis edad-período-cohorte (APC) de la confianza institucional en Chile (Gobierno, Parlamento, Partidos, Fuerzas Armadas, Iglesia), usando el panel armonizado de la Encuesta Bicentenario PUCV (2006-2025). La pregunta central:
