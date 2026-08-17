@@ -1,0 +1,181 @@
+variable,year,n
+"Confianza en Gobierno",2006,1933
+"Confianza en Gobierno",2007,0
+"Confianza en Gobierno",2008,0
+"Confianza en Gobierno",2009,0
+"Confianza en Gobierno",2010,1963
+"Confianza en Gobierno",2011,1954
+"Confianza en Gobierno",2012,1983
+"Confianza en Gobierno",2013,0
+"Confianza en Gobierno",2014,0
+"Confianza en Gobierno",2016,1987
+"Confianza en Gobierno",2017,1989
+"Confianza en Gobierno",2018,1994
+"Confianza en Gobierno",2019,2024
+"Confianza en Gobierno",2021,1981
+"Confianza en Gobierno",2022,1868
+"Confianza en Gobierno",2023,1553
+"Confianza en Gobierno",2024,1605
+"Confianza en Gobierno",2025,1587
+"Confianza en Parlamento",2006,1927
+"Confianza en Parlamento",2007,0
+"Confianza en Parlamento",2008,0
+"Confianza en Parlamento",2009,0
+"Confianza en Parlamento",2010,1962
+"Confianza en Parlamento",2011,1943
+"Confianza en Parlamento",2012,1979
+"Confianza en Parlamento",2013,1951
+"Confianza en Parlamento",2014,1992
+"Confianza en Parlamento",2016,1991
+"Confianza en Parlamento",2017,1986
+"Confianza en Parlamento",2018,1999
+"Confianza en Parlamento",2019,2013
+"Confianza en Parlamento",2021,1974
+"Confianza en Parlamento",2022,1858
+"Confianza en Parlamento",2023,1545
+"Confianza en Parlamento",2024,1600
+"Confianza en Parlamento",2025,1572
+"Confianza en Partidos",2006,1919
+"Confianza en Partidos",2007,0
+"Confianza en Partidos",2008,0
+"Confianza en Partidos",2009,0
+"Confianza en Partidos",2010,1962
+"Confianza en Partidos",2011,1942
+"Confianza en Partidos",2012,1975
+"Confianza en Partidos",2013,0
+"Confianza en Partidos",2014,1984
+"Confianza en Partidos",2016,1991
+"Confianza en Partidos",2017,1981
+"Confianza en Partidos",2018,1994
+"Confianza en Partidos",2019,2008
+"Confianza en Partidos",2021,1975
+"Confianza en Partidos",2022,1858
+"Confianza en Partidos",2023,1545
+"Confianza en Partidos",2024,1596
+"Confianza en Partidos",2025,1576
+"Confianza en FF.AA.",2006,1937
+"Confianza en FF.AA.",2007,0
+"Confianza en FF.AA.",2008,0
+"Confianza en FF.AA.",2009,0
+"Confianza en FF.AA.",2010,1955
+"Confianza en FF.AA.",2011,1952
+"Confianza en FF.AA.",2012,1983
+"Confianza en FF.AA.",2013,0
+"Confianza en FF.AA.",2014,1983
+"Confianza en FF.AA.",2016,1986
+"Confianza en FF.AA.",2017,1987
+"Confianza en FF.AA.",2018,1998
+"Confianza en FF.AA.",2019,2010
+"Confianza en FF.AA.",2021,1973
+"Confianza en FF.AA.",2022,1859
+"Confianza en FF.AA.",2023,1539
+"Confianza en FF.AA.",2024,1605
+"Confianza en FF.AA.",2025,1587
+"Confianza en Iglesia",2006,1943
+"Confianza en Iglesia",2007,0
+"Confianza en Iglesia",2008,0
+"Confianza en Iglesia",2009,0
+"Confianza en Iglesia",2010,1971
+"Confianza en Iglesia",2011,1951
+"Confianza en Iglesia",2012,1977
+"Confianza en Iglesia",2013,1963
+"Confianza en Iglesia",2014,1993
+"Confianza en Iglesia",2016,1987
+"Confianza en Iglesia",2017,1984
+"Confianza en Iglesia",2018,2006
+"Confianza en Iglesia",2019,2018
+"Confianza en Iglesia",2021,1975
+"Confianza en Iglesia",2022,1864
+"Confianza en Iglesia",2023,1551
+"Confianza en Iglesia",2024,1608
+"Confianza en Iglesia",2025,1584
+"Edad",2006,1963
+"Edad",2007,1958
+"Edad",2008,1966
+"Edad",2009,1968
+"Edad",2010,1982
+"Edad",2011,1971
+"Edad",2012,1993
+"Edad",2013,1983
+"Edad",2014,1999
+"Edad",2016,1997
+"Edad",2017,2002
+"Edad",2018,2011
+"Edad",2019,2034
+"Edad",2021,1986
+"Edad",2022,1884
+"Edad",2023,1567
+"Edad",2024,1618
+"Edad",2025,1594
+"Mujer (sexo)",2006,1963
+"Mujer (sexo)",2007,1958
+"Mujer (sexo)",2008,1966
+"Mujer (sexo)",2009,1968
+"Mujer (sexo)",2010,1982
+"Mujer (sexo)",2011,1971
+"Mujer (sexo)",2012,1993
+"Mujer (sexo)",2013,1983
+"Mujer (sexo)",2014,1999
+"Mujer (sexo)",2016,1997
+"Mujer (sexo)",2017,2002
+"Mujer (sexo)",2018,2011
+"Mujer (sexo)",2019,2034
+"Mujer (sexo)",2021,1986
+"Mujer (sexo)",2022,1884
+"Mujer (sexo)",2023,1567
+"Mujer (sexo)",2024,1618
+"Mujer (sexo)",2025,1594
+"Nivel educativo (educ4)",2006,1963
+"Nivel educativo (educ4)",2007,1958
+"Nivel educativo (educ4)",2008,1966
+"Nivel educativo (educ4)",2009,1964
+"Nivel educativo (educ4)",2010,1980
+"Nivel educativo (educ4)",2011,1971
+"Nivel educativo (educ4)",2012,1986
+"Nivel educativo (educ4)",2013,1976
+"Nivel educativo (educ4)",2014,1998
+"Nivel educativo (educ4)",2016,1997
+"Nivel educativo (educ4)",2017,2002
+"Nivel educativo (educ4)",2018,2009
+"Nivel educativo (educ4)",2019,2031
+"Nivel educativo (educ4)",2021,1986
+"Nivel educativo (educ4)",2022,1884
+"Nivel educativo (educ4)",2023,1567
+"Nivel educativo (educ4)",2024,1616
+"Nivel educativo (educ4)",2025,1594
+"Nivel socioeconomico (nse4)",2006,1963
+"Nivel socioeconomico (nse4)",2007,1958
+"Nivel socioeconomico (nse4)",2008,1966
+"Nivel socioeconomico (nse4)",2009,1968
+"Nivel socioeconomico (nse4)",2010,1982
+"Nivel socioeconomico (nse4)",2011,1971
+"Nivel socioeconomico (nse4)",2012,1993
+"Nivel socioeconomico (nse4)",2013,1983
+"Nivel socioeconomico (nse4)",2014,1999
+"Nivel socioeconomico (nse4)",2016,1997
+"Nivel socioeconomico (nse4)",2017,2002
+"Nivel socioeconomico (nse4)",2018,2011
+"Nivel socioeconomico (nse4)",2019,2001
+"Nivel socioeconomico (nse4)",2021,1986
+"Nivel socioeconomico (nse4)",2022,1884
+"Nivel socioeconomico (nse4)",2023,1567
+"Nivel socioeconomico (nse4)",2024,1618
+"Nivel socioeconomico (nse4)",2025,1594
+"Cohorte quinquenal (cohort5)",2006,1963
+"Cohorte quinquenal (cohort5)",2007,1958
+"Cohorte quinquenal (cohort5)",2008,1966
+"Cohorte quinquenal (cohort5)",2009,1968
+"Cohorte quinquenal (cohort5)",2010,1982
+"Cohorte quinquenal (cohort5)",2011,1971
+"Cohorte quinquenal (cohort5)",2012,1993
+"Cohorte quinquenal (cohort5)",2013,1983
+"Cohorte quinquenal (cohort5)",2014,1999
+"Cohorte quinquenal (cohort5)",2016,1997
+"Cohorte quinquenal (cohort5)",2017,2002
+"Cohorte quinquenal (cohort5)",2018,2011
+"Cohorte quinquenal (cohort5)",2019,2034
+"Cohorte quinquenal (cohort5)",2021,1986
+"Cohorte quinquenal (cohort5)",2022,1884
+"Cohorte quinquenal (cohort5)",2023,1567
+"Cohorte quinquenal (cohort5)",2024,1618
+"Cohorte quinquenal (cohort5)",2025,1594
