@@ -4,7 +4,7 @@ Gonzalo Bustamante Rojas & Alonso Quintero Contreras
 
 <sub>Ponencia aceptada en el 4to Congreso Latinoamericano de Ciencias Sociales y Gobierno de la Triada 2026 (PUC Chile / Universidad de los Andes Colombia / Tec de Monterrey), 1-2 de octubre de 2026, campus Ciudad de México.</sub>
 
-Autor: [brojasgonzalo](https://github.com/brojasgonzalo)
+Autor: [brojasgonzalo](https://brojasgonzalo.github.io/)
 
 ## General
 
