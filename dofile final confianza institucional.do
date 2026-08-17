@@ -727,6 +727,58 @@ twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) ///
 graph export "$PRINCIPAL\7_brecha_estallido_prob.png", replace width(2400)
 restore
 
+* brecha3
+* A diferencia de brecha1/brecha2 (que grafican los dos grupos por separado, cada
+* uno con su propio IC), acá se grafica directamente la diferencia entre grupos
+* (el efecto marginal promedio de post_estallido) con el IC de esa diferencia,
+* que es la cantidad que efectivamente prueba el test de Wald de brecha2 (arriba).
+* Dos IC que se tocan no implican que la diferencia no sea significativa; este
+* gráfico evita esa lectura ambigua mostrando solo el número que importa.
+* Redefine sus propios locals (no depende de que sobrevivan de la sección
+* "prep" si esta sección se corre como una ejecución separada) — solo
+* necesita la base ya cargada y las variables creadas en "prep".
+local institutions "conf_gobierno conf_parlamento conf_partidos conf_ffaa conf_iglesia"
+local labels        `""Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia""'
+
+tempname fh_ame
+tempfile margins_ame
+postfile `fh_ame' byte inst_id double ame double se double pval double ll double ul using "`margins_ame'", replace
+
+local i = 1
+foreach v of local institutions {
+    quietly meologit `v' age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
+    quietly margins, dydx(post_estallido) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+    matrix tab_ame = r(table)
+    * col 1 = nivel base (0b.post_estallido, siempre b=0 y el resto missing);
+    * col 2 = el efecto real (1.post_estallido). Hay que leer la columna 2.
+    post `fh_ame' (`i') (tab_ame[1,2]) (tab_ame[2,2]) (tab_ame[4,2]) (tab_ame[5,2]) (tab_ame[6,2])
+    local ++i
+}
+postclose `fh_ame'
+
+preserve
+use "`margins_ame'", clear
+label define instlbl5 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
+label values inst_id instlbl5
+export delimited using "$PRINCIPAL\10_forest_brecha_estallido.csv", replace
+
+gen inst_rev = 6 - inst_id
+gen sig = (pval < 0.05)
+
+twoway ///
+    (rcap ll ul inst_rev, horizontal lcolor(gs8)) ///
+    (scatter inst_rev ame if sig==1, mcolor(navy)   msymbol(O) msize(large)) ///
+    (scatter inst_rev ame if sig==0, mcolor(gs10)   msymbol(O) msize(large)) ///
+    , xline(0, lpattern(dash) lcolor(gs8)) ///
+      ylabel(1 "Iglesia" 2 "FF.AA." 3 "Partidos" 4 "Parlamento" 5 "Gobierno", angle(0)) ytitle("") ///
+      xtitle("Efecto marginal de ser Generación del estallido sobre P(confía)", size(small)) ///
+      title("Brecha post-estallido", size(medium)) ///
+      note("Positivo = Generación del estallido confía más que las cohortes anteriores", size(vsmall)) ///
+      legend(off) ///
+      graphregion(color(white)) xsize(9) ysize(6)
+graph export "$PRINCIPAL\10_forest_brecha_estallido.png", replace width(2400)
+restore
+
 * curva
 preserve
 import delimited "$PRINCIPAL\tabla_4_wald_cohortes.csv", clear varnames(1) case(preserve)

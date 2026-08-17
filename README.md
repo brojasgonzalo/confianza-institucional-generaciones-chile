@@ -32,7 +32,9 @@ Se utilizaron escalas de confianza estilo Likert 1-5.
 
 *Modelado*
 
-Se estimaron tres especificaciones multinivel de las variables dependientes en paralelo (binaria top-2, continua z-score, ordinal completa), con edad, sexo, educación y nivel socioeconómico (NSE) como controles, sobre una base de cohortes quinquenales y controles de sexo, educación y nivel socioeconómico.
+El modelo enfrenta el problema clásico de identificación edad-período-cohorte (Mason, Mason, Winsborough & Poole, 1973): dado que la cohorte se define como período menos edad, la inclusión simultánea de las tres variables como categóricas en una misma regresión produce una dependencia lineal exacta. Durante años el modelo lineal generalizado restringido (CGLIM), resolvió la indeterminación mediante la imposición de una restricción de igualdad entre dos categorías., y restricciones alternativas igualmente plausibles pueden producir conclusiones sustantivas opuestas a partir de los mismos datos (Mason et al., 1973).
+
+Siguiendo el enfoque jerárquico edad-período-cohorte (HAPC) de Yang y Land (2006), el período se especifica como efecto aleatorio de nivel 2 dentro de un modelo multinivel, en lugar de como un conjunto de variables indicadoras fijas. Bajo esta especificación se estima un único parámetro de varianza para las 18 olas del panel, en vez de 18 coeficientes independientes, lo que resuelve la dependencia lineal sin requerir restricciones de igualdad arbitrarias. La edad se especifica como efecto fijo con un término cuadrático, que permite una relación no lineal con la variable dependiente. La cohorte se mantiene como efecto fijo categórico, divergiendo del HAPC clásico de Yang y Land, en el cual tanto período como cohorte se especifican como aleatorios; esta divergencia responde al objetivo del análisis, que requiere coeficientes estimables para cohortes específicas con el fin de testear fronteras generacionales mediante pruebas de Wald, procedimiento incompatible con una especificación de cohorte como parámetro de varianza único.
 
 La propuesta de análisis generacional se hace de tres esquemas de análisis a partir de la literatura (1) taxonomía generacional importada (Silenciosa/Boomer/Generación X/Millennial/Generación Z), popular en reportes chilenos (Didier, 2017; del Solar & Fernández, 2024) criticada por ser fronteras sin anclaje en la experiencia histórica local; (2) una periodización histórico-local propia (Pre-masificación educativa, Estado desarrollista, Dictadura-transición, Democracia neoliberal y Generación del estallido), inspirada en el argumento de Araujo & Martuccelli (2012) de que la subjetividad se forma en condiciones históricas concretas y extendida con la lógica de "años impresionables" de Mannheim (1928) y Krosnick & Alwin (1989); y (3) un corte único de edad (Osborne, Sears & Valentino, 2011; Neundorf, 2017; Balcells y Villamil, 2026) con dos cortes.
 
@@ -55,18 +57,41 @@ Respecto al análisis edad-periodo-cohorte, transversal a las instituciones apar
 Para la edad, los coeficientes sólo son significativos en Gobierno y Parlamento, pero vale la pena precisar la forma, no solo la significancia. En ambas el patrón es cóncavo, la confianza sube con la edad pero a un ritmo decreciente, no en línea recta, el salto de 18 a 40 años es proporcionalmente mayor que el de 60 a 80. En magnitud, Gobierno tiene el gradiente más pronunciado de las cinco instituciones, mientras que para el parlamento, aun siendo significativo, tiene un rango mucho más comprimido en términos absolutos porque está en escala de probabilidad ordinal (de 0,015 a 0,11). FF.AA. es la única de las cinco donde el panel es visualmente plano y estadísticamente nulo entre gráfico y tabla.
 
 <p align="center">
-<a href="Principal/1b_continua_gob.png"><img src="Principal/1b_continua_gob.png" width="180"></a>
-<a href="Principal/1b_continua_ffaa.png"><img src="Principal/1b_continua_ffaa.png" width="180"></a>
-<a href="Principal/1b_continua_igl.png"><img src="Principal/1b_continua_igl.png" width="180"></a>
-<a href="Principal/1c_ordinal_parl.png"><img src="Principal/1c_ordinal_parl.png" width="180"></a>
-<a href="Principal/1c_ordinal_part.png"><img src="Principal/1c_ordinal_part.png" width="180"></a>
+<a href="Principal/1b_continua_gob.png"><img src="Principal/1b_continua_gob.png" width="220"></a>
+<a href="Principal/1b_continua_ffaa.png"><img src="Principal/1b_continua_ffaa.png" width="220"></a>
+<a href="Principal/1b_continua_igl.png"><img src="Principal/1b_continua_igl.png" width="220"></a>
+<a href="Principal/1c_ordinal_parl.png"><img src="Principal/1c_ordinal_parl.png" width="220"></a>
+<a href="Principal/1c_ordinal_part.png"><img src="Principal/1c_ordinal_part.png" width="220"></a>
 </p>
 
 <sub>Nota: Se testeó normalidad tanto de la distribución de los residuos individuales del modelo continuo (z-score) como la distribución de los 13-15 efectos aleatorios de período (uno por año encuestado). A nivel de período, la única institución con no-normalidad estadísticamente significativa es iglesia, mientras que parlamento y partidos (las peores a nivel individual) salen perfectamente normales a nivel de período, es decir, la no-normalidad de parlamento/partidos se sitúa cada persona dentro de un año, no en cómo varía el promedio de un año a otro, mientras que en Iglesia pasa lo contrario. Muy probablemente un año puntual (el escándalo de abusos de 2018 es el candidato más obvio) actuando como outlier en la serie temporal.</sub>
 
+*Magnitudes y distancias*
+
+En magnitud, la brecha de probabilidad en confiar (en la estructura ordinal de los modelos, es decir, P(Y=4)+P(Y=5)) entre la generación más joven o "del estallido" y el resto de generaciones anteriores, es positiva en las cinco instituciones. La distancia relativa es mayor para el parlamento y partidos políticos, donde la probabilidad de confiar prácticamente se duplica, aunque el punto de partida es bastante bajo (al rededor de 2 a 4%). Para el gobierno sube de forma más acentuada, de un 12% a un 18-19%. El mayor salto está en las fuerzas armadas. Los efectos marginales de estas estimaciones muestran que las cinco instituciones tienen una brecha estadísticamente significativa al 5%. En magnitud, el gobierno tiene la brecha más grande (6,5 puntos porcentuales), FF.AA. le sigue muy de cerca (5,5 puntos), Iglesia queda en un nivel intermedio (3,3 puntos), y Parlamento y Partidos son los más chicos, ambos por debajo de 2 puntos porcentuales (1,9 y 1,7 respectivamente). Esto también podría indicar que en estas instituciones en particular (y por alguna razón) parten de una probabilidad base de confianza muy baja, así que aunque el efecto latente sea real y fuerte, se traduce en un movimiento chico en la escala de probabilidad real.
+
+<p align="center"><img src="Principal/10_forest_brecha_estallido.png" width="650"></p>
+
+<sub>* ame = P(confía | post_estallido) - P(confía | pre_estallido), promediado sobre toda la muestra (AME, no evaluado en la media de covariables). Positivo (a la derecha del cero) = la Generación del estallido confía más que las cohortes anteriores; negativo sería lo contrario.</sub>
+
+el tamaño de la brecha y la certeza de la estimación van en direcciones opuestas entre estos dos grupos de instituciones. Parlamento y Partidos, con las brechas más chicas, tienen los intervalos de confianza más angostos y los p-values más bajos de los cinco (0,000035 y 0,00021), lejos los resultados más precisos y más seguros, pese a que hablen de un efecto pequeño. Gobierno y FF.AA., en cambio, tienen intervalos bastante más anchos en proporción a su propio tamaño, el de Gobierno va de 0,025 a 0,105, prácticamente cuadriplicándose de la cota inferior a la superior, lo que dice que el efecto es grande pero se mide con más ruido.
+
+Otras es especificaciones y visualizaciones de las distancias y magnitudes de las diferencias pueden verse a continuación:
+
+<p align="center">
+<img src="Principal/4_brecha_estallido.png" width="380">
+<img src="Principal/7_brecha_estallido_prob.png" width="380">
+</p>
+
+El gráfico 4 la presenta en la escala continua (z-score), que es la más sensible estadísticamente y la que muestra la separación más clara, El gráfico 7 la traduce a la escala ordinal en términos de probabilidad real de confiar, más interpretable pero con intervalos de confianza más anchos por tratarse de dos valores predichos por separado. Si bien la visualización 10 sopesa de mejor manera la ambigüedad de comparar intervalos por separado, todas estas figuras muestran una inclinación visiblemente positiva de las nuevas generaciones hacia las instituciones en chile.
+
 Otros hallazgos:
 
 El gradiente NSE es sistemático y significativo en las cinco instituciones: comparado con el grupo alto (categoría de referencia omitida), el grupo bajo (D/E) tiene entre 30% y 40% menos probabilidad de confiar en Gobierno (OR=0,584), Parlamento (0,635) y Partidos (0,643), con FF.AA. algo más moderado (0,793) e Iglesia también significativo pero más débil (0,856). Gradiente evidentemente monotónica. A menor NSE, menor confianza, sin excepciones, y en magnitud es comparable o mayor que el salto generacional.
+
+el nivel superior se asocia a más confianza específicamente en las dos instituciones representativas, Parlamento (OR=1,275**) y Partidos (OR=1,412***), significativo solo ahí y no en Gobierno, FF.AA. o Iglesia, lo que es un poco contraintuitivo si se asume que más educación debería ir de la mano de más escepticismo hacia la política, no menos.
+
+En FF.AA. las mujeres confían significativamente menos que los hombres (OR=0,849***), el efecto de género más fuerte de las cinco instituciones. En Iglesia el patrón se da vuelta por completo, las mujeres son las que confían significativamente más (OR=1,135**). Partidos muestra el mismo signo que FF.AA. pero mucho más débil (OR=0,927*, apenas significativo), y en Gobierno (0,970) y Parlamento (0,978) el coeficiente no llega a ser significativo.
 
 ## Estructura del repositorio (mirror del Dropbox)
 
@@ -87,6 +112,7 @@ Análisis final/
 │   ├── 7_brecha_estallido_prob.png / _pvalues.csv
 │   ├── 8_specification_curve.png
 │   ├── 9_wald_momento1_cohorte.png
+│   ├── 10_forest_brecha_estallido.png / .csv    # AME de post_estallido con IC propio (pt. magnitudes)
 │   ├── cobertura_variables_detalle.csv / _resumen.csv
 │   └── Metodologia_y_hallazgos*.docx             # borradores del manuscrito
 │
