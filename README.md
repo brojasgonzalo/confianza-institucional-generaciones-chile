@@ -2,7 +2,7 @@
 
 Gonzalo Bustamante Rojas y Alonso Quintero Contreras
 
-editor del repo: [brojasgonzalo](https://brojasgonzalo.github.io/)
+editor del repo: [Gonzalo Bustamante Rojas](https://brojasgonzalo.github.io/)
 
 ## Resumen de la metodología: 
 
