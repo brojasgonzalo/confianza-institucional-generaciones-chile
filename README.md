@@ -12,7 +12,7 @@ Análisis edad-período-cohorte de confianza institucional (Gobierno, Parlamento
 
 - **Pooled dataset**: panel armonizado, cohorte de nacimiento 1930-2007, edad 18-85, `svyset` con ponderador y estrato.
 - **Misma variable, tres estimaciones**: cada institución se modela como binaria (top-2-box), continua (z-score por año) y ordinal completa (1-5).
-- **Tres modelos mixtos con intercepto aleatorio de período** (`|| year:`):
+- **Tres modelos mixtos con intercepto aleatorio de período**:
   - `mixed` para la variable continua
   - `melogit` para la binaria
   - `meologit` (ordinal) para la escala completa —> especificación principal
@@ -22,7 +22,6 @@ Análisis edad-período-cohorte de confianza institucional (Gobierno, Parlamento
   3. Corte único: puntos de quiebre político puntual (plebiscito 1988, retorno a la democracia 1990)
 - **Identificación de diferencias generacionales (Wald)**: test de Wald conjunto sobre los 13 coeficientes de cohorte, más LR test (modelo completo vs. reducido). 
 - **Wald para el quiebre generacional**: tests dentro-bloque y de frontera para los tres esquemas, más test frontera-a-frontera de las 13 fronteras quinquenales consecutivas.
-- **Hallazgo central**: solo la frontera 1994/1995 (Generación del estallido) sobrevive robusta en las tres especificaciones para Gobierno y FF.AA.
 
 ────────────────────────────────────────────
 
