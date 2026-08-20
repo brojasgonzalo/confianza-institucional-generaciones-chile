@@ -107,7 +107,7 @@ En magnitud, la brecha de probabilidad en confiar (en la estructura ordinal de l
 
 <p align="center"><img src="Principal/10_forest_brecha_estallido.png" width="650"></p>
 
-<sub>* ame = P(confía | post_estallido) - P(confía | pre_estallido), promediado sobre toda la muestra (AME, no evaluado en la media de covariables). Positivo (a la derecha del cero) = la Generación del estallido confía más que las cohortes anteriores; negativo sería lo contrario.</sub>
+<sub>* ame = P(confía | post_estallido) - P(confía | pre_estallido), promediado sobre toda la muestra (AME, no evaluado en la media de covariables).</sub>
 
 el tamaño de la brecha y la certeza de la estimación van en direcciones opuestas entre estos dos grupos de instituciones. Parlamento y Partidos, con las brechas más chicas, tienen los intervalos de confianza más angostos y los p-values más bajos de los cinco (0,000035 y 0,00021), lejos los resultados más precisos y más seguros, pese a que hablen de un efecto pequeño. Gobierno y FF.AA., en cambio, tienen intervalos bastante más anchos en proporción a su propio tamaño, el de Gobierno va de 0,025 a 0,105, prácticamente cuadriplicándose de la cota inferior a la superior, lo que dice que el efecto es grande pero se mide con más ruido.
 
