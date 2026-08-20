@@ -1,4 +1,4 @@
-# La confianza ya viene: Quiebres generacionales en confianza institucional del Chile de los últimos 20 años
+# La confianza ya viene: Quiebres generacionales en la confianza institucional del Chile de los últimos 20 años
 
 Gonzalo Bustamante Rojas y Alonso Quintero Contreras
 
