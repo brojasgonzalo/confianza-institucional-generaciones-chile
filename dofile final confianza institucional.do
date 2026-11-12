@@ -569,14 +569,16 @@ graph export "$PRINCIPAL\6_tendencia_temporal.png", replace width(2400)
 restore
 
 * brecha1
+* figura 4: corte 1995 en formato continuo, con el mismo diseño que las figuras 7, 8 y 10 (olas desde 2013, edad fija en el promedio)
+* antes usaba todas las olas, incluidas 2006-2012, cuando todavía no había encuestados nacidos desde 1995
 tempname fh_estallido
 tempfile margins_estallido
 postfile `fh_estallido' byte inst_id byte post_estallido double b double ll double ul using "`margins_estallido'", replace
 
 local i = 1
 foreach v of local institutions {
-    quietly mixed `v'_z age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, mle vce(robust)
-    quietly margins post_estallido
+    quietly mixed `v'_z c.age_s##c.age_s i.post_estallido mujer i.educ4 i.nse4 if year >= 2013 [pweight=ponderador] || year:, mle vce(robust)
+    quietly margins post_estallido, at((mean) age_s)
     matrix tab_est = r(table)
     forvalues c = 1/2 {
         post `fh_estallido' (`i') (`c' - 1) (tab_est[1,`c']) (tab_est[5,`c']) (tab_est[6,`c'])
@@ -592,104 +594,105 @@ label values inst_id instlbl
 
 gen xpos = inst_id + (post_estallido - 0.5) * 0.35
 
-twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) (rcap ll ul xpos, lcolor(black)), xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) xtitle("") ytitle("Confianza (z-score por año)", size(small)) yline(0, lcolor(gs10) lpattern(dash)) title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) subtitle("Única ruptura que sobrevive a las tres encrucijadas de cohortes testeadas", size(vsmall)) legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) graphregion(color(white)) xsize(9) ysize(6)
+twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) (rcap ll ul xpos, lcolor(black)), xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) xtitle("") ytitle("Confianza (z-score por año)", size(small)) yline(0, lcolor(gs10) lpattern(dash)) title("Corte 1995, formato continuo", size(medium)) legend(order(1 "Nacidos antes de 1995" 2 "Nacidos desde 1995") rows(1) position(6) size(small)) graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\4_brecha_estallido.png", replace width(2400)
 restore
 
-* brecha2
-tempname fh_estallido_p
-tempfile margins_estallido_p
-postfile `fh_estallido_p' byte inst_id byte post_estallido double b double ll double ul using "`margins_estallido_p'", replace
+* cortes_hapc
+* figuras 7 y 8 con la lógica de las figuras 11 y 12: cada frontera candidata entra como corte binario (nacidos desde el corte vs. antes), no como test entre dos cohortes vecinas
+* así los tres esquemas se comparan con el mismo diseño; antes se comparaban quinquenios, pares de años o años sueltos según el esquema
+* HAPC ordinal con intercepto aleatorio de año, solo en las olas en que ya hay nacidos desde el corte (año >= corte + 18), como en la figura 11
+* la diferencia es el efecto marginal sobre P(confía) = P(Y=4)+P(Y=5) con la edad fija en el promedio, como en las figuras 11 y 12
+* ojo: un corte binario también recoge cualquier tendencia suave de cohorte (ver bv_barrido); se lee dónde separa más, no como test de discontinuidad
+* para correr solo esta sección: primero config y prep (hasta antes de * modelos), luego esta sección; redefine sus locals
+local institutions "conf_gobierno conf_parlamento conf_partidos conf_ffaa conf_iglesia"
+local controles     "mujer i.educ4 i.nse4"
 
-tempname fh_sig
-file open `fh_sig' using "$PRINCIPAL\7_brecha_estallido_prob_pvalues.csv", write replace
-file write `fh_sig' "institucion,chi2,p" _n
+* cortes (nacidos desde): 1946 Silenciosa/Boomer, 1950 Pre-masificación/Estado desarrollista, 1965 Boomer/X y Estado desarrollista/Dictadura-transición,
+* 1971 plebiscito 1988, 1972 retorno a la democracia 1990, 1980 Dictadura-transición/Democracia neoliberal, 1981 X/Millennial,
+* 1995 Democracia neoliberal/Generación del estallido, 1997 Millennial/Z
+local cortes "1946 1950 1965 1971 1972 1980 1981 1995 1997"
 
-local i = 1
-foreach v of local institutions {
-    quietly meologit `v' age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
-    quietly test 1.post_estallido
-    local lbl : word `i' of `labels'
-    file write `fh_sig' `""`lbl'""' "," %9.3f (r(chi2)) "," %9.4f (r(p)) _n
+tempname fh_cortes
+tempfile cortes_data
+postfile `fh_cortes' int corte byte inst_id int anio_min long n double p0 double ll0 double ul0 double p1 double ll1 double ul1 double dif double se double pval double dll double dul using "`cortes_data'", replace
 
-    quietly margins post_estallido, expression(predict(pr outcome(4)) + predict(pr outcome(5)))
-    matrix tab_est = r(table)
-    forvalues c = 1/2 {
-        post `fh_estallido_p' (`i') (`c' - 1) (tab_est[1,`c']) (tab_est[5,`c']) (tab_est[6,`c'])
+foreach c of local cortes {
+    capture drop post_c
+    gen byte post_c = (birthyear >= `c') if !missing(birthyear)
+    local i = 1
+    foreach v of local institutions {
+        local n = .
+        local amin = .
+        matrix tab_p = J(9, 2, .)
+        matrix tab_d = J(9, 2, .)
+        * edad como c.age_s##c.age_s (mismo modelo que age_s age_s2) para que margins pueda fijarla en el promedio
+        capture quietly meologit `v' c.age_s##c.age_s i.post_c `controles' if year >= `c' + 18 [pweight=ponderador] || year:, or vce(robust)
+        if _rc == 0 {
+            local n = e(N)
+            quietly summarize year if e(sample)
+            local amin = r(min)
+            * col 1 = nacidos antes del corte, col 2 = nacidos desde el corte
+            capture quietly margins post_c, at((mean) age_s) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+            if _rc == 0 matrix tab_p = r(table)
+            * col 2 = diferencia entre ambos lados, con su propio IC
+            capture quietly margins, dydx(post_c) at((mean) age_s) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
+            if _rc == 0 matrix tab_d = r(table)
+            else di as text "corte `c', `v': margins no pudo estimar la diferencia, queda en missing"
+        }
+        else di as text "corte `c', `v': el modelo no se pudo estimar, queda en missing"
+        post `fh_cortes' (`c') (`i') (`amin') (`n') (tab_p[1,1]) (tab_p[5,1]) (tab_p[6,1]) (tab_p[1,2]) (tab_p[5,2]) (tab_p[6,2]) (tab_d[1,2]) (tab_d[2,2]) (tab_d[4,2]) (tab_d[5,2]) (tab_d[6,2])
+        local ++i
     }
-    local ++i
 }
-postclose `fh_estallido_p'
-file close `fh_sig'
+drop post_c
+postclose `fh_cortes'
 
 preserve
-use "`margins_estallido_p'", clear
-label define instlbl3 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
-label values inst_id instlbl3
+use "`cortes_data'", clear
+label define instlbl9 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", replace
+label values inst_id instlbl9
+gen byte esquema = 1 if inlist(corte, 1946, 1981, 1997)
+replace esquema = 2 if inlist(corte, 1950, 1980, 1995)
+replace esquema = 3 if inlist(corte, 1971, 1972)
+replace esquema = 4 if corte == 1965
+label define esquemalbl 1 "Importada" 2 "Propia" 3 "Corte único" 4 "Importada y propia", replace
+label values esquema esquemalbl
+export delimited using "$PRINCIPAL\8_cortes_hapc.csv", replace
 
-gen xpos = inst_id + (post_estallido - 0.5) * 0.35
+* 8: diferencia en cada frontera candidata, el marcador indica el esquema al que pertenece
+twoway (rcap dll dul corte, lcolor(gs10)) (scatter dif corte if esquema == 1, mcolor(navy) msymbol(O)) (scatter dif corte if esquema == 2, mcolor(orange) msymbol(D)) (scatter dif corte if esquema == 3, mcolor(maroon) msymbol(T)) (scatter dif corte if esquema == 4, mcolor(dkgreen) msymbol(S)), by(inst_id, rows(2) note("") title("Fronteras candidatas como corte binario", size(medium)) graphregion(color(white))) yline(0, lcolor(gs10)) xlabel(1950(10)2000) xtitle("Corte (nacidos desde)") ytitle("Diferencia en P(confía)") legend(order(2 "Importada" 3 "Propia" 4 "Corte único" 5 "Importada y propia") rows(1) size(small)) xsize(12) ysize(7)
+graph export "$PRINCIPAL\8_cortes_hapc.png", replace width(2400)
 
-twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) (rcap ll ul xpos, lcolor(black)), xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) xtitle("") ytitle("P(confía) = P(Y=4)+P(Y=5)", size(small)) title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) subtitle("Misma ruptura que la sección 11, en escala de probabilidad (modelo ordinal)", size(vsmall)) legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) graphregion(color(white)) xsize(9) ysize(6)
+* 7: el corte 1995, cada lado con su IC
+keep if corte == 1995
+export delimited using "$PRINCIPAL\7_brecha_estallido_prob.csv", replace
+keep inst_id p0 ll0 ul0 p1 ll1 ul1
+reshape long p ll ul, i(inst_id) j(grupo)
+gen xpos = inst_id + (grupo - 0.5) * 0.35
+twoway (bar p xpos if grupo == 0, color(navy%70) barwidth(0.32)) (bar p xpos if grupo == 1, color(orange%70) barwidth(0.32)) (rcap ll ul xpos, lcolor(black)), xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) xtitle("") ytitle("P(confía) = P(Y=4)+P(Y=5)", size(small)) title("Corte 1995 en el HAPC", size(medium)) legend(order(1 "Nacidos antes de 1995" 2 "Nacidos desde 1995") rows(1) position(6) size(small)) graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\7_brecha_estallido_prob.png", replace width(2400)
 restore
 
 * brecha3
-* grafica la diferencia post-pre directo (con su IC), no los dos grupos por separado como brecha1/brecha2
-* redefine los locals por si esta seccion se corre sola
-local institutions "conf_gobierno conf_parlamento conf_partidos conf_ffaa conf_iglesia"
-local labels        `""Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia""'
-
-tempname fh_ame
-tempfile margins_ame
-postfile `fh_ame' byte inst_id double ame double se double pval double ll double ul using "`margins_ame'", replace
-
-local i = 1
-foreach v of local institutions {
-    quietly meologit `v' age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
-    quietly margins, dydx(post_estallido) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
-    matrix tab_ame = r(table)
-    * col 2 de r(table) es el efecto real, la col 1 es el nivel base (siempre vacia)
-    post `fh_ame' (`i') (tab_ame[1,2]) (tab_ame[2,2]) (tab_ame[4,2]) (tab_ame[5,2]) (tab_ame[6,2])
-    local ++i
-}
-postclose `fh_ame'
-
+* figura 10: la diferencia del corte 1995 con su IC, tomada de la figura 8 (mismo modelo que la 7: olas desde 2013, edad fija en el promedio)
+* no estima nada, lee 8_cortes_hapc.csv: si cortes_hapc ya corrió, basta con correr esta sección
+* antes era un meologit aparte sobre todas las olas, con la diferencia promediada sobre la muestra (daba cifras distintas a la 7 para la misma brecha)
 preserve
-use "`margins_ame'", clear
-label define instlbl5 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
-label values inst_id instlbl5
-export delimited using "$PRINCIPAL\10_forest_brecha_estallido.csv", replace
+import delimited "$PRINCIPAL\8_cortes_hapc.csv", clear varnames(1) case(preserve)
+keep if corte == 1995
+gen byte inst_n = 1 if inst_id == "Gobierno"
+replace inst_n = 2 if inst_id == "Parlamento"
+replace inst_n = 3 if inst_id == "Partidos"
+replace inst_n = 4 if inst_id == "FF.AA."
+replace inst_n = 5 if inst_id == "Iglesia"
+export delimited inst_id anio_min n dif se pval dll dul using "$PRINCIPAL\10_forest_brecha_estallido.csv", replace
 
-gen inst_rev = 6 - inst_id
+gen inst_rev = 6 - inst_n
 gen sig = (pval < 0.05)
 
-twoway (rcap ll ul inst_rev, horizontal lcolor(gs8)) (scatter inst_rev ame if sig==1, mcolor(navy) msymbol(O) msize(large)) (scatter inst_rev ame if sig==0, mcolor(gs10) msymbol(O) msize(large)) , xline(0, lpattern(dash) lcolor(gs8)) ylabel(1 "Iglesia" 2 "FF.AA." 3 "Partidos" 4 "Parlamento" 5 "Gobierno", angle(0)) ytitle("") xtitle("Efecto marginal de ser Generación del estallido sobre P(confía)", size(small)) title("Brecha post-estallido", size(medium)) note("Positivo = Generación del estallido confía más que las cohortes anteriores", size(vsmall)) legend(off) graphregion(color(white)) xsize(9) ysize(6)
+twoway (rcap dll dul inst_rev, horizontal lcolor(gs8)) (scatter inst_rev dif if sig==1, mcolor(navy) msymbol(O) msize(large)) (scatter inst_rev dif if sig==0, mcolor(gs10) msymbol(O) msize(large)), xline(0, lpattern(dash) lcolor(gs8)) ylabel(1 "Iglesia" 2 "FF.AA." 3 "Partidos" 4 "Parlamento" 5 "Gobierno", angle(0)) ytitle("") xtitle("Diferencia en P(confía) entre nacidos desde 1995 y antes", size(small)) title("Brecha post-estallido", size(medium)) legend(off) graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\10_forest_brecha_estallido.png", replace width(2400)
-restore
-
-* curva
-preserve
-import delimited "$PRINCIPAL\tabla_4_wald_cohortes.csv", clear varnames(1) case(preserve)
-keep if tipo == "frontera" & especificacion == "ordinal"
-
-gen neglog10p = -log10(chi2tail(df, stat))
-
-gen front_pos = .
-replace front_pos = 1  if bloque == "frontera Silenciosa/Boomer (1945/1946)"
-replace front_pos = 2  if bloque == "frontera 1-2 (1949/1950)"
-replace front_pos = 3  if bloque == "frontera Boomer/X (1964/1965)"
-replace front_pos = 4  if bloque == "frontera 2-3 (1964/1965)"
-replace front_pos = 5  if bloque == "frontera plebiscito 1988 (1970/1971)"
-replace front_pos = 6  if bloque == "frontera retorno democracia 1990 (1971/1972)"
-replace front_pos = 7  if bloque == "frontera 3-4 (1979/1980)"
-replace front_pos = 8  if bloque == "frontera X/Millennial (1980/1981)"
-replace front_pos = 9  if bloque == "frontera 4-5 (1994/1995)"
-replace front_pos = 10 if bloque == "frontera Millennial/Z (1996/1997)"
-
-gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, cond(institucion=="FF.AA.",0.12,0.24))))
-
-twoway (scatter front_jit neglog10p if institucion=="Gobierno", mcolor(navy) msymbol(O)) (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon) msymbol(D)) (scatter front_jit neglog10p if institucion=="Partidos", mcolor(dkgreen) msymbol(T)) (scatter front_jit neglog10p if institucion=="FF.AA.", mcolor(orange) msymbol(S)) (scatter front_jit neglog10p if institucion=="Iglesia", mcolor(purple) msymbol(X)) , xline(1.301, lpattern(dash) lcolor(gs8)) ylabel(1 "Silenciosa / Boomer (1)" 2 "Pre-masificación educativa / Estado desarrollista (2)" 3 "Boomer / Generación X (1)" 4 "Estado desarrollista / Dictadura-transición (2)" 5 "Corte plebiscito 1988 (3)" 6 "Corte retorno a la democracia 1990 (3)" 7 "Dictadura-transición / Democracia neoliberal (2)" 8 "Generación X / Millennial (1)" 9 "Democracia neoliberal / Generación del estallido (2)" 10 "Millennial / Generación Z (1)", angle(0) labsize(vsmall)) ytitle("") xtitle("-log10(p), test de Wald (especificación ordinal)") title("Curva de especificaciones — fronteras de cohorte candidatas", size(medium)) legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) graphregion(color(white) margin(l=25)) plotregion(color(white)) xsize(13) ysize(7)
-graph export "$PRINCIPAL\8_specification_curve.png", replace width(2400)
 restore
 
 * grafico1
