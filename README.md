@@ -17,9 +17,10 @@ Análisis edad-período-cohorte de confianza institucional (Gobierno, Parlamento
 - **Propuesta generacional, tres esquemas** 
   1. Importado: taxonomía Silenciosa/Boomer/X/Millennial/Z
   2. Propio: periodización histórico-local (Pre-masificación / Estado desarrollista / Dictadura-transición / Democracia neoliberal / Generación del estallido)
-  3. Corte único: puntos de quiebre político puntual (plebiscito 1988, retorno a la democracia 1990)
+  3. Corte único: puntos de quiebre político puntual (plebiscito 1988, frontera 1970/1971: los nacidos en 1970 pudieron votar y los de 1971 no; retorno a la democracia 1990, frontera 1971/1972: los nacidos en 1971 cumplen 18 años en dictadura y los de 1972 en democracia)
 - **Identificación de diferencias generacionales (Wald)**: test de Wald conjunto sobre los 13 coeficientes de cohorte, más LR test (modelo completo vs. reducido). 
 - **Wald para el quiebre generacional**: tests dentro-bloque y de frontera para los tres esquemas, más test frontera-a-frontera de las 13 fronteras quinquenales consecutivas.
+- **Réplica de Balcells y Villamil (2026)**: como contraste fuera del HAPC, logit con efectos fijos de año y logaritmo de la edad sobre la variable binaria, con un corte de cohorte cruzado con el año de encuesta (1972 y 1995), un barrido del corte año a año entre 1950 y 2000 y perfiles de edad estimados por separado en cada período.
 
 ────────────────────────────────────────────
 
@@ -120,6 +121,40 @@ Otras es especificaciones y visualizaciones de las distancias y magnitudes de la
 
 El gráfico 4 la presenta en la escala continua (z-score), que es la más sensible estadísticamente y la que muestra la separación más clara, El gráfico 7 la traduce a la escala ordinal en términos de probabilidad real de confiar, más interpretable pero con intervalos de confianza más anchos por tratarse de dos valores predichos por separado. Si bien la visualización 10 sopesa de mejor manera la ambigüedad de comparar intervalos por separado, todas estas figuras muestran una inclinación visiblemente positiva de las nuevas generaciones hacia las instituciones en chile.
 
+## Réplica de Balcells y Villamil (2026)
+
+Como contraste, se replicó el diseño de Balcells y Villamil (2026), que buscan legados generacionales del autoritarismo en España (su variable dependiente es la participación en asociaciones, no la confianza). Su diseño no usa efectos aleatorios. Es un logit con efectos fijos de año de encuesta y logaritmo de la edad, que acá se aplica a la variable binaria (top-2-box), con los mismos controles del HAPC y con ponderador, que ellos no usan. Se replicaron tres piezas de su análisis.
+
+*Corte por ola*
+
+La muestra se divide entre nacidos antes y después de un año de corte, y el corte se cruza con el año de encuesta. Eso da una diferencia por ola, con la edad fijada en el promedio. Se usaron dos cortes. El primero, 1972, es el análogo chileno del corte de Balcells y Villamil: la primera cohorte que cumple 18 años fuera de la dictadura. El segundo, 1995, es la frontera que sobrevive en el HAPC, y solo puede estimarse desde 2013, cuando los nacidos desde 1995 empiezan a aparecer en la encuesta.
+
+<p align="center"><img src="Principal/11_corte1995_por_ano.png" width="700"></p>
+
+Con el corte 1995 la dirección es la misma que en el HAPC. En Gobierno, FF.AA. e Iglesia los nacidos desde 1995 confían más en casi todas las olas (8 de 9, 9 de 10 y 9 de 11), con diferencias promedio de 3,5, 5,9 y 4,6 puntos, del mismo orden que los efectos marginales de la figura 10. Ola por ola la diferencia casi nunca es significativa, porque cada ola tiene pocos cientos de casos de esa cohorte: solo lo es en FF.AA. (2014 y 2019) y en Iglesia (2022 y 2025). En Parlamento y Partidos no hay diferencia, porque casi nadie confía en ninguna cohorte. En 2017, ninguno de los 150 nacidos desde 1995 confía en el Parlamento, así que esa ola se excluye de su estimación.
+
+<p align="center"><img src="Principal/11_corte1972_por_ano.png" width="700"></p>
+
+Con el corte 1972 no aparece ninguna diferencia. En las cinco instituciones las dos líneas prácticamente se superponen durante todo el período, con diferencias promedio entre -2,5 y +0,4 puntos. La generación que cumplió 18 años en democracia confía igual que la que lo hizo en dictadura. En la confianza institucional chilena, el corte que propone el diseño de Balcells y Villamil no separa a nadie: la diferencia aparece recién con las cohortes de mediados de los noventa.
+
+*Barrido de cortes*
+
+Para no depender de un corte elegido de antemano, se movió el corte año a año entre 1950 y 2000, sin cruzarlo con el año de encuesta, y se registró la diferencia en P(confía) entre ambos lados. Este barrido es una extensión propia y no está en Balcells y Villamil. Como la dummy también recoge cualquier tendencia suave de cohorte, se lee como el lugar donde el corte separa más, no como un test de discontinuidad.
+
+<p align="center"><img src="Principal/12_barrido_cortes.png" width="700"></p>
+
+En Gobierno la diferencia sube de forma gradual desde las cohortes de los sesenta, es significativa desde el corte en 1985 y llega a su máximo con el corte en 1993 (+6,5 puntos). Con el corte en 1995 es de +5,8 puntos (p = 0,004). En FF.AA. es negativa con los cortes tempranos, se mantiene cerca de cero entre los setenta y los ochenta y sube desde 1993, con máximo en 1999 (+6,4). Con el corte en 1995 es de +6,3 puntos (p = 0,002). En ambas el corte en 1972 da una diferencia nula. Iglesia se comporta distinto: no hay un salto sino una pendiente continua. Con los cortes tempranos la diferencia es negativa (las cohortes más antiguas confían más de lo que predice su edad), cruza el cero poco después de 1972 y sigue subiendo hasta el final, con diferencias significativas desde el corte en 1981. Eso coincide con que en el HAPC la frontera 1994/1995 no sea significativa para Iglesia: hay un gradiente de cohorte, pero no un quiebre. Parlamento y Partidos quedan en torno a cero con cualquier corte, igual que en la especificación binaria del HAPC.
+
+*Edad por período*
+
+Balcells y Villamil comparan el perfil de edad estimado por separado en el primer y en el último período. Un desplazamiento parejo de toda la curva es efecto de período; uno concentrado en un tramo de edad apunta a cohorte. Se estimó con tres formas de la edad: cuadrática, que es la de ellos (`13_edad_por_periodo.png`), cúbica (`13b_edad_cubica.png`) y grupos de cinco años sin forma impuesta (figura 13c). El término cúbico no es significativo en ninguna de las 20 combinaciones de institución y período (p > 0,21 en todas), así que la cuadrática basta. Los grupos son la referencia, porque no imponen ninguna forma.
+
+<p align="center"><img src="Principal/13c_edad_grupos.png" width="700"></p>
+
+Entre 2006-2009 y 2020-2025 la curva de edad se aplanó. En 2006-2009 la probabilidad de confiar en el Gobierno subía de 0,23 entre los 18 y 24 años a 0,52 entre los 70 y 74; en 2020-2025 se mueve entre 0,07 y 0,18 en todas las edades. En la Iglesia pasaba de 0,30 a 0,69; en 2020-2025 se mantiene entre 0,13 y 0,15 hasta cerca de los 55 años y recién después sube, hasta 0,34 entre los 80 y 85. En las dos instituciones, la caída entre períodos fue de 14 puntos entre los 18 y 24 años, y de 37 (Gobierno) y 46 puntos (Iglesia) entre los 70 y 74. En FF.AA. las dos curvas son casi iguales, y Parlamento y Partidos están en el piso en ambos períodos.
+
+Dentro de un período, la edad y la cohorte no se pueden separar: los jóvenes de 2020-2025 son también las cohortes más recientes. Que en 2020-2025 los jóvenes no confíen menos que los de 30 a 55 años, cuando en 2006-2009 confiaban claramente menos, es lo que el HAPC registra como efecto de cohorte. La figura admite también otra lectura: que para los menores de 55 años la edad haya dejado de importar en todas las cohortes, es decir, una interacción entre edad y período. El HAPC asume una sola curva de edad para todos los períodos, así que atribuye ese aplanamiento a la cohorte.
+
 ## Otros hallazgos:
 
 El gradiente NSE es sistemático y significativo en las cinco instituciones: comparado con el grupo alto (categoría de referencia omitida), el grupo bajo (D/E) tiene entre 30% y 40% menos probabilidad de confiar en Gobierno (OR=0,584), Parlamento (0,635) y Partidos (0,643), con FF.AA. algo más moderado (0,793) e Iglesia también significativo pero más débil (0,856). Gradiente evidentemente monotónica. A menor NSE, menor confianza, sin excepciones, y en magnitud es comparable o mayor que el salto generacional.
@@ -128,13 +163,21 @@ el nivel superior se asocia a más confianza específicamente en las dos institu
 
 En FF.AA. las mujeres confían significativamente menos que los hombres (OR=0,849***), el efecto de género más fuerte de las cinco instituciones. En Iglesia el patrón se da vuelta por completo, las mujeres son las que confían significativamente más (OR=1,135**). Partidos muestra el mismo signo que FF.AA. pero mucho más débil (OR=0,927*, apenas significativo), y en Gobierno (0,970) y Parlamento (0,978) el coeficiente no llega a ser significativo.
 
+## Conclusiones
+
+1. **Hay efecto de cohorte** en las cinco instituciones y en las tres especificaciones (Wald conjunto, p < 0,0001 en las 15 combinaciones).
+2. **El quiebre está en 1994/1995, no en la transición.** De las fronteras candidatas, la única que sobrevive de forma robusta es la de la Generación del estallido. La frontera del retorno a la democracia (1971/1972) no es significativa en ninguna institución ni especificación. La del plebiscito (1970/1971) solo aparece en Parlamento (continua y ordinal) y en FF.AA. (binaria). El corte 1972 de la réplica de Balcells y Villamil tampoco separa a nadie.
+3. **Se mantiene que los nacidos desde 1995 confían más de lo que corresponde a su edad.** La brecha es positiva y significativa en las cinco instituciones: Gobierno +6,5 puntos, FF.AA. +5,5, Iglesia +3,3, Parlamento +1,9 y Partidos +1,7. Con otro modelo, la réplica de Balcells y Villamil da el mismo signo en casi todas las olas para Gobierno, FF.AA. e Iglesia, con diferencias del mismo orden. El barrido de cortes ubica la mayor separación en torno a 1995 en Gobierno y FF.AA.
+4. **La brecha es moderada y se mide respecto de la edad.** El resultado no dice que los jóvenes confíen más que los adultos en términos brutos. En 2020-2025 confían parecido a los de 30 a 55 años y menos que los mayores. Lo que muestra es que ya no confían menos, como pasaba en 2006-2009 y como predeciría su edad. Ola por ola la diferencia es ruidosa y rara vez significativa, y su tamaño es comparable o menor que el del gradiente socioeconómico.
+5. **Iglesia es el caso débil.** Tiene brecha positiva en el efecto marginal, pero su frontera 1994/1995 no es significativa en ninguna especificación, y el barrido muestra un gradiente continuo de cohorte más que un quiebre.
+6. **Límites.** La cohorte 1995+ solo se observa entre los 18 y los 30 años, así que su efecto depende de cómo se modele la edad. La edad cúbica no agrega nada en los perfiles por período, pero el HAPC asume una curva de edad común a todos los períodos. Si la curva se aplanó por un cambio de período que afecta a todas las cohortes, parte de lo que el modelo atribuye a la cohorte sería una interacción entre edad y período.
+
 ## Estructura del repositorio (mirror del Dropbox)
 
 ```
 Análisis final/
 ├── README.md
-├── dofile final confianza institucional.do     # script único: las 15 secciones completas del análisis
-├── Resultados completos - Confianza institucional (con NSE).docx
+├── dofile final confianza institucional.do     # script único: HAPC completo y réplica de Balcells y Villamil
 │
 ├── Principal/                                   # tablas y gráficos centrales
 │   ├── tabla_1c_ordinal.rtf
@@ -148,8 +191,11 @@ Análisis final/
 │   ├── 8_specification_curve.png
 │   ├── 9_wald_momento1_cohorte.png
 │   ├── 10_forest_brecha_estallido.png / .csv    # AME de post_estallido con IC propio (pt. magnitudes)
-│   ├── cobertura_variables_detalle.csv / _resumen.csv
-│   └── Metodologia_y_hallazgos*.docx             # borradores del manuscrito
+│   ├── 11_corte{1972,1995}_por_ano.png / 11_corte_bv_por_ano.csv   # réplica B&V: corte cruzado con año de encuesta
+│   ├── 12_barrido_cortes.png / .csv             # corte movido año a año, 1950-2000
+│   ├── 13_edad_por_periodo.png / .csv           # perfil de edad por período, cuadrática (el CSV trae las tres formas)
+│   ├── 13b_edad_cubica.png / 13c_edad_grupos.png
+│   └── cobertura_variables_detalle.csv / _resumen.csv
 │
 ├── Auxiliar/                                    # robustez y diagnóstico
 │   ├── tabla_1a_binaria.rtf / tabla_1b_continua.rtf

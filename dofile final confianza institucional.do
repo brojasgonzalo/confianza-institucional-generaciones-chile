@@ -19,10 +19,7 @@ gen mujer  = (sexo == 2) if !missing(sexo)
 
 gen cohort5 = 5 * floor(birthyear / 5)
 recode cohort5 (min/1944 = 1944)
-label define cohort5lbl 1944 "≤1944" 1945 "1945-49" 1950 "1950-54" 1955 "1955-59" ///
-    1960 "1960-64" 1965 "1965-69" 1970 "1970-74" 1975 "1975-79" ///
-    1980 "1980-84" 1985 "1985-89" 1990 "1990-94" 1995 "1995-99" ///
-    2000 "2000-04" 2005 "2005-07"
+label define cohort5lbl 1944 "≤1944" 1945 "1945-49" 1950 "1950-54" 1955 "1955-59" 1960 "1960-64" 1965 "1965-69" 1970 "1970-74" 1975 "1975-79" 1980 "1980-84" 1985 "1985-89" 1990 "1990-94" 1995 "1995-99" 2000 "2000-04" 2005 "2005-07"
 label values cohort5 cohort5lbl
 
 gen cohort_teorica = 1     if birthyear <= 1949
@@ -31,12 +28,7 @@ replace cohort_teorica = 3 if inrange(birthyear, 1965, 1979)
 replace cohort_teorica = 4 if inrange(birthyear, 1980, 1994)
 replace cohort_teorica = 5 if birthyear >= 1995
 
-label define cohort_teoricalbl ///
-    1 "Pre-masificación educativa (<=1949)" ///
-    2 "Estado desarrollista (1950-1964)" ///
-    3 "Dictadura/transición (1965-1979)" ///
-    4 "Democracia neoliberal (1980-1994)" ///
-    5 "Generación del estallido (1995+)"
+label define cohort_teoricalbl 1 "Pre-masificación educativa (<=1949)" 2 "Estado desarrollista (1950-1964)" 3 "Dictadura/transición (1965-1979)" 4 "Democracia neoliberal (1980-1994)" 5 "Generación del estallido (1995+)"
 label values cohort_teorica cohort_teoricalbl
 
 gen cohort_check = cohort5
@@ -46,10 +38,10 @@ replace cohort_check = 12001 if inrange(birthyear, 1979, 1980)
 replace cohort_check = 12002 if inrange(birthyear, 1981, 1982)
 replace cohort_check = 13001 if inrange(birthyear, 1995, 1996)
 replace cohort_check = 13002 if inrange(birthyear, 1997, 1998)
+* 1988: 1970 pudo votar en el plebiscito, 1971 no. 1990: 1971 cumple 18 en dictadura, 1972 en democracia
 replace cohort_check = 20001 if birthyear == 1970
 replace cohort_check = 20002 if birthyear == 1971
 replace cohort_check = 20003 if birthyear == 1972
-replace cohort_check = 20004 if birthyear == 1973
 
 gen post_estallido = (birthyear >= 1995) if !missing(birthyear)
 label define post_estallidolbl 0 "Pre-estallido (<1995)" 1 "Post-estallido (1995+)"
@@ -106,9 +98,7 @@ estimates store ffaa_ord
 meologit conf_iglesia    age_s age_s2 i.cohort5 mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store igl_ord
 
-foreach m in gob_logit parl_logit part_logit ffaa_logit igl_logit ///
-             gob_lineal parl_lineal part_lineal ffaa_lineal igl_lineal ///
-             gob_ord parl_ord part_ord ffaa_ord igl_ord {
+foreach m in gob_logit parl_logit part_logit ffaa_logit igl_logit gob_lineal parl_lineal part_lineal ffaa_lineal igl_lineal gob_ord parl_ord part_ord ffaa_ord igl_ord {
     estimates restore `m'
     local ll = e(ll)
     local k  = e(k)
@@ -120,29 +110,11 @@ foreach m in gob_logit parl_logit part_logit ffaa_logit igl_logit ///
     estadd scalar sigma_p = sd_tab[1,1]
 }
 
-esttab gob_logit parl_logit part_logit ffaa_logit igl_logit ///
-    using "$AUXILIAR\tabla_1a_binaria.rtf", replace ///
-    eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") ///
-    stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) ///
-    label nogaps compress nonotes nobaselevels ///
-    title("Tabla APC (a) - Modelo binario logistico (OR; DV: confia top-2-box)")
+esttab gob_logit parl_logit part_logit ffaa_logit igl_logit using "$AUXILIAR\tabla_1a_binaria.rtf", replace eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) label nogaps compress nonotes nobaselevels title("Tabla APC (a) - Modelo binario logistico (OR; DV: confia top-2-box)")
 
-esttab gob_lineal parl_lineal part_lineal ffaa_lineal igl_lineal ///
-    using "$AUXILIAR\tabla_1b_continua.rtf", replace ///
-    b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") ///
-    stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) ///
-    label nogaps compress nonotes nobaselevels ///
-    title("Tabla APC (b) - Modelo lineal sobre z-score (DV: confianza estandarizada por ano)")
+esttab gob_lineal parl_lineal part_lineal ffaa_lineal igl_lineal using "$AUXILIAR\tabla_1b_continua.rtf", replace b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) label nogaps compress nonotes nobaselevels title("Tabla APC (b) - Modelo lineal sobre z-score (DV: confianza estandarizada por ano)")
 
-esttab gob_ord parl_ord part_ord ffaa_ord igl_ord ///
-    using "$PRINCIPAL\tabla_1c_ordinal.rtf", replace ///
-    eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") ///
-    stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) ///
-    label nogaps compress nonotes nobaselevels ///
-    title("Tabla APC (c) - Modelo ordinal logistico (OR; DV: escala 1-5 completa) - ESPECIFICACION PRINCIPAL")
+esttab gob_ord parl_ord part_ord ffaa_ord igl_ord using "$PRINCIPAL\tabla_1c_ordinal.rtf", replace eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) label nogaps compress nonotes nobaselevels title("Tabla APC (c) - Modelo ordinal logistico (OR; DV: escala 1-5 completa) - ESPECIFICACION PRINCIPAL")
 
 * teorica
 melogit conf_gobierno_bin   age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
@@ -178,9 +150,7 @@ estimates store ffaa_ord_teo
 meologit conf_iglesia    age_s age_s2 i.cohort_teorica mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
 estimates store igl_ord_teo
 
-foreach m in gob_logit_teo parl_logit_teo part_logit_teo ffaa_logit_teo igl_logit_teo ///
-             gob_lineal_teo parl_lineal_teo part_lineal_teo ffaa_lineal_teo igl_lineal_teo ///
-             gob_ord_teo parl_ord_teo part_ord_teo ffaa_ord_teo igl_ord_teo {
+foreach m in gob_logit_teo parl_logit_teo part_logit_teo ffaa_logit_teo igl_logit_teo gob_lineal_teo parl_lineal_teo part_lineal_teo ffaa_lineal_teo igl_lineal_teo gob_ord_teo parl_ord_teo part_ord_teo ffaa_ord_teo igl_ord_teo {
     estimates restore `m'
     local ll = e(ll)
     local k  = e(k)
@@ -192,29 +162,11 @@ foreach m in gob_logit_teo parl_logit_teo part_logit_teo ffaa_logit_teo igl_logi
     estadd scalar sigma_p = sd_tab[1,1]
 }
 
-esttab gob_logit_teo parl_logit_teo part_logit_teo ffaa_logit_teo igl_logit_teo ///
-    using "$AUXILIAR\tabla_2a_binaria_robustez_teorica.rtf", replace ///
-    eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") ///
-    stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) ///
-    label nogaps compress nonotes nobaselevels ///
-    title("Tabla APC (2a, robustez) - Cohortes teoricas, modelo binario (OR)")
+esttab gob_logit_teo parl_logit_teo part_logit_teo ffaa_logit_teo igl_logit_teo using "$AUXILIAR\tabla_2a_binaria_robustez_teorica.rtf", replace eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) label nogaps compress nonotes nobaselevels title("Tabla APC (2a, robustez) - Cohortes teoricas, modelo binario (OR)")
 
-esttab gob_lineal_teo parl_lineal_teo part_lineal_teo ffaa_lineal_teo igl_lineal_teo ///
-    using "$AUXILIAR\tabla_2b_continua_robustez_teorica.rtf", replace ///
-    b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") ///
-    stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) ///
-    label nogaps compress nonotes nobaselevels ///
-    title("Tabla APC (2b, robustez) - Cohortes teoricas, modelo lineal sobre z-score")
+esttab gob_lineal_teo parl_lineal_teo part_lineal_teo ffaa_lineal_teo igl_lineal_teo using "$AUXILIAR\tabla_2b_continua_robustez_teorica.rtf", replace b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) label nogaps compress nonotes nobaselevels title("Tabla APC (2b, robustez) - Cohortes teoricas, modelo lineal sobre z-score")
 
-esttab gob_ord_teo parl_ord_teo part_ord_teo ffaa_ord_teo igl_ord_teo ///
-    using "$AUXILIAR\tabla_2c_ordinal_robustez_teorica.rtf", replace ///
-    eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") ///
-    stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) ///
-    label nogaps compress nonotes nobaselevels ///
-    title("Tabla APC (2c, robustez) - Cohortes teoricas, modelo ordinal (OR)")
+esttab gob_ord_teo parl_ord_teo part_ord_teo ffaa_ord_teo igl_ord_teo using "$AUXILIAR\tabla_2c_ordinal_robustez_teorica.rtf", replace eform b(3) se(3) star(* 0.10 ** 0.05 *** 0.01) mtitles("Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia") stats(sigma_p N AIC BIC, fmt(4 0 1 1) labels("Sigma periodo" "N obs." "AIC" "BIC")) label nogaps compress nonotes nobaselevels title("Tabla APC (2c, robustez) - Cohortes teoricas, modelo ordinal (OR)")
 
 * margenes
 foreach m in gob parl part ffaa igl {
@@ -373,9 +325,7 @@ program define wald_row
         local stat = r(F)
         local stattype "F"
     }
-    file write `fh' `"`especificacion'"' "," `"`esquema'"' "," `"`institucion'"' "," ///
-        `"`bloque'"' "," `"`tipo'"' "," `"`stattype'"' "," ///
-        %9.3f (`stat') "," %3.0f (r(df)) "," %9.4f (r(p)) _n
+    file write `fh' `"`especificacion'"' "," `"`esquema'"' "," `"`institucion'"' "," `"`bloque'"' "," `"`tipo'"' "," `"`stattype'"' "," %9.3f (`stat') "," %3.0f (r(df)) "," %9.4f (r(p)) _n
 end
 
 tempname fh_wald
@@ -442,9 +392,9 @@ foreach spec in binaria zscore ordinal {
         wald_row `fh_wald' "`spec'" "importada" "`lbl'" "frontera Millennial/Z (1996/1997)" "frontera"
 
         quietly test 20002.cohort_check = 20001.cohort_check
-        wald_row `fh_wald' "`spec'" "balcells" "`lbl'" "frontera plebiscito 1988 (1970/1971)" "frontera"
-        quietly test 20004.cohort_check = 20003.cohort_check
-        wald_row `fh_wald' "`spec'" "balcells" "`lbl'" "frontera retorno democracia 1990 (1972/1973)" "frontera"
+        wald_row `fh_wald' "`spec'" "corte_unico" "`lbl'" "frontera plebiscito 1988 (1970/1971)" "frontera"
+        quietly test 20003.cohort_check = 20002.cohort_check
+        wald_row `fh_wald' "`spec'" "corte_unico" "`lbl'" "frontera retorno democracia 1990 (1971/1972)" "frontera"
 
         local ++i
     }
@@ -485,9 +435,7 @@ foreach spec in binaria zscore ordinal {
         estimates restore `short'`sufmodelo'
         local ll_full = e(ll)
 
-        quietly test 1945.cohort5 1950.cohort5 1955.cohort5 1960.cohort5 1965.cohort5 ///
-            1970.cohort5 1975.cohort5 1980.cohort5 1985.cohort5 1990.cohort5 1995.cohort5 ///
-            2000.cohort5 2005.cohort5
+        quietly test 1945.cohort5 1950.cohort5 1955.cohort5 1960.cohort5 1965.cohort5 1970.cohort5 1975.cohort5 1980.cohort5 1985.cohort5 1990.cohort5 1995.cohort5 2000.cohort5 2005.cohort5
         local wald_chi2 = r(chi2)
         local wald_df   = r(df)
         local wald_p    = r(p)
@@ -498,9 +446,7 @@ foreach spec in binaria zscore ordinal {
 
         quietly lrtest `short'`sufmodelo' modelo_reducido, force
 
-        file write `fh_m1' `"`spec'"' "," `"`lbl'"' "," %12.3f (`ll_full') "," %12.3f (`ll_reducido') "," ///
-            %9.3f (r(chi2)) "," %3.0f (r(df)) "," %9.4f (r(p)) "," ///
-            %9.3f (`wald_chi2') "," %3.0f (`wald_df') "," %9.4f (`wald_p') _n
+        file write `fh_m1' `"`spec'"' "," `"`lbl'"' "," %12.3f (`ll_full') "," %12.3f (`ll_reducido') "," %9.3f (r(chi2)) "," %3.0f (r(df)) "," %9.4f (r(p)) "," %9.3f (`wald_chi2') "," %3.0f (`wald_df') "," %9.4f (`wald_p') _n
 
         local ++i
     }
@@ -588,22 +534,9 @@ replace front_pos = 11 if frontera == "1990-94 / 1995-99"
 replace front_pos = 12 if frontera == "1995-99 / 2000-04"
 replace front_pos = 13 if frontera == "2000-04 / 2005-07"
 
-gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, ///
-    cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, ///
-    cond(institucion=="FF.AA.",0.12,0.24))))
+gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, cond(institucion=="FF.AA.",0.12,0.24))))
 
-twoway ///
-    (scatter front_jit neglog10p if institucion=="Gobierno",   mcolor(navy)    msymbol(O)) ///
-    (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon)  msymbol(D)) ///
-    (scatter front_jit neglog10p if institucion=="Partidos",   mcolor(dkgreen) msymbol(T)) ///
-    (scatter front_jit neglog10p if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
-    (scatter front_jit neglog10p if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
-    , xline(1.301, lpattern(dash) lcolor(gs8)) ///
-      ylabel(1 "≤1944 / 1945-49" 2 "1945-49 / 1950-54" 3 "1950-54 / 1955-59" 4 "1955-59 / 1960-64" 5 "1960-64 / 1965-69" 6 "1965-69 / 1970-74" 7 "1970-74 / 1975-79" 8 "1975-79 / 1980-84" 9 "1980-84 / 1985-89" 10 "1985-89 / 1990-94" 11 "1990-94 / 1995-99" 12 "1995-99 / 2000-04" 13 "2000-04 / 2005-07", angle(0) labsize(vsmall)) ytitle("") ///
-      xtitle("-log10(p), test de Wald (especificación ordinal)") ///
-      title("Fronteras entre quinquenios consecutivos", size(medium)) ///
-      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
-      graphregion(color(white)) xsize(10) ysize(9)
+twoway (scatter front_jit neglog10p if institucion=="Gobierno", mcolor(navy) msymbol(O)) (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon) msymbol(D)) (scatter front_jit neglog10p if institucion=="Partidos", mcolor(dkgreen) msymbol(T)) (scatter front_jit neglog10p if institucion=="FF.AA.", mcolor(orange) msymbol(S)) (scatter front_jit neglog10p if institucion=="Iglesia", mcolor(purple) msymbol(X)) , xline(1.301, lpattern(dash) lcolor(gs8)) ylabel(1 "≤1944 / 1945-49" 2 "1945-49 / 1950-54" 3 "1950-54 / 1955-59" 4 "1955-59 / 1960-64" 5 "1960-64 / 1965-69" 6 "1965-69 / 1970-74" 7 "1970-74 / 1975-79" 8 "1975-79 / 1980-84" 9 "1980-84 / 1985-89" 10 "1985-89 / 1990-94" 11 "1990-94 / 1995-99" 12 "1995-99 / 2000-04" 13 "2000-04 / 2005-07", angle(0) labsize(vsmall)) ytitle("") xtitle("-log10(p), test de Wald (especificación ordinal)") title("Fronteras entre quinquenios consecutivos", size(medium)) legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) graphregion(color(white)) xsize(10) ysize(9)
 graph export "$PRINCIPAL\5_forest_encrucijadas.png", replace width(2400)
 restore
 
@@ -631,17 +564,7 @@ use "`trend_data'", clear
 label define instlbl2 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
 label values inst_id instlbl2
 
-twoway ///
-    (connected prop anio if inst_id==1, mcolor(navy)    lcolor(navy)    msymbol(O)) ///
-    (connected prop anio if inst_id==2, mcolor(maroon)  lcolor(maroon)  msymbol(D)) ///
-    (connected prop anio if inst_id==3, mcolor(dkgreen) lcolor(dkgreen) msymbol(T)) ///
-    (connected prop anio if inst_id==4, mcolor(orange)  lcolor(orange)  msymbol(S)) ///
-    (connected prop anio if inst_id==5, mcolor(purple)  lcolor(purple)  msymbol(X)) ///
-    , xtitle("Año de encuesta") ytitle("% que confía (top-2-box, ponderado)") ///
-      title("Confianza institucional en Chile, 2006-2025", size(medium)) ///
-      subtitle("Tendencia descriptiva simple, sin ajustar por cohorte ni edad", size(vsmall)) ///
-      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
-      graphregion(color(white)) xsize(10) ysize(6)
+twoway (connected prop anio if inst_id==1, mcolor(navy) lcolor(navy) msymbol(O)) (connected prop anio if inst_id==2, mcolor(maroon) lcolor(maroon) msymbol(D)) (connected prop anio if inst_id==3, mcolor(dkgreen) lcolor(dkgreen) msymbol(T)) (connected prop anio if inst_id==4, mcolor(orange) lcolor(orange) msymbol(S)) (connected prop anio if inst_id==5, mcolor(purple) lcolor(purple) msymbol(X)) , xtitle("Año de encuesta") ytitle("% que confía (top-2-box, ponderado)") title("Confianza institucional en Chile, 2006-2025", size(medium)) subtitle("Tendencia descriptiva simple, sin ajustar por cohorte ni edad", size(vsmall)) legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) graphregion(color(white)) xsize(10) ysize(6)
 graph export "$PRINCIPAL\6_tendencia_temporal.png", replace width(2400)
 restore
 
@@ -669,16 +592,7 @@ label values inst_id instlbl
 
 gen xpos = inst_id + (post_estallido - 0.5) * 0.35
 
-twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) ///
-       (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) ///
-       (rcap ll ul xpos, lcolor(black)), ///
-    xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) ///
-    xtitle("") ytitle("Confianza (z-score por año)", size(small)) ///
-    yline(0, lcolor(gs10) lpattern(dash)) ///
-    title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) ///
-    subtitle("Única ruptura que sobrevive a las tres encrucijadas de cohortes testeadas", size(vsmall)) ///
-    legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) ///
-    graphregion(color(white)) xsize(9) ysize(6)
+twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) (rcap ll ul xpos, lcolor(black)), xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) xtitle("") ytitle("Confianza (z-score por año)", size(small)) yline(0, lcolor(gs10) lpattern(dash)) title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) subtitle("Única ruptura que sobrevive a las tres encrucijadas de cohortes testeadas", size(vsmall)) legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\4_brecha_estallido.png", replace width(2400)
 restore
 
@@ -715,28 +629,13 @@ label values inst_id instlbl3
 
 gen xpos = inst_id + (post_estallido - 0.5) * 0.35
 
-twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) ///
-       (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) ///
-       (rcap ll ul xpos, lcolor(black)), ///
-    xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) ///
-    xtitle("") ytitle("P(confía) = P(Y=4)+P(Y=5)", size(small)) ///
-    title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) ///
-    subtitle("Misma ruptura que la sección 11, en escala de probabilidad (modelo ordinal)", size(vsmall)) ///
-    legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) ///
-    graphregion(color(white)) xsize(9) ysize(6)
+twoway (bar b xpos if post_estallido == 0, color(navy%70) barwidth(0.32)) (bar b xpos if post_estallido == 1, color(orange%70) barwidth(0.32)) (rcap ll ul xpos, lcolor(black)), xlabel(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia", angle(0)) xtitle("") ytitle("P(confía) = P(Y=4)+P(Y=5)", size(small)) title("Brecha generacional confirmada: pre- vs. post-estallido", size(medium)) subtitle("Misma ruptura que la sección 11, en escala de probabilidad (modelo ordinal)", size(vsmall)) legend(order(1 "Nacidos antes de 1995" 2 "Generación del estallido (1995+)") rows(1) position(6) size(small)) graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\7_brecha_estallido_prob.png", replace width(2400)
 restore
 
 * brecha3
-* A diferencia de brecha1/brecha2 (que grafican los dos grupos por separado, cada
-* uno con su propio IC), acá se grafica directamente la diferencia entre grupos
-* (el efecto marginal promedio de post_estallido) con el IC de esa diferencia,
-* que es la cantidad que efectivamente prueba el test de Wald de brecha2 (arriba).
-* Dos IC que se tocan no implican que la diferencia no sea significativa; este
-* gráfico evita esa lectura ambigua mostrando solo el número que importa.
-* Redefine sus propios locals (no depende de que sobrevivan de la sección
-* "prep" si esta sección se corre como una ejecución separada) — solo
-* necesita la base ya cargada y las variables creadas en "prep".
+* grafica la diferencia post-pre directo (con su IC), no los dos grupos por separado como brecha1/brecha2
+* redefine los locals por si esta seccion se corre sola
 local institutions "conf_gobierno conf_parlamento conf_partidos conf_ffaa conf_iglesia"
 local labels        `""Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia""'
 
@@ -749,8 +648,7 @@ foreach v of local institutions {
     quietly meologit `v' age_s age_s2 i.post_estallido mujer i.educ4 i.nse4 [pweight=ponderador] || year:, or vce(robust)
     quietly margins, dydx(post_estallido) expression(predict(pr outcome(4)) + predict(pr outcome(5)))
     matrix tab_ame = r(table)
-    * col 1 = nivel base (0b.post_estallido, siempre b=0 y el resto missing);
-    * col 2 = el efecto real (1.post_estallido). Hay que leer la columna 2.
+    * col 2 de r(table) es el efecto real, la col 1 es el nivel base (siempre vacia)
     post `fh_ame' (`i') (tab_ame[1,2]) (tab_ame[2,2]) (tab_ame[4,2]) (tab_ame[5,2]) (tab_ame[6,2])
     local ++i
 }
@@ -765,17 +663,7 @@ export delimited using "$PRINCIPAL\10_forest_brecha_estallido.csv", replace
 gen inst_rev = 6 - inst_id
 gen sig = (pval < 0.05)
 
-twoway ///
-    (rcap ll ul inst_rev, horizontal lcolor(gs8)) ///
-    (scatter inst_rev ame if sig==1, mcolor(navy)   msymbol(O) msize(large)) ///
-    (scatter inst_rev ame if sig==0, mcolor(gs10)   msymbol(O) msize(large)) ///
-    , xline(0, lpattern(dash) lcolor(gs8)) ///
-      ylabel(1 "Iglesia" 2 "FF.AA." 3 "Partidos" 4 "Parlamento" 5 "Gobierno", angle(0)) ytitle("") ///
-      xtitle("Efecto marginal de ser Generación del estallido sobre P(confía)", size(small)) ///
-      title("Brecha post-estallido", size(medium)) ///
-      note("Positivo = Generación del estallido confía más que las cohortes anteriores", size(vsmall)) ///
-      legend(off) ///
-      graphregion(color(white)) xsize(9) ysize(6)
+twoway (rcap ll ul inst_rev, horizontal lcolor(gs8)) (scatter inst_rev ame if sig==1, mcolor(navy) msymbol(O) msize(large)) (scatter inst_rev ame if sig==0, mcolor(gs10) msymbol(O) msize(large)) , xline(0, lpattern(dash) lcolor(gs8)) ylabel(1 "Iglesia" 2 "FF.AA." 3 "Partidos" 4 "Parlamento" 5 "Gobierno", angle(0)) ytitle("") xtitle("Efecto marginal de ser Generación del estallido sobre P(confía)", size(small)) title("Brecha post-estallido", size(medium)) note("Positivo = Generación del estallido confía más que las cohortes anteriores", size(vsmall)) legend(off) graphregion(color(white)) xsize(9) ysize(6)
 graph export "$PRINCIPAL\10_forest_brecha_estallido.png", replace width(2400)
 restore
 
@@ -792,28 +680,15 @@ replace front_pos = 2  if bloque == "frontera 1-2 (1949/1950)"
 replace front_pos = 3  if bloque == "frontera Boomer/X (1964/1965)"
 replace front_pos = 4  if bloque == "frontera 2-3 (1964/1965)"
 replace front_pos = 5  if bloque == "frontera plebiscito 1988 (1970/1971)"
-replace front_pos = 6  if bloque == "frontera retorno democracia 1990 (1972/1973)"
+replace front_pos = 6  if bloque == "frontera retorno democracia 1990 (1971/1972)"
 replace front_pos = 7  if bloque == "frontera 3-4 (1979/1980)"
 replace front_pos = 8  if bloque == "frontera X/Millennial (1980/1981)"
 replace front_pos = 9  if bloque == "frontera 4-5 (1994/1995)"
 replace front_pos = 10 if bloque == "frontera Millennial/Z (1996/1997)"
 
-gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, ///
-    cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, ///
-    cond(institucion=="FF.AA.",0.12,0.24))))
+gen front_jit = front_pos + cond(institucion=="Gobierno",-0.24, cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, cond(institucion=="FF.AA.",0.12,0.24))))
 
-twoway ///
-    (scatter front_jit neglog10p if institucion=="Gobierno",   mcolor(navy)    msymbol(O)) ///
-    (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon)  msymbol(D)) ///
-    (scatter front_jit neglog10p if institucion=="Partidos",   mcolor(dkgreen) msymbol(T)) ///
-    (scatter front_jit neglog10p if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
-    (scatter front_jit neglog10p if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
-    , xline(1.301, lpattern(dash) lcolor(gs8)) ///
-      ylabel(1 "Silenciosa / Boomer (1)" 2 "Pre-masificación educativa / Estado desarrollista (2)" 3 "Boomer / Generación X (1)" 4 "Estado desarrollista / Dictadura-transición (2)" 5 "Corte plebiscito 1988 (3)" 6 "Corte retorno a la democracia 1990 (3)" 7 "Dictadura-transición / Democracia neoliberal (2)" 8 "Generación X / Millennial (1)" 9 "Democracia neoliberal / Generación del estallido (2)" 10 "Millennial / Generación Z (1)", angle(0) labsize(vsmall)) ytitle("") ///
-      xtitle("-log10(p), test de Wald (especificación ordinal)") ///
-      title("Curva de especificaciones — fronteras de cohorte candidatas", size(medium)) ///
-      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
-      graphregion(color(white) margin(l=25)) plotregion(color(white)) xsize(13) ysize(7)
+twoway (scatter front_jit neglog10p if institucion=="Gobierno", mcolor(navy) msymbol(O)) (scatter front_jit neglog10p if institucion=="Parlamento", mcolor(maroon) msymbol(D)) (scatter front_jit neglog10p if institucion=="Partidos", mcolor(dkgreen) msymbol(T)) (scatter front_jit neglog10p if institucion=="FF.AA.", mcolor(orange) msymbol(S)) (scatter front_jit neglog10p if institucion=="Iglesia", mcolor(purple) msymbol(X)) , xline(1.301, lpattern(dash) lcolor(gs8)) ylabel(1 "Silenciosa / Boomer (1)" 2 "Pre-masificación educativa / Estado desarrollista (2)" 3 "Boomer / Generación X (1)" 4 "Estado desarrollista / Dictadura-transición (2)" 5 "Corte plebiscito 1988 (3)" 6 "Corte retorno a la democracia 1990 (3)" 7 "Dictadura-transición / Democracia neoliberal (2)" 8 "Generación X / Millennial (1)" 9 "Democracia neoliberal / Generación del estallido (2)" 10 "Millennial / Generación Z (1)", angle(0) labsize(vsmall)) ytitle("") xtitle("-log10(p), test de Wald (especificación ordinal)") title("Curva de especificaciones — fronteras de cohorte candidatas", size(medium)) legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) graphregion(color(white) margin(l=25)) plotregion(color(white)) xsize(13) ysize(7)
 graph export "$PRINCIPAL\8_specification_curve.png", replace width(2400)
 restore
 
@@ -828,24 +703,207 @@ replace spec_pos = 1 if especificacion == "binaria"
 replace spec_pos = 2 if especificacion == "zscore"
 replace spec_pos = 3 if especificacion == "ordinal"
 
-gen spec_jit = spec_pos + cond(institucion=="Gobierno",-0.24, ///
-    cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, ///
-    cond(institucion=="FF.AA.",0.12,0.24))))
+gen spec_jit = spec_pos + cond(institucion=="Gobierno",-0.24, cond(institucion=="Parlamento",-0.12,cond(institucion=="Partidos",0, cond(institucion=="FF.AA.",0.12,0.24))))
 
-twoway ///
-    (scatter spec_jit logchi2 if institucion=="Gobierno",   mcolor(navy)    msymbol(O)) ///
-    (scatter spec_jit logchi2 if institucion=="Parlamento", mcolor(maroon)  msymbol(D)) ///
-    (scatter spec_jit logchi2 if institucion=="Partidos",   mcolor(dkgreen) msymbol(T)) ///
-    (scatter spec_jit logchi2 if institucion=="FF.AA.",     mcolor(orange)  msymbol(S)) ///
-    (scatter spec_jit logchi2 if institucion=="Iglesia",    mcolor(purple)  msymbol(X)) ///
-    , ylabel(1 "Binaria (top-2)" 2 "Continua (z-score)" 3 "Ordinal completa", angle(0) labsize(small)) ytitle("") ///
-      xtitle("log10(chi2), test de Wald conjunto sobre los 13 coeficientes de cohort5") ///
-      title("¿Existe algún efecto de cohorte? (momento 1)", size(medium)) ///
-      subtitle("Test de Wald conjunto, réplica del chequeo global de Bargsted & Maldonado (2018) — p<0.0001 en las 15 combinaciones", size(vsmall)) ///
-      legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) ///
-      note("Gobierno: df=12 en las tres especificaciones (colinealidad entre dos coeficientes de cohorte al testearlos juntos); resto en df=13.", size(vsmall)) ///
-      graphregion(color(white) margin(l=15)) plotregion(color(white)) xsize(11) ysize(5.5)
+twoway (scatter spec_jit logchi2 if institucion=="Gobierno", mcolor(navy) msymbol(O)) (scatter spec_jit logchi2 if institucion=="Parlamento", mcolor(maroon) msymbol(D)) (scatter spec_jit logchi2 if institucion=="Partidos", mcolor(dkgreen) msymbol(T)) (scatter spec_jit logchi2 if institucion=="FF.AA.", mcolor(orange) msymbol(S)) (scatter spec_jit logchi2 if institucion=="Iglesia", mcolor(purple) msymbol(X)) , ylabel(1 "Binaria (top-2)" 2 "Continua (z-score)" 3 "Ordinal completa", angle(0) labsize(small)) ytitle("") xtitle("log10(chi2), test de Wald conjunto sobre los 13 coeficientes de cohort5") title("¿Existe algún efecto de cohorte? (momento 1)", size(medium)) subtitle("Test de Wald conjunto, réplica del chequeo global de Bargsted & Maldonado (2018) — p<0.0001 en las 15 combinaciones", size(vsmall)) legend(order(1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia") rows(1) position(6) size(small)) note("Gobierno: df=12 en las tres especificaciones (colinealidad entre dos coeficientes de cohorte al testearlos juntos); resto en df=13.", size(vsmall)) graphregion(color(white) margin(l=15)) plotregion(color(white)) xsize(11) ysize(5.5)
 graph export "$PRINCIPAL\9_wald_momento1_cohorte.png", replace width(2400)
+restore
+
+* bv_prep
+* replica de Balcells y Villamil (2026, EJPR): corte binario sobre toda la muestra, cruzado con el año de encuesta
+* como ellos: logit con EF de año y log de la edad (no HAPC), solo binaria top-2; a diferencia de ellos, con ponderador
+* su corte es la primera cohorte que cumple 18 fuera de la dictadura (1958 cumple 18 en 1976); el análogo chileno es 1972 (cumple 18 en 1990)
+* redefine los locals por si estas secciones se corren solas
+local institutions "conf_gobierno conf_parlamento conf_partidos conf_ffaa conf_iglesia"
+local labels        `""Gobierno" "Parlamento" "Partidos" "FF.AA." "Iglesia""'
+local controles     "mujer i.educ4 i.nse4"
+
+capture drop age_l post1972
+gen age_l = ln(edad)
+gen post1972 = (birthyear >= 1972) if !missing(birthyear)
+label define post1972lbl 0 "Nacidos antes de 1972" 1 "Nacidos desde 1972", replace
+label values post1972 post1972lbl
+
+* en qué olas aparece la generación del estallido
+tab year post_estallido
+
+* bv_corte
+* figura 2 de ellos: P(confía) de cada lado del corte, ola por ola, con la edad fija en el promedio (ellos la fijan en ~42 años)
+* el corte 1995 se corre igual, solo en las olas donde ya hay nacidos desde 1995 (2013 en adelante)
+tempname fh_bv
+tempfile bv_data
+postfile `fh_bv' int corte byte inst_id int anio double p0 double ll0 double ul0 double p1 double ll1 double ul1 double dif double se double pval double dll double dul using "`bv_data'", replace
+
+foreach c in 1972 1995 {
+    local cvar = cond(`c' == 1972, "post1972", "post_estallido")
+    local i = 1
+    foreach v of local institutions {
+        * se excluyen las olas en que el grupo posterior no tiene variación en la dependiente (Parlamento 2017 con el corte 1995: 0 de 150 confían)
+        * si se dejan, logit bota esa celda por predicción perfecta y margins no puede estimar el grupo posterior en ninguna ola
+        capture drop m_post
+        quietly egen m_post = mean(`v'_bin) if `cvar' == 1 & year >= `c' + 18 & !missing(`v'_bin, age_l, mujer, educ4, nse4, ponderador), by(year)
+        quietly levelsof year if inlist(m_post, 0, 1), local(olas_sin_var)
+        local excl ""
+        foreach a of local olas_sin_var {
+            local excl "`excl' & year != `a'"
+            di as text "corte `c', `v': se excluye la ola `a' (el grupo posterior no tiene variación)"
+        }
+        drop m_post
+        quietly logit `v'_bin i.`cvar'##i.year age_l `controles' [pweight=ponderador] if year >= `c' + 18 `excl', vce(robust)
+        quietly levelsof year if e(sample), local(anios_est)
+        foreach a of local anios_est {
+            * red de seguridad: si igual una ola no es estimable, queda en missing y se avisa
+            capture quietly margins `cvar', at(year = `a' (mean) age_l)
+            if _rc == 0 matrix tab_p = r(table)
+            else matrix tab_p = J(9, 2, .)
+            capture quietly margins, dydx(`cvar') at(year = `a' (mean) age_l)
+            local rc_d = _rc
+            if `rc_d' == 0 matrix tab_d = r(table)
+            else {
+                matrix tab_d = J(9, 2, .)
+                matrix tab_p[1, 2] = .
+                matrix tab_p[5, 2] = .
+                matrix tab_p[6, 2] = .
+                di as text "corte `c', `v', año `a': grupo posterior no estimable (rc = `rc_d'), queda en missing"
+            }
+            * col 1 de tab_p es el grupo antes del corte y col 2 el grupo después; en tab_d la col 2 es la diferencia
+            post `fh_bv' (`c') (`i') (`a') (tab_p[1,1]) (tab_p[5,1]) (tab_p[6,1]) (tab_p[1,2]) (tab_p[5,2]) (tab_p[6,2]) (tab_d[1,2]) (tab_d[2,2]) (tab_d[4,2]) (tab_d[5,2]) (tab_d[6,2])
+        }
+        local ++i
+    }
+}
+postclose `fh_bv'
+
+preserve
+use "`bv_data'", clear
+label define instlbl6 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
+label values inst_id instlbl6
+export delimited using "$PRINCIPAL\11_corte_bv_por_ano.csv", replace
+
+foreach c in 1972 1995 {
+    twoway (rcap ll0 ul0 anio if corte == `c', lcolor(navy%40)) (connected p0 anio if corte == `c', mcolor(navy) lcolor(navy) msymbol(O)) (rcap ll1 ul1 anio if corte == `c', lcolor(orange%40)) (connected p1 anio if corte == `c', mcolor(orange) lcolor(orange) msymbol(D)), by(inst_id, rows(2) note("") title("Corte `c'", size(medium)) graphregion(color(white))) xtitle("Año de encuesta") ytitle("P(confía), top-2") legend(order(2 "Nacidos antes de `c'" 4 "Nacidos desde `c'") rows(1) size(small)) xsize(12) ysize(7)
+    graph export "$PRINCIPAL\11_corte`c'_por_ano.png", replace width(2400)
+}
+restore
+
+* bv_barrido
+* placebo generalizado: el mismo corte binario (sin cruzar con año) movido año a año entre 1950 y 2000
+* su placebo es 7 años después del corte; el análogo chileno (1979/1980) es frontera de nuestra periodización, por eso se barre todo
+* ojo: con log de la edad y EF de año la dummy también recoge cualquier tendencia suave de cohorte; se lee dónde el corte separa más, no como test de discontinuidad
+tempname fh_scan
+tempfile scan_data
+postfile `fh_scan' int corte byte inst_id double dif double se double pval double ll double ul using "`scan_data'", replace
+
+forvalues c = 1950/2000 {
+    capture drop post_tmp
+    gen byte post_tmp = (birthyear >= `c') if !missing(birthyear)
+    local i = 1
+    foreach v of local institutions {
+        quietly logit `v'_bin i.post_tmp i.year age_l `controles' [pweight=ponderador], vce(robust)
+        quietly margins, dydx(post_tmp) at((mean) age_l)
+        matrix tab_s = r(table)
+        post `fh_scan' (`c') (`i') (tab_s[1,2]) (tab_s[2,2]) (tab_s[4,2]) (tab_s[5,2]) (tab_s[6,2])
+        local ++i
+    }
+}
+drop post_tmp
+postclose `fh_scan'
+
+preserve
+use "`scan_data'", clear
+label define instlbl7 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
+label values inst_id instlbl7
+export delimited using "$PRINCIPAL\12_barrido_cortes.csv", replace
+
+twoway (rarea ll ul corte, color(gs13)) (line dif corte, lcolor(navy)), by(inst_id, rows(2) note("") title("Barrido de cortes", size(medium)) graphregion(color(white))) xline(1972 1995, lpattern(dash) lcolor(gs8)) yline(0, lcolor(gs10)) xtitle("Corte (nacidos desde)") ytitle("Diferencia en P(confía)") legend(off) xsize(12) ysize(7)
+graph export "$PRINCIPAL\12_barrido_cortes.png", replace width(2400)
+restore
+
+* bv_edad
+* figura 3 de ellos: perfil de edad estimado aparte en cada período de encuesta
+* un desplazamiento parejo de toda la curva es período; uno concentrado en un tramo de edad es cohorte
+* tres formas para la edad: 1 cuadrática (la de ellos), 2 cúbica, 3 grupos de edad (sin forma impuesta)
+* la cuadrática se curva hacia un solo lado: si la curva sube fuerte en un extremo, levanta también el otro y puede inventar un repunte en los jóvenes
+* la cúbica también es inestable en los extremos de edad; los grupos son la referencia para ver si un repunte es real
+capture drop periodo5 edad_g
+gen periodo5 = 5 * floor(year / 5)
+replace periodo5 = 2020 if year == 2025
+label define periodo5lbl 2005 "2006-2009" 2010 "2010-2014" 2015 "2015-2019" 2020 "2020-2025", replace
+label values periodo5 periodo5lbl
+
+* 18-24, 25-29, ..., 75-79, 80-85; en 2006-2009 no hay nadie de 80 o más (nacidos desde 1930), así que ese período tiene un grupo menos
+gen edad_g = 5 * floor(edad / 5)
+replace edad_g = 20 if edad_g < 20
+replace edad_g = 80 if edad_g > 80
+
+tempname fh_edad
+tempfile edad_data
+postfile `fh_edad' byte forma byte inst_id int periodo double edad_v double p double ll double ul double p_cubico using "`edad_data'", replace
+
+quietly levelsof periodo5, local(periodos)
+local i = 1
+foreach v of local institutions {
+    foreach p of local periodos {
+        * formas 1 y 2 con la edad en décadas (age_s) para que el término cúbico no desordene la escala; las predicciones son las mismas que con la edad en años
+        forvalues f = 1/2 {
+            local poli = cond(`f' == 1, "c.age_s##c.age_s", "c.age_s##c.age_s##c.age_s")
+            capture quietly logit `v'_bin `poli' i.year `controles' [pweight=ponderador] if periodo5 == `p', vce(robust)
+            if _rc != 0 continue
+            * p_cubico: test de Wald del término cúbico, dice si la cúbica agrega algo a la cuadrática
+            local pc = .
+            if `f' == 2 {
+                quietly test c.age_s#c.age_s#c.age_s
+                local pc = r(p)
+            }
+            quietly margins, at(age_s = (2(0.5)8))
+            matrix tab_e = r(table)
+            local k = 1
+            forvalues e = 20(5)80 {
+                post `fh_edad' (`f') (`i') (`p') (`e') (tab_e[1,`k']) (tab_e[5,`k']) (tab_e[6,`k']) (`pc')
+                local ++k
+            }
+        }
+        * forma 3: grupos de edad, cada punto se ubica en el centro de su grupo
+        capture quietly logit `v'_bin i.edad_g i.year `controles' [pweight=ponderador] if periodo5 == `p', vce(robust)
+        if _rc != 0 continue
+        quietly levelsof edad_g if e(sample), local(grupos)
+        local ng : word count `grupos'
+        quietly margins edad_g
+        matrix tab_e = r(table)
+        if colsof(tab_e) != `ng' {
+            di as text "`v', período `p': los grupos de edad no calzan con margins, se omite la forma 3"
+            continue
+        }
+        local k = 1
+        foreach g of local grupos {
+            local mid = cond(`g' == 20, 21, cond(`g' == 80, 82.5, `g' + 2))
+            * si un grupo no es estimable (sin error estándar) queda en missing
+            post `fh_edad' (3) (`i') (`p') (`mid') (cond(missing(tab_e[2,`k']), ., tab_e[1,`k'])) (tab_e[5,`k']) (tab_e[6,`k']) (.)
+            local ++k
+        }
+    }
+    local ++i
+}
+postclose `fh_edad'
+
+preserve
+use "`edad_data'", clear
+label define instlbl8 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Iglesia"
+label values inst_id instlbl8
+label define formalbl 1 "cuadrática" 2 "cúbica" 3 "grupos de edad"
+label values forma formalbl
+export delimited using "$PRINCIPAL\13_edad_por_periodo.csv", replace
+
+* 13: cuadrática (réplica de ellos), 13b: cúbica, 13c: grupos de edad
+forvalues f = 1/2 {
+    local suf = cond(`f' == 1, "_edad_por_periodo", "b_edad_cubica")
+    local tit = cond(`f' == 1, "Edad por período, cuadrática", "Edad por período, cúbica")
+    twoway (rarea ll ul edad_v if forma == `f' & periodo == 2005, color(navy%20)) (line p edad_v if forma == `f' & periodo == 2005, lcolor(navy)) (rarea ll ul edad_v if forma == `f' & periodo == 2020, color(orange%20)) (line p edad_v if forma == `f' & periodo == 2020, lcolor(orange)), by(inst_id, rows(2) note("") title("`tit'", size(medium)) graphregion(color(white))) xtitle("Edad") ytitle("P(confía), top-2") legend(order(2 "2006-2009" 4 "2020-2025") rows(1) size(small)) xsize(12) ysize(7)
+    graph export "$PRINCIPAL\13`suf'.png", replace width(2400)
+}
+
+twoway (rcap ll ul edad_v if forma == 3 & periodo == 2005, lcolor(navy%40)) (connected p edad_v if forma == 3 & periodo == 2005, mcolor(navy) lcolor(navy) msymbol(O) msize(small)) (rcap ll ul edad_v if forma == 3 & periodo == 2020, lcolor(orange%40)) (connected p edad_v if forma == 3 & periodo == 2020, mcolor(orange) lcolor(orange) msymbol(D) msize(small)), by(inst_id, rows(2) note("") title("Edad por período, grupos de edad", size(medium)) graphregion(color(white))) xtitle("Edad") ytitle("P(confía), top-2") xlabel(20(10)80) legend(order(2 "2006-2009" 4 "2020-2025") rows(1) size(small)) xsize(12) ysize(7)
+graph export "$PRINCIPAL\13c_edad_grupos.png", replace width(2400)
 restore
 
 * cobertura
@@ -893,8 +951,7 @@ foreach v of local variables {
     quietly levelsof `v', local(cats)
     local ncat : word count `cats'
 
-    file write `fh_cob2' `""`lbl'""' "," (`ntot') "," (`olas_con_datos') "," (`n_olas_total') "," ///
-        %9.2f (`vmin') "," %9.2f (`vmax') "," (`ncat') _n
+    file write `fh_cob2' `""`lbl'""' "," (`ntot') "," (`olas_con_datos') "," (`n_olas_total') "," %9.2f (`vmin') "," %9.2f (`vmax') "," (`ncat') _n
     local ++i
 }
 file close `fh_cob2'
