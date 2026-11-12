@@ -121,11 +121,8 @@ Otras es especificaciones y visualizaciones de las distancias y magnitudes de la
 
 El gráfico 4 la presenta en la escala continua (z-score), que es la más sensible estadísticamente y la que muestra la separación más clara, El gráfico 7 la traduce a la escala ordinal en términos de probabilidad real de confiar, más interpretable pero con intervalos de confianza más anchos por tratarse de dos valores predichos por separado. Si bien la visualización 10 sopesa de mejor manera la ambigüedad de comparar intervalos por separado, todas estas figuras muestran una inclinación visiblemente positiva de las nuevas generaciones hacia las instituciones en chile.
 
-## Réplica de Balcells y Villamil (2026)
+## Corte único (Balcells y Villamil, 2026)
 
-Como contraste, se replicó el diseño de Balcells y Villamil (2026), que buscan legados generacionales del autoritarismo en España (su variable dependiente es la participación en asociaciones, no la confianza). Su diseño no usa efectos aleatorios. Es un logit con efectos fijos de año de encuesta y logaritmo de la edad, que acá se aplica a la variable binaria (top-2-box), con los mismos controles del HAPC y con ponderador, que ellos no usan. Se replicaron tres piezas de su análisis.
-
-*Corte por ola*
 
 La muestra se divide entre nacidos antes y después de un año de corte, y el corte se cruza con el año de encuesta. Eso da una diferencia por ola, con la edad fijada en el promedio. Se usaron dos cortes. El primero, 1972, es el análogo chileno del corte de Balcells y Villamil: la primera cohorte que cumple 18 años fuera de la dictadura. El segundo, 1995, es la frontera que sobrevive en el HAPC, y solo puede estimarse desde 2013, cuando los nacidos desde 1995 empiezan a aparecer en la encuesta.
 
