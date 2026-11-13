@@ -571,6 +571,8 @@ restore
 * brecha1
 * figura 4: corte 1995 en formato continuo, con el mismo diseño que las figuras 7, 8 y 10 (olas desde 2013, edad fija en el promedio)
 * antes usaba todas las olas, incluidas 2006-2012, cuando todavía no había encuestados nacidos desde 1995
+* para correr solo esta sección: primero config y prep; redefine el local porque no pasa de una selección a otra
+local institutions "conf_gobierno conf_parlamento conf_partidos conf_ffaa conf_iglesia"
 tempname fh_estallido
 tempfile margins_estallido
 postfile `fh_estallido' byte inst_id byte post_estallido double b double ll double ul using "`margins_estallido'", replace
