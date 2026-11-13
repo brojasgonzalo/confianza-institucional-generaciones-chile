@@ -129,7 +129,7 @@ En puntos la brecha es chica. En Parlamento y Partidos se parte de una probabili
 
 <sub>Diferencia en P(confía) con la edad fija en el promedio, solo en las olas en que ya hay nacidos desde 1995 (desde 2013).</sub>
 
-La figura 4 hace la misma comparación en el formato continuo (z-score).
+La figura 4 hace la misma comparación en el formato continuo (z-score). Ahí la separación es clara en Gobierno, Parlamento y Partidos, mientras que en FF.AA. e Iglesia los intervalos de ambos grupos se superponen.
 
 <p align="center">
 <img src="Principal/7_brecha_estallido_prob.png" width="380">
