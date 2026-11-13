@@ -820,7 +820,7 @@ label define instlbl7 1 "Gobierno" 2 "Parlamento" 3 "Partidos" 4 "FF.AA." 5 "Igl
 label values inst_id instlbl7
 export delimited using "$PRINCIPAL\12_barrido_cortes.csv", replace
 
-twoway (rarea ll ul corte, color(gs13)) (line dif corte, lcolor(navy)), by(inst_id, rows(2) note("") title("Barrido de cortes", size(medium)) graphregion(color(white))) xline(1972 1995, lpattern(dash) lcolor(gs8)) yline(0, lcolor(gs10)) xtitle("Corte (nacidos desde)") ytitle("Diferencia en P(confía)") legend(off) xsize(12) ysize(7)
+twoway (rarea ll ul corte, color(gs13)) (line dif corte, lcolor(navy)), by(inst_id, rows(2) note("") title("Barrido de cortes", size(medium)) graphregion(color(white)) legend(off)) xline(1972 1995, lpattern(dash) lcolor(gs8)) yline(0, lcolor(gs10)) xtitle("Corte (nacidos desde)") ytitle("Diferencia en P(confía)") xsize(12) ysize(7)
 graph export "$PRINCIPAL\12_barrido_cortes.png", replace width(2400)
 restore
 

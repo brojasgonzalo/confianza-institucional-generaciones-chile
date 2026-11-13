@@ -152,9 +152,11 @@ Con el corte único de 1972, en cambio, no aparece diferencia en ninguna institu
 
 *Corte año a año*
 
-Es la misma idea de la figura 8, pero con este logit, moviendo el corte año a año entre 1950 y 2000 y usando todas las olas en todos los cortes (sin cruzarlo con el año de encuesta).
+Es la misma comparación de la figura 8, con el corte movido año a año entre 1950 y 2000.
 
 <p align="center"><img src="Principal/12_barrido_cortes.png" width="700"></p>
+
+<sub>Cada punto es el efecto marginal de un logit (nacidos desde el año del eje x vs. nacidos antes) sobre P(confía). Un logit por corte, con efectos fijos de año, log de la edad, sexo, educación y NSE, ponderado, olas 2006-2025. Banda gris: IC 95%. Punteadas: cortes 1972 y 1995.</sub>
 
 En Gobierno la diferencia sube de forma gradual desde las cohortes de los sesenta, es significativa desde el corte en 1985 y llega a su máximo con el corte en 1993 (+6,5 puntos). Con el corte en 1995 es de +5,8 puntos (p = 0,004). En FF.AA. es negativa con los cortes tempranos, se mantiene cerca de cero entre los setenta y los ochenta y sube desde 1993, con máximo en 1999 (+6,4). Con el corte en 1995 es de +6,3 puntos (p = 0,002). En ambas el corte en 1972 da una diferencia nula. Iglesia tiene una pendiente continua: con los cortes tempranos la diferencia es negativa (las cohortes más antiguas confían más de lo que predice su edad), cruza el cero poco después de 1972 y sigue subiendo hasta el final, con diferencias significativas desde el corte en 1981. Hay un gradiente de cohorte, pero no un quiebre. Parlamento y Partidos quedan en torno a cero con cualquier corte.
 
